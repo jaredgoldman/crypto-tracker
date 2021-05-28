@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS exchanges CASCADE;
+
+CREATE TABLE user_coins(
+  id SERIAL PRIMARY KEY NOT NULL,
+  user_id INTEGER REFERENCES users(id) NOT NULL,
+  coin_id INTEGER REFERENCES coins(id) NOT NULL
+)
