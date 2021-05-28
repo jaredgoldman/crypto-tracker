@@ -12,7 +12,7 @@ CREATE TABLE transactions(
     cost DOUBLE PRECISION,
     transaction_time TIMESTAMP WITH TIME ZONE,
     transaction_fee DOUBLE PRECISION
-);
+)
 
 -- ALTER TABLE transactions 
 -- DROP COLUMN account_id;
