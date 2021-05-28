@@ -1,4 +1,4 @@
 INSERT INTO
-coins(symbol)
+user_coins(user_id, coin_id)
 VALUES
 (1, 1);

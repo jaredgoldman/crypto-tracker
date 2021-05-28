@@ -6,4 +6,4 @@ CREATE TABLE accounts(
   exchange_id INTEGER REFERENCES exchanges(id) NOT NULL,
   api_key VARCHAR(100),
   api_secret VARCHAR(100) 
-)
+);
