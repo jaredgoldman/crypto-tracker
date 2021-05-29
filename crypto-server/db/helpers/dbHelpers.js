@@ -1,5 +1,4 @@
 const db = require('../index')
-const ccxt = require('ccxt')
 
 // 1- GET /api/users/:id === get users information
 const getUsers = () => {
