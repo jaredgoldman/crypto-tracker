@@ -39,10 +39,10 @@ const getUserByEmail = (email) => {
 }
 
 // 4 - POST /api/users/new === register user 
-const addUser = (email, password) => {
+const addUser = (firstName, lastName, email, password) => {
   const query = {
-    text: `INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *`,
-    values: [email, password]
+    text: `INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *`,
+    values: [firstName, lastName, email, password]
   }
 
   return db.query(query)

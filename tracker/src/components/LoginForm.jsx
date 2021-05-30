@@ -19,7 +19,7 @@ export default function LoginForm(props) {
 
   return (
     <div className="form-container">
-      
+      {props.alert && <div>{props.alert}</div>}
       <p>Login</p>
       
       <form 

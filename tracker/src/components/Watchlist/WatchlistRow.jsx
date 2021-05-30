@@ -1,3 +1,5 @@
+import './WatchlistRow.scss'
+
 export default function WatchlistRow(props) {
   return (
 

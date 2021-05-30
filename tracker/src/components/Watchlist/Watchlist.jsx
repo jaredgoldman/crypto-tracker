@@ -1,3 +1,4 @@
+import "./Watchlist.scss"
 import WatchlistRow from "./WatchlistRow"
 
 export default function Watchlist(props) {
@@ -17,8 +18,9 @@ export default function Watchlist(props) {
   })
 
   return (
-    <table>
-      <thead>
+    <div className="table-wrapper">
+      <table>
+        <thead>
           <tr>
             <td>Icon</td>
             <td>Ticker</td>
@@ -33,7 +35,8 @@ export default function Watchlist(props) {
         <tbody className="tbody">
           {tableRows}
         </tbody>
-    </table>
+      </table>
+    </div>
   )
 
 }

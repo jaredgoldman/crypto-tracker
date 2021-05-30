@@ -9,7 +9,6 @@ export default function useApplicationData() {
 
   const handleAlert = (alert) => {
     setAlert(alert)
-    console.log(alert)
     setTimeout(() => {
       setAlert(null);
     }, 3000)
@@ -29,10 +28,24 @@ export default function useApplicationData() {
     });
   }
 
-  // const handleLogout = () => {
-  //   removeCookie("user_id");
-  // }
+  const handleLogout = () => {
+    removeCookie("user_id");
+  }
 
-  return { handleLogin, cookies, alert }
+  const handleRegister = (userData) => {
+    const { firstName, lastName, password, email } = userData;
+    axios
+    .post(`http://localhost:3001/api/users/register`, {firstName, lastName, password, email})
+    .then(res => {
+      if (res) {
+        return setCookie('user_id', res.data.id, { path: '/' });
+      }
+    })
+    .catch((err) => {
+      handleAlert(err.response.data)
+    });
+  }
+
+  return { handleLogin, handleLogout, handleRegister, cookies, alert }
 
 }

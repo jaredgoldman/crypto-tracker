@@ -1,3 +1,11 @@
-table, th, td {
-  border: 1px solid black;
+.table-wrapper {
+  text-align: center;
+  margin-top: 2%;
+  margin-bottom: 200px;
+  display: block;
+}
+
+table {
+  border: solid 1px black;
+  width: 100%;
 }
