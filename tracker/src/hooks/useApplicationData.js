@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useCookies } from 'react-cookie';
 import axios from 'axios'
 
@@ -6,6 +6,7 @@ export default function useApplicationData() {
 
   const [cookies, setCookie, removeCookie] = useCookies(['user_id']);
   const [alert, setAlert] = useState(null);
+  const [coins, setCoins] = useState(null)
 
   const handleAlert = (alert) => {
     setAlert(alert)
@@ -46,6 +47,16 @@ export default function useApplicationData() {
     });
   }
 
-  return { handleLogin, handleLogout, handleRegister, cookies, alert }
+  // Load coins when user signs in 
+  useEffect(() => {
+    if (cookies.user_id) {
+      axios.get(`http://localhost:3001/api/exchange/coins`)
+      .then(res => {
+        setCoins(res.data);
+      })
+    }
+  }, [cookies.user_id])
+
+  return { handleLogin, handleLogout, handleRegister, cookies, alert, coins }
 
 }

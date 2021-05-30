@@ -13,22 +13,9 @@ import RegisterForm from "./components/RegisterForm"
 import useApplicationData from "./hooks/useApplicationData"
 import Watchlist from './components/Watchlist/Watchlist';
 
-const coinArray = [
-  {
-    coinLogo: "http://cdn.coinranking.com/Sy33Krudb/btc.svg",
-    ticker: "BTC",
-    rank: 1,
-    name: "Bitcoin",
-    price: "9370.9993109108",
-    changePercent: "-0.52",
-    volume: "6818750000",
-    marketCap: "159393904304"
-  }
-]
-
 export default function App() {
 
-  const { handleLogin, handleLogout, handleRegister, cookies, alert } = useApplicationData();
+  const { handleLogin, handleLogout, handleRegister, cookies, alert, coins } = useApplicationData();
 
   return (
     <main>
@@ -51,7 +38,7 @@ export default function App() {
             <RegisterForm handleRegister={handleRegister} alert={alert}/>
           </Route>
           <Route path="/watchlist">
-            <Watchlist rows={coinArray}/>
+            <Watchlist rows={coins}/>
           </Route>
           <Route exact path="/">
           {!cookies.user_id ? <Redirect to="/login" /> :
