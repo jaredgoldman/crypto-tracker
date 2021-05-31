@@ -4,9 +4,10 @@ import axios from 'axios'
 
 export default function useApplicationData() {
 
+      // USER FUNCTIONS/STATE // 
+
   const [cookies, setCookie, removeCookie] = useCookies(['user_id']);
   const [alert, setAlert] = useState(null);
-  const [coins, setCoins] = useState(null)
 
   const handleAlert = (alert) => {
     setAlert(alert)
@@ -47,6 +48,18 @@ export default function useApplicationData() {
     });
   }
 
+      // EXCHANGE FUNCTIONS/STATE //
+
+  const [coins, setCoins] = useState(null);
+  const [userCoins, setUserCoins] = useState(null);
+
+  const addUserCoin = (coin) => {
+    // send POST req to api with coin info
+    axios.post(`http://localhost:3001/api/coins/add`, {coin})
+    // receive all user coins as response 
+    // setUserCoins 
+  }
+
   // Load coins when user signs in 
   useEffect(() => {
     if (cookies.user_id) {
@@ -57,6 +70,12 @@ export default function useApplicationData() {
     }
   }, [cookies.user_id])
 
-  return { handleLogin, handleLogout, handleRegister, cookies, alert, coins }
+  return { 
+    handleLogin, 
+    handleLogout, 
+    handleRegister, 
+    cookies, 
+    alert, 
+    coins }
 
 }

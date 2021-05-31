@@ -1,7 +1,20 @@
+import { useState } from 'react'
+
 import "./Watchlist.scss"
 import WatchlistRow from "./WatchlistRow"
+import Modal from '../CoinModal/CoinModal'
 
 export default function Watchlist(props) {
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => {
+    if (showModal) {
+      setShowModal(false)
+    } else {
+      setShowModal(true)
+    }
+  }
 
   const tableRows = props.rows.map((row, i) => {
     return <WatchlistRow
@@ -19,6 +32,7 @@ export default function Watchlist(props) {
 
   return (
     <div className="table-wrapper">
+      <button onClick={() => handleShowModal()}>Add Coins</button>
       <table>
         <thead>
           <tr>
@@ -36,6 +50,9 @@ export default function Watchlist(props) {
           {tableRows}
         </tbody>
       </table>
+
+    {showModal && <Modal handleShowModal={handleShowModal} rows={props.rows}/>}
+     
     </div>
   )
 

@@ -1,0 +1,23 @@
+.Modal {
+  /* fixed position will always show modal in the top left corner */
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* z-index to show modal even if it is used before some other elements */
+  z-index: 5;
+  /* make modal fill whole window */
+  width: 100vw;
+  height: 100vh;
+  /* add some background to blur content behind modal */
+  background: rgba(255, 255, 255, 0.9);
+
+  /* center content inside modal */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.coin-table {
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
+}
