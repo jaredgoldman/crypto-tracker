@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import "./Watchlist.scss"
 import WatchlistRow from "./WatchlistRow"
-import Modal from '../CoinModal/CoinModal'
+import CoinModal from '../CoinModal/CoinModal'
 
 export default function Watchlist(props) {
 
@@ -51,7 +51,7 @@ export default function Watchlist(props) {
         </tbody>
       </table>
 
-    {showModal && <Modal handleShowModal={handleShowModal} rows={props.rows}/>}
+    {showModal && <CoinModal handleShowModal={handleShowModal} rows={props.rows} addUserCoin={props.addUserCoin}/>}
      
     </div>
   )

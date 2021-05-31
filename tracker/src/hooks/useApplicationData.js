@@ -50,22 +50,39 @@ export default function useApplicationData() {
 
       // EXCHANGE FUNCTIONS/STATE //
 
-  const [coins, setCoins] = useState(null);
+  // coins from crypto ranking
+  const [allCoins, setAllCoins] = useState(null);
+  // coins user has on watchlist
   const [userCoins, setUserCoins] = useState(null);
 
-  const addUserCoin = (coin) => {
-    // send POST req to api with coin info
-    axios.post(`http://localhost:3001/api/coins/add`, {coin})
-    // receive all user coins as response 
-    // setUserCoins 
+  const addUserCoin = (coinSymbol) => {
+    const userId = cookies.user_id;
+
+    axios.post(`http://localhost:3001/api/coins/add`, {userId, coinSymbol})
+    .then(res => {
+      const coins = res.data;
+      const userCoins = [];
+      
+      coins.forEach(coin => {
+        for (let c of allCoins) {
+          if (coin.symbol === c.ticker) {
+            userCoins.push(c);
+          }
+        }
+      })
+      setUserCoins(userCoins)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   // Load coins when user signs in 
   useEffect(() => {
     if (cookies.user_id) {
-      axios.get(`http://localhost:3001/api/exchange/coins`)
+      axios.get(`http://localhost:3001/api/coins/all`)
       .then(res => {
-        setCoins(res.data);
+        setAllCoins(res.data);
       })
     }
   }, [cookies.user_id])
@@ -73,9 +90,11 @@ export default function useApplicationData() {
   return { 
     handleLogin, 
     handleLogout, 
-    handleRegister, 
+    handleRegister,
+    addUserCoin, 
     cookies, 
     alert, 
-    coins }
+    allCoins 
+  }
 
 }

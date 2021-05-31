@@ -1,4 +1,7 @@
 INSERT INTO
 coins(symbol)
 VALUES
-('BTC');
+('BTC'),
+('ETH'),
+('XRP'),
+('DOT');

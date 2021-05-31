@@ -15,7 +15,7 @@ import Watchlist from './components/Watchlist/Watchlist';
 
 export default function App() {
 
-  const { handleLogin, handleLogout, handleRegister, cookies, alert, coins } = useApplicationData();
+  const { handleLogin, handleLogout, handleRegister, addUserCoin, cookies, alert, allCoins } = useApplicationData();
 
   return (
     <main>
@@ -38,7 +38,7 @@ export default function App() {
             <RegisterForm handleRegister={handleRegister} alert={alert}/>
           </Route>
           <Route path="/watchlist">
-            <Watchlist rows={coins}/>
+            <Watchlist rows={allCoins} addUserCoin={addUserCoin}/>
           </Route>
           <Route exact path="/">
           {!cookies.user_id ? <Redirect to="/login" /> :

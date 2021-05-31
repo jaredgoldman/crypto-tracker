@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getUserByEmail, addUser} = require('../db/helpers/dbHelpers');
+const {getUserByEmail, addUser} = require('../db/helpers/userHelpers');
 
  // USER LOGIN
  router.post('/login', (req, res) => {

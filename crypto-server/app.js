@@ -5,7 +5,7 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const usersRouter = require('./routes/users');
-const exchangeRouter = require('./routes/coins');
+const coinRouter = require('./routes/coins');
 const app = express();
 
 app.use(cors());
