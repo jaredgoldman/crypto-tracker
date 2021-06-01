@@ -9,6 +9,7 @@ import {
 
 import LoginForm from "./components/LoginForm"
 import RegisterForm from "./components/RegisterForm"
+import CoinDash from "./components/CoinDash"
 
 import useApplicationData from "./hooks/useApplicationData"
 import Watchlist from './components/Watchlist/Watchlist';
@@ -50,7 +51,7 @@ export default function App() {
             <Watchlist userCoins={userCoins} allCoins={allCoins} addUserCoin={addUserCoin}/>
           </Route>
           <Route path="/coins">
-            <div>I am coins</div>
+            <CoinDash/>
           </Route>
           <Route exact path="/">
           {!cookies.user_id ? <Redirect to="/login" /> :

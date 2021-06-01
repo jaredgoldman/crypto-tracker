@@ -54,6 +54,8 @@ export default function useApplicationData() {
   const [allCoins, setAllCoins] = useState(null);
   // coins user has on watchlist
   const [userCoins, setUserCoins] = useState(null);
+  // individual coin data
+  const [coinData, setCoinData] = useState(null)
 
   // adds a new coin to a users watchlist and returns entire list of user coins 
   const addUserCoin = (coinSymbol) => {
@@ -61,13 +63,19 @@ export default function useApplicationData() {
 
     axios.post(`http://localhost:3001/api/coins/add`, {userId, coinSymbol})
     .then(res => {
-
       const userCoins = res.data;
       const filteredUserCoins = filterUserCoins(userCoins, allCoins);
       setUserCoins(filteredUserCoins);
     })
     .catch(err => {
       console.log(err)
+    })
+  }
+
+  const loadCoinData = (coinSymbol) => {
+    axios.get(`http://localhost:3001/api/coins/show/${coinSymbol}`)
+    .then(res => {
+      console.log(res.data);
     })
   }
 
@@ -82,7 +90,6 @@ export default function useApplicationData() {
         setAllCoins(allCoins);
         setUserCoins(filteredUserCoins);
       })
-      
     }
   }, [cookies.user_id])
 

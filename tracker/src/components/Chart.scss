@@ -1,0 +1,21 @@
+.Chart {
+  font-family: sans-serif;
+  margin-top: 10px;
+  margin-left: 0px;
+  margin-right: 100px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
+  label {
+    padding-top: .5em;
+  }
+
+@media only screen and (max-width: 1024px) {
+  .Chart {
+    display: flex;
+    justify-content: center;
+  }
+}

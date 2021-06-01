@@ -122,6 +122,7 @@
 - /api/register
 - /api/:coin/new
 - /api/:coin
+- /api/coins/show/:coin
 - /api/:exchange/new
 - probably more needed here
 
