@@ -48,44 +48,57 @@ export default function useApplicationData() {
     });
   }
 
-      // EXCHANGE FUNCTIONS/STATE //
+      // COIN FUNCTIONS/STATE //
 
   // coins from crypto ranking
   const [allCoins, setAllCoins] = useState(null);
   // coins user has on watchlist
   const [userCoins, setUserCoins] = useState(null);
 
+  // adds a new coin to a users watchlist and returns entire list of user coins 
   const addUserCoin = (coinSymbol) => {
     const userId = cookies.user_id;
 
     axios.post(`http://localhost:3001/api/coins/add`, {userId, coinSymbol})
     .then(res => {
-      const coins = res.data;
-      const userCoins = [];
-      
-      coins.forEach(coin => {
-        for (let c of allCoins) {
-          if (coin.symbol === c.ticker) {
-            userCoins.push(c);
-          }
-        }
-      })
-      setUserCoins(userCoins)
+
+      const userCoins = res.data;
+      const filteredUserCoins = filterUserCoins(userCoins, allCoins);
+      setUserCoins(filteredUserCoins);
     })
     .catch(err => {
       console.log(err)
     })
   }
 
-  // Load coins when user signs in 
+  // Load watchlist and top 100 coins when user signs in 
   useEffect(() => {
     if (cookies.user_id) {
-      axios.get(`http://localhost:3001/api/coins/all`)
+      axios.get(`http://localhost:3001/api/coins/all/${cookies.user_id}`)
       .then(res => {
-        setAllCoins(res.data);
+        const allCoins = res.data.coins;
+        const userCoins = res.data.userCoins;
+        const filteredUserCoins = filterUserCoins(userCoins, allCoins)
+        setAllCoins(allCoins);
+        setUserCoins(filteredUserCoins);
       })
+      
     }
   }, [cookies.user_id])
+
+      // HELPER FUNCTIONS //
+
+  const filterUserCoins = (userCoins, allCoins) => {
+    const userCoinArr = [];
+    userCoins.forEach(coin => {
+      for (let c of allCoins) {
+        if (coin.symbol === c.ticker) {
+          userCoinArr.push(c);
+        }
+      }
+    })
+    return userCoinArr
+  }
 
   return { 
     handleLogin, 
@@ -94,7 +107,8 @@ export default function useApplicationData() {
     addUserCoin, 
     cookies, 
     alert, 
-    allCoins 
+    allCoins,
+    userCoins 
   }
 
 }

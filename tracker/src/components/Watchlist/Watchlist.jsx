@@ -16,7 +16,9 @@ export default function Watchlist(props) {
     }
   }
 
-  const tableRows = props.rows.map((row, i) => {
+  console.log(props.userCoins)
+
+  const tableRows = props.userCoins.map((row, i) => {
     return <WatchlistRow
       key={i}
       coinLogo={row.iconUrl}
@@ -51,7 +53,7 @@ export default function Watchlist(props) {
         </tbody>
       </table>
 
-    {showModal && <CoinModal handleShowModal={handleShowModal} rows={props.rows} addUserCoin={props.addUserCoin}/>}
+    {showModal && <CoinModal handleShowModal={handleShowModal} rows={props.allCoins} addUserCoin={props.addUserCoin}/>}
      
     </div>
   )

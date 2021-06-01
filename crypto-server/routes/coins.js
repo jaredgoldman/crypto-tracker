@@ -5,9 +5,10 @@ const axios = require('axios');
 const { formatCoins } = require('../helpers/exchange-helpers');
 const { getCoinByName, addCoin, addUserCoin, getUserCoin, getUserCoins } = require('../db/helpers/coinHelpers');
 
-// GET TOP 100 COINS FROM COIN RANKING
-router.get('/all', (req, res) => {
+// GET TOP 100 COINS FROM COIN RANKING AND USER COINS 
+router.get('/all/:id', (req, res) => {
 
+  const { id } = req.params;
   const config = {
     headers: {
       'x-access-token': process.env.CR_API
@@ -16,8 +17,11 @@ router.get('/all', (req, res) => {
 
   axios.get('https://api.coinranking.com/v2/coins?limit=100', config)
   .then(response => {
-    const coins = formatCoins(response.data.data.coins);
-    return res.status(200).json(coins);
+    // grab user coins from database 
+    getUserCoins(id).then(userCoins => {
+      const coins = formatCoins(response.data.data.coins);
+      return res.status(200).json({userCoins, coins});
+    })
   })
   .catch(err => {
     console.log(err)
