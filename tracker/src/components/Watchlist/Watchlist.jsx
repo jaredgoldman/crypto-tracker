@@ -9,14 +9,8 @@ export default function Watchlist(props) {
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => {
-    if (showModal) {
-      setShowModal(false)
-    } else {
-      setShowModal(true)
-    }
+    setShowModal(prevShowModal => !prevShowModal)
   }
-
-  console.log(props.userCoins)
 
   const tableRows = props.userCoins.map((row, i) => {
     return <WatchlistRow
@@ -46,6 +40,7 @@ export default function Watchlist(props) {
             <td>24h%</td>
             <td>Volume (24h)</td>
             <td>Market Cap</td>
+            <td></td>
           </tr>
         </thead>
         <tbody className="tbody">

@@ -3,8 +3,12 @@ import './CoinModal.scss'
 
 export default function CoinModal(props) {
 
-  const coinRows = props.rows.map(coin => {
-    return <CoinModalRow coin={coin.name} ticker={coin.ticker} addUserCoin={props.addUserCoin}/>
+  const coinRows = props.rows.map((coin, i) => {
+    return <CoinModalRow 
+      key={i}coin={coin.name} 
+      ticker={coin.ticker} 
+      addUserCoin={props.addUserCoin}
+    />
   })
 
   return (

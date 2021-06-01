@@ -1,4 +1,8 @@
 import './WatchlistRow.scss'
+import {
+  BrowserRouter as Router,
+  Link,
+} from "react-router-dom";
 
 export default function WatchlistRow(props) {
   return (
@@ -12,7 +16,7 @@ export default function WatchlistRow(props) {
       <td>{props.changePercent}</td>
       <td>{props.volume}</td>
       <td>{props.marketCap}</td>
-      {/* <button>Select Coin</button> */}
+      <td><button>Show Coin</button></td>
     </tr>
 
   )
