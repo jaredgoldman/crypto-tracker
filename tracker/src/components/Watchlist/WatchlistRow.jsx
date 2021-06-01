@@ -1,10 +1,14 @@
+import { useHistory } from "react-router-dom";
 import './WatchlistRow.scss'
-import {
-  BrowserRouter as Router,
-  Link,
-} from "react-router-dom";
 
 export default function WatchlistRow(props) {
+  
+  const history = useHistory();
+  const handleClick = (ticker) => {
+    props.loadCoinData(ticker);
+    history.push('/coins');
+  } 
+
   return (
 
     <tr>
@@ -16,7 +20,13 @@ export default function WatchlistRow(props) {
       <td>{props.changePercent}</td>
       <td>{props.volume}</td>
       <td>{props.marketCap}</td>
-      <td><a href={`/coins`}>Show Coin</a></td>
+      <td>
+        <a href='/coins' onClick={(e) => {
+            e.preventDefault();
+            handleClick(props.ticker);
+          }
+        }>Show Coin</a>
+      </td>
     </tr>
 
   )

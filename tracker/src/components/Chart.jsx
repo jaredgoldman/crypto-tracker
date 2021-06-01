@@ -106,10 +106,11 @@ export default function DisplayChart(props) {
   [ 1618401600000, 64542.03, 64645.13, 63690.7, 63886.22, 25.077029 ]
 ]
   
-  const candles = testCandles.map(([date, ...values]) => {
+  const candles = props.candles.map(([date, ...values]) => {
     return {x: new Date(date),
     y: values}})
 
+    console.log(props.candles)
     
     const chartData = {
 

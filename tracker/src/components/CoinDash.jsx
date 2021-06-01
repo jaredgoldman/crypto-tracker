@@ -1,15 +1,21 @@
 import './CoinDash.scss'
 
 import Chart from "./Chart"
+import CoinInfo from "./CoinInfo"
 
-export default function CoinDash() {
+export default function CoinDash(props) {
 
   return (
-    
-  <div>
-    <h2>I am Coin Dashboard</h2>
-    <Chart/>
-  </div>
+  <div className="coin-dashboard">
 
+    <div className="chart-container">
+      <Chart candles={props.candles}/>
+    </div>
+
+    <div className="info-container">
+      <CoinInfo/>
+    </div>
+
+  </div>
   )
 }

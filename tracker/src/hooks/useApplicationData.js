@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useCookies } from 'react-cookie';
+
 import axios from 'axios'
 
 export default function useApplicationData() {
@@ -55,7 +56,36 @@ export default function useApplicationData() {
   // coins user has on watchlist
   const [userCoins, setUserCoins] = useState(null);
   // individual coin data
-  const [coinData, setCoinData] = useState(null)
+  const [candles, setCandles] = useState(null)
+
+  // loads data for specific coin selected on watchlist
+  const loadCoinData = (coinSymbol) => {
+    console.log('firing axios request')
+    axios.get(`http://localhost:3001/api/coins/show/${coinSymbol}`)
+    .then(res => {
+      setCandles(res.data);
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
+  // Load watchlist and top 100 coins when user signs in 
+  useEffect(() => {
+    if (cookies.user_id) {
+      axios.get(`http://localhost:3001/api/coins/${cookies.user_id}`)
+      .then(res => {
+        const allCoins = res.data.coins;
+        const userCoins = res.data.userCoins;
+        const filteredUserCoins = filterUserCoins(userCoins, allCoins);
+        setAllCoins(allCoins);
+        setUserCoins(filteredUserCoins);
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+  }, [cookies.user_id])
 
   // adds a new coin to a users watchlist and returns entire list of user coins 
   const addUserCoin = (coinSymbol) => {
@@ -72,29 +102,9 @@ export default function useApplicationData() {
     })
   }
 
-  const loadCoinData = (coinSymbol) => {
-    axios.get(`http://localhost:3001/api/coins/show/${coinSymbol}`)
-    .then(res => {
-      console.log(res.data);
-    })
-  }
-
-  // Load watchlist and top 100 coins when user signs in 
-  useEffect(() => {
-    if (cookies.user_id) {
-      axios.get(`http://localhost:3001/api/coins/all/${cookies.user_id}`)
-      .then(res => {
-        const allCoins = res.data.coins;
-        const userCoins = res.data.userCoins;
-        const filteredUserCoins = filterUserCoins(userCoins, allCoins)
-        setAllCoins(allCoins);
-        setUserCoins(filteredUserCoins);
-      })
-    }
-  }, [cookies.user_id])
-
       // HELPER FUNCTIONS //
 
+  // use userCoins to filter allCoins list 
   const filterUserCoins = (userCoins, allCoins) => {
     const userCoinArr = [];
     userCoins.forEach(coin => {
@@ -111,11 +121,13 @@ export default function useApplicationData() {
     handleLogin, 
     handleLogout, 
     handleRegister,
-    addUserCoin, 
+    addUserCoin,
+    loadCoinData, 
     cookies, 
     alert, 
     allCoins,
-    userCoins 
+    userCoins,
+    candles
   }
 
 }

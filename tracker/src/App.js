@@ -20,11 +20,13 @@ export default function App() {
     handleLogin, 
     handleLogout, 
     handleRegister, 
-    addUserCoin, 
+    addUserCoin,
+    loadCoinData,
     cookies, 
     alert, 
     allCoins,
-    userCoins 
+    userCoins,
+    candles
   } = useApplicationData();
 
   return (
@@ -41,21 +43,26 @@ export default function App() {
         </header>
         <Switch>
           <Route path="/login">
-          {cookies.user_id ? <Redirect to="/watchlist" /> :
+          {cookies.user_id ? <Redirect to="/" /> :
             <LoginForm handleLogin={handleLogin} alert={alert}/> }
           </Route>
           <Route path="/register">
             <RegisterForm handleRegister={handleRegister} alert={alert}/>
           </Route>
           <Route path="/watchlist">
-            <Watchlist userCoins={userCoins} allCoins={allCoins} addUserCoin={addUserCoin}/>
+            <Watchlist 
+              userCoins={userCoins} 
+              allCoins={allCoins} 
+              addUserCoin={addUserCoin}
+              loadCoinData={loadCoinData}
+            />
           </Route>
           <Route path="/coins">
-            <CoinDash/>
+            <CoinDash candles={candles}/>
           </Route>
           <Route exact path="/">
           {!cookies.user_id ? <Redirect to="/login" /> :
-            <div>home page</div> }
+            <h1>home page</h1> }
           </Route>
         </Switch>
       </Router>

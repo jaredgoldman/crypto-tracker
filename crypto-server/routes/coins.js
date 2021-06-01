@@ -2,20 +2,21 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-const { formatCoins } = require('../helpers/exchange-helpers');
+const { formatCoins, formatCandles } = require('../helpers/api-helpers');
 const { getCoinByName, addCoin, addUserCoin, getUserCoin, getUserCoins } = require('../db/helpers/coinHelpers');
 
 // GET TOP 100 COINS FROM COIN RANKING AND USER COINS 
-router.get('/all/:id', (req, res) => {
+router.get('/:id', (req, res) => {
 
   const { id } = req.params;
+  const URL = `https://api.coinranking.com/v2/coins?limit=100`
   const config = {
     headers: {
       'x-access-token': process.env.CR_API
     }
   }
 
-  axios.get('https://api.coinranking.com/v2/coins?limit=100', config)
+  axios.get(URL, config)
   .then(response => {
     // grab user coins from database 
     getUserCoins(id).then(userCoins => {
@@ -53,7 +54,6 @@ router.post('/add', (req, res) => {
         .then(userCoin => {
           getUserCoins(userId)
           .then(coins => {
-            console.log(coins)
             return res.status(200).json(coins)
           })
         })
@@ -62,6 +62,22 @@ router.post('/add', (req, res) => {
       return res.send('coin already on watchlist')
       }
     })
+  })
+  .catch(err => {
+    console.log(err)
+  })
+})
+
+// GET COIN CANDLES
+router.get('/show/:coin', (req, res) => {
+  const { coin } = req.params;
+  const URL = `https://min-api.cryptocompare.com/data/v2/histohour?fsym=${coin}&tsym=USD&limit=50&api_key=${process.env.CC_API}`
+
+  axios.get(URL)
+  .then(coinData => {
+    const candles = coinData.data.Data.Data;
+    const formattedCandles = formatCandles(candles);
+    return res.status(200).send(formattedCandles);
   })
   .catch(err => {
     console.log(err)

@@ -23,6 +23,7 @@ export default function Watchlist(props) {
       changePercent={row.changePercent}
       volume={row.volume}
       marketCap={row.marketCap}
+      loadCoinData={props.loadCoinData}
     />
   })
 

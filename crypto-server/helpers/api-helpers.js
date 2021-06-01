@@ -1,3 +1,4 @@
+// formats coins res from cryptoranking 
 const formatCoins = (coins) => {
   const formattedCoins = coins.map(coin => {
     return {
@@ -14,4 +15,12 @@ const formatCoins = (coins) => {
   return formattedCoins;
 }
 
-module.exports = { formatCoins };
+// formats candles from crypto compare
+const formatCandles = (candles) => {
+  const formattedCandles = candles.map(candle => {
+    return [candle.time, candle.open, candle.high, candle.low, candle.close];
+  })
+  return formattedCandles;
+}
+
+module.exports = { formatCoins, formatCandles };
