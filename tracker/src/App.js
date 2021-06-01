@@ -49,6 +49,9 @@ export default function App() {
           <Route path="/watchlist">
             <Watchlist userCoins={userCoins} allCoins={allCoins} addUserCoin={addUserCoin}/>
           </Route>
+          <Route path="/coins">
+            <div>I am coins</div>
+          </Route>
           <Route exact path="/">
           {!cookies.user_id ? <Redirect to="/login" /> :
             <div>home page</div> }

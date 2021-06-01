@@ -16,7 +16,9 @@ export default function WatchlistRow(props) {
       <td>{props.changePercent}</td>
       <td>{props.volume}</td>
       <td>{props.marketCap}</td>
-      <td><button>Show Coin</button></td>
+      <Router>
+      <td><Link to={`/coins/${props.ticker}`}>Show Coin</Link></td>
+      </Router>
     </tr>
 
   )
