@@ -23,4 +23,25 @@ const formatCandles = (candles) => {
   return formattedCandles;
 }
 
-module.exports = { formatCoins, formatCandles };
+const formatCandleRequest = (candleLength) => {
+  if (candleLength === 'day') {
+    return {
+      candleUnit: 'hour',
+      candleAmount: 24
+    }
+  }
+  if (candleLength === 'week') {
+    return {
+      candleUnit: 'hour',
+      candleAmount: 168
+    }  
+  }
+  if (candleLength === 'month') {
+    return {
+      candleUnit: 'day',
+      candleAmount: 30
+    }  
+  }
+}
+
+module.exports = { formatCoins, formatCandles, formatCandleRequest };

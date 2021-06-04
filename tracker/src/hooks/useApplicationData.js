@@ -59,31 +59,31 @@ export default function useApplicationData() {
   // individual coin data
   const [coinState, dispatch] = useReducer(reducer, {
     coin: 'BTC',
-    candleLength: '1hr',
-    candleNumber: 24,
+    candleLength: 'day',
     candles: null
   });
   
-  const setCandleLength = (timeframe) => {
-    dispatch({type: "SET_CANDLE_LENGTH", value: timeframe});
+  const setCandleLength = (candleLength) => {
+    dispatch({type: "SET_CANDLE_LENGTH", value: candleLength});
   }
   
   const setCoin = (coin) => {
     dispatch({type: "SET_COIN", value: coin});
   }
   
-  const setCandleNumber = (time) => {
-    dispatch({type: "SET_CANDLE_NUMBER", value: time})
+  const setCandleNumber = (candleNumber) => {
+    dispatch({type: "SET_CANDLE_NUMBER", value: candleNumber})
   }
 
-  const setCandles = (time) => {
-    dispatch({type: "SET_CANDLES", value: time})
+  const setCandles = (candles) => {
+    dispatch({type: "SET_CANDLES", value: candles})
   }
 
   // Load watchlist and top 100 coins when user signs in 
   useEffect(() => {
     if (cookies.user_id) {
-      axios.get(`http://localhost:3001/api/coins/${cookies.user_id}`)
+      const URL = `http://localhost:3001/api/coins/${cookies.user_id}`
+      axios.get(URL)
       .then(res => {
         const allCoins = res.data.coins;
         const userCoins = res.data.userCoins;
@@ -99,8 +99,9 @@ export default function useApplicationData() {
 
   // Load coin data for coin dashboard
   useEffect(() => {
-    if (coinState.coin) {
-      axios.get(`http://localhost:3001/api/coins/show/${coinState.coin}`)
+    if (coinState.coin || coinState.candleLength) {
+      const URL = `http://localhost:3001/api/coins/show/${coinState.coin}/${coinState.candleLength}`
+      axios.get(URL)
       .then(res => {
         setCandles(res.data);
       })
@@ -108,7 +109,7 @@ export default function useApplicationData() {
         console.log(err)
       })
     }
-  }, [coinState.coin])
+  }, [coinState.coin, coinState.candleLength])
 
   // adds a new coin to a users watchlist and returns entire list of user coins 
   const addUserCoin = (coinSymbol) => {

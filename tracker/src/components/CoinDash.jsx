@@ -1,21 +1,18 @@
-import {useEffect} from 'react'
-import axios from 'axios'
-
 import './CoinDash.scss'
 
 import Chart from "./Chart"
 import CoinInfo from "./CoinInfo"
 
 export default function CoinDash(props) {
-  const { coinState, setCandleLength, setCandleNumber } = props;
+  const { coinState, setCandleLength } = props;
 
-  const handleSetCandleLength = (length) => {
-    setCandleLength(length)
+  const handleSetCandleLength = (e) => {
+    setCandleLength(e.target.value)
   }
 
-  const handleSetCandleNumber = (number) => {
-    setCandleNumber(number)
-  }
+  // const handleSetCandleNumber = (e) => {
+  //   setCandleNumber(e.target.value)
+  // }
 
   return (
   <div className="coin-dashboard">
@@ -29,21 +26,18 @@ export default function CoinDash(props) {
     </div>
 
     <div>
-      <div>Select candle length</div>
-      <select>
-        <option value={'15m'}>15 minutes</option>
-        <option value={'30m'}>30 minutes</option>
-        <option value={'1h'}>1 hour</option>
-        <option value={'6h'}>6 hours</option>
-        <option value={'12h'}>12 hours</option>
-        <option value={'1d'}>1 day</option>
+      <div>Select Timeframe</div>
+      <select onChange={(e) => handleSetCandleLength(e)}>
+        <option value={'day'}>day</option>
+        <option value={'week'}>week</option>
+        <option value={'month'}>month</option>
       </select>
-      <div>Select timeframe</div>
-      <select>
+      {/* <div>Select timeframe</div>
+      <select onChange={(e) => handleSetCandleNumber(e)}>
         <option value={'1d'}>1 day</option>
         <option value={'1w'}>1 week</option>
         <option value={'1m'}>1 month</option>
-      </select>
+      </select> */}
     </div>
 
   </div>

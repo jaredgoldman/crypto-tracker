@@ -2,8 +2,19 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-const { formatCoins, formatCandles } = require('../helpers/api-helpers');
-const { getCoinByName, addCoin, addUserCoin, getUserCoin, getUserCoins } = require('../db/helpers/coinHelpers');
+const { 
+  formatCoins, 
+  formatCandles, 
+  formatCandleRequest 
+} = require('../helpers/api-helpers');
+
+const { 
+  getCoinByName, 
+  addCoin, 
+  addUserCoin, 
+  getUserCoin, 
+  getUserCoins 
+} = require('../db/helpers/coinHelpers');
 
 // GET TOP 100 COINS FROM COIN RANKING AND USER COINS 
 router.get('/:id', (req, res) => {
@@ -69,10 +80,10 @@ router.post('/add', (req, res) => {
 })
 
 // GET COIN CANDLES
-router.get('/show/:coin', (req, res) => {
-  const { coin } = req.params;
-  const URL = `https://min-api.cryptocompare.com/data/v2/histohour?fsym=${coin}&tsym=USD&limit=50&api_key=${process.env.CC_API}`
-
+router.get('/show/:coin/:candleLength', (req, res) => {
+  const { coin, candleLength } = req.params;
+  const candleData = formatCandleRequest(candleLength);
+  const URL = `https://min-api.cryptocompare.com/data/v2/histo${candleData.candleUnit}?fsym=${coin}&tsym=USD&limit=${candleData.candleAmount}&api_key=${process.env.CC_API}`
   axios.get(URL)
   .then(coinData => {
     const candles = coinData.data.Data.Data;
