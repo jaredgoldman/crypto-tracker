@@ -17,14 +17,6 @@ export default function CoinDash(props) {
   return (
   <div className="coin-dashboard">
 
-    <div className="chart-container">
-      <Chart candles={coinState.candles}/>
-    </div>
-
-    <div className="info-container">
-      <CoinInfo/>
-    </div>
-
     <div>
       <div>Select Timeframe</div>
       <select onChange={(e) => handleSetCandleLength(e)}>
@@ -32,12 +24,14 @@ export default function CoinDash(props) {
         <option value={'week'}>week</option>
         <option value={'month'}>month</option>
       </select>
-      {/* <div>Select timeframe</div>
-      <select onChange={(e) => handleSetCandleNumber(e)}>
-        <option value={'1d'}>1 day</option>
-        <option value={'1w'}>1 week</option>
-        <option value={'1m'}>1 month</option>
-      </select> */}
+    </div>
+
+    <div className="chart-container">
+      <Chart candles={coinState.candles}/>
+    </div>
+
+    <div className="info-container">
+      <CoinInfo coinInfo={coinState.coinInfo}/>
     </div>
 
   </div>

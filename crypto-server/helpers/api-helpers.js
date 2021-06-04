@@ -22,7 +22,7 @@ const getCoinInfo = async (uuid) => {
   const URL = `https://api.coinranking.com/v2/coin/${uuid}`
   try {
     const coinInfo = await axios.get(URL, config)
-    console.log(coinInfo.data.data.coin)
+    return formatCoinInfo(coinInfo.data.data.coin);
   } catch(error) {
     console.log(error)
   }
@@ -54,6 +54,22 @@ const formatCandles = (candles) => {
     return [candle.time, candle.open, candle.high, candle.low, candle.close];
   })
   return formattedCandles;
+}
+
+const formatCoinInfo = (coinInfo) => {
+  return {
+    ticker: coinInfo.symbol,
+    icon: coinInfo.iconUrl,
+    website: coinInfo.websiteUrl,
+    totalSupply: coinInfo.supply.total,
+    volume: coinInfo['24hVolume'],
+    marketCap: coinInfo.marketCap,
+    price: coinInfo.price,
+    btcPrice: coinInfo.btcPrice,
+    change: coinInfo.change,
+    rank: coinInfo.rank,
+    allTimeHigh: coinInfo.allTimeHigh
+  }
 }
 
 const formatCandleRequest = (candleLength) => {

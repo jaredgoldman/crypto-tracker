@@ -86,7 +86,7 @@ router.get('/show/:coin/:uuid/:candleLength', async (req, res) => {
   try {
     const candles = await getCandles(coin, candleLength);
     const coinInfo = await getCoinInfo(uuid)
-    return res.send(candles);
+    return res.send({candles, coinInfo});
   } catch(error) {
     console.log(error.response.data)
   }

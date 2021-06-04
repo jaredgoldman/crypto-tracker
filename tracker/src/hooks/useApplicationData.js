@@ -61,16 +61,21 @@ export default function useApplicationData() {
     coin: {ticker: 'BTC', uuid: 'Qwsogvtv82FCd'},
     candleLength: 'day',
     candles: null,
+    coinInfo: null
   });
-  
-  const setCandleLength = (candleLength) => {
-    dispatch({type: "SET_CANDLE_LENGTH", value: candleLength});
-  }
   
   const setCoin = (coin) => {
     dispatch({type: "SET_COIN", value: coin});
   }
 
+  const setCoinInfo = (coinInfo) => {
+    dispatch({type: "SET_COIN_INFO", value: coinInfo})
+  }
+
+  const setCandleLength = (candleLength) => {
+    dispatch({type: "SET_CANDLE_LENGTH", value: candleLength});
+  }
+  
   const setCandles = (candles) => {
     dispatch({type: "SET_CANDLES", value: candles})
   }
@@ -101,7 +106,8 @@ export default function useApplicationData() {
       const URL = `http://localhost:3001/api/coins/show/${coin}/${uuid}/${coinState.candleLength}`
       axios.get(URL)
       .then(res => {
-        setCandles(res.data);
+        setCandles(res.data.candles);
+        setCoinInfo(res.data.coinInfo);
       })
       .catch(err => {
         console.log(err)
@@ -136,7 +142,6 @@ export default function useApplicationData() {
         }
       }
     })
-    console.log(userCoinArr)
     return userCoinArr
   }
 
