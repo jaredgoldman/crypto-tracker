@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
+    "dev": "nodemon -L ./bin/www",
     "db:reset": "node ./db/reset.js"
   },
   "dependencies": {

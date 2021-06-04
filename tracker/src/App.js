@@ -23,7 +23,6 @@ export default function App() {
     addUserCoin,
     setCoin,
     setCandleLength,
-    setCandleNumber,
     setCandles,
     cookies, 
     alert, 
@@ -63,7 +62,6 @@ export default function App() {
           <Route path="/coins">
             <CoinDash 
               setCandleLength={setCandleLength}
-              setCandleNumber={setCandleNumber}
               setCandles={setCandles}
               coinState={coinState}
              />

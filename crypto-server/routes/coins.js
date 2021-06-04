@@ -4,8 +4,8 @@ const axios = require('axios');
 
 const { 
   formatCoins, 
-  formatCandles, 
-  formatCandleRequest 
+  getCandles, 
+  getCoinInfo
 } = require('../helpers/api-helpers');
 
 const { 
@@ -79,21 +79,17 @@ router.post('/add', (req, res) => {
   })
 })
 
-// GET COIN CANDLES
-router.get('/show/:coin/:candleLength', (req, res) => {
-  const { coin, candleLength } = req.params;
-  const candleData = formatCandleRequest(candleLength);
-  const URL = `https://min-api.cryptocompare.com/data/v2/histo${candleData.candleUnit}?fsym=${coin}&tsym=USD&limit=${candleData.candleAmount}&api_key=${process.env.CC_API}`
-  axios.get(URL)
-  .then(coinData => {
-    const candles = coinData.data.Data.Data;
-    const formattedCandles = formatCandles(candles);
-    return res.status(200).send(formattedCandles);
-  })
-  .catch(err => {
-    console.log(err)
-  })
+// GET COIN DATA
+router.get('/show/:coin/:uuid/:candleLength', async (req, res) => {
+  const { coin, candleLength, uuid } = req.params;
+  console.log(uuid)
+  try {
+    const candles = await getCandles(coin, candleLength);
+    const coinInfo = await getCoinInfo(uuid)
+    return res.send(candles);
+  } catch(error) {
+    console.log(error.response.data)
+  }
 })
-
 
 module.exports = router;

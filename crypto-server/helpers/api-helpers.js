@@ -1,3 +1,35 @@
+const axios = require('axios');
+
+// REQUESTS //
+
+const getCandles = async (coin, candleLength) => {
+  const candleData = formatCandleRequest(candleLength);
+  const URL = `https://min-api.cryptocompare.com/data/v2/histo${candleData.candleUnit}?fsym=${coin}&tsym=USD&limit=${candleData.candleAmount}&api_key=${process.env.CC_API}`
+  try {
+    const candles = await axios.get(URL);
+    return formatCandles(candles.data.Data.Data);
+  } catch(error) {
+    console.log(error)
+  }
+}
+
+const getCoinInfo = async (uuid) => {
+  const config = {
+    headers: {
+      'x-access-token': process.env.CR_API
+    }
+  }
+  const URL = `https://api.coinranking.com/v2/coin/${uuid}`
+  try {
+    const coinInfo = await axios.get(URL, config)
+    console.log(coinInfo.data.data.coin)
+  } catch(error) {
+    console.log(error)
+  }
+}
+
+// REQUEST HELPER FUNCTIONS //
+
 // formats coins res from cryptoranking 
 const formatCoins = (coins) => {
   const formattedCoins = coins.map(coin => {
@@ -9,7 +41,8 @@ const formatCoins = (coins) => {
       price: coin.price,
       changePercent: coin.change,
       volume: coin['24hVolume'],
-      marketCap: coin.marketCap
+      marketCap: coin.marketCap,
+      uuid: coin.uuid
     }
   })
   return formattedCoins;
@@ -40,8 +73,12 @@ const formatCandleRequest = (candleLength) => {
     return {
       candleUnit: 'day',
       candleAmount: 30
-    }  
+    } 
   }
 }
 
-module.exports = { formatCoins, formatCandles, formatCandleRequest };
+module.exports = { 
+  formatCoins, 
+  getCandles,
+  getCoinInfo
+};

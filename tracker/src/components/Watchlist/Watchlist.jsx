@@ -6,6 +6,7 @@ import CoinModal from '../CoinModal/CoinModal'
 
 export default function Watchlist(props) {
 
+  console.log(props)
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => {
@@ -23,6 +24,7 @@ export default function Watchlist(props) {
       changePercent={row.changePercent}
       volume={row.volume}
       marketCap={row.marketCap}
+      uuid={row.uuid}
       setCoin={props.setCoin}
     />
   })

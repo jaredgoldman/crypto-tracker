@@ -58,9 +58,9 @@ export default function useApplicationData() {
   const [userCoins, setUserCoins] = useState(null);
   // individual coin data
   const [coinState, dispatch] = useReducer(reducer, {
-    coin: 'BTC',
+    coin: {ticker: 'BTC', uuid: 'Qwsogvtv82FCd'},
     candleLength: 'day',
-    candles: null
+    candles: null,
   });
   
   const setCandleLength = (candleLength) => {
@@ -69,10 +69,6 @@ export default function useApplicationData() {
   
   const setCoin = (coin) => {
     dispatch({type: "SET_COIN", value: coin});
-  }
-  
-  const setCandleNumber = (candleNumber) => {
-    dispatch({type: "SET_CANDLE_NUMBER", value: candleNumber})
   }
 
   const setCandles = (candles) => {
@@ -86,8 +82,8 @@ export default function useApplicationData() {
       axios.get(URL)
       .then(res => {
         const allCoins = res.data.coins;
-        const userCoins = res.data.userCoins;
-        const filteredUserCoins = filterUserCoins(userCoins, allCoins);
+        const userCoinRes = res.data.userCoins;
+        const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
         setAllCoins(allCoins);
         setUserCoins(filteredUserCoins);
       })
@@ -100,7 +96,9 @@ export default function useApplicationData() {
   // Load coin data for coin dashboard
   useEffect(() => {
     if (coinState.coin || coinState.candleLength) {
-      const URL = `http://localhost:3001/api/coins/show/${coinState.coin}/${coinState.candleLength}`
+      const coin = coinState.coin.ticker;
+      const uuid = coinState.coin.uuid;
+      const URL = `http://localhost:3001/api/coins/show/${coin}/${uuid}/${coinState.candleLength}`
       axios.get(URL)
       .then(res => {
         setCandles(res.data);
@@ -117,8 +115,8 @@ export default function useApplicationData() {
 
     axios.post(`http://localhost:3001/api/coins/add`, {userId, coinSymbol})
     .then(res => {
-      const userCoins = res.data;
-      const filteredUserCoins = filterUserCoins(userCoins, allCoins);
+      const userCoinRes = res.data;
+      const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
       setUserCoins(filteredUserCoins);
     })
     .catch(err => {
@@ -138,8 +136,13 @@ export default function useApplicationData() {
         }
       }
     })
+    console.log(userCoinArr)
     return userCoinArr
   }
+
+  // const filterUserCoins = (userCoins, allCoins) => {
+    
+  // }
 
   return { 
     handleLogin, 
@@ -148,7 +151,6 @@ export default function useApplicationData() {
     addUserCoin,
     setCoin,
     setCandleLength,
-    setCandleNumber,
     setCandles,
     cookies, 
     alert, 

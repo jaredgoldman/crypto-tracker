@@ -4,9 +4,9 @@ import './WatchlistRow.scss'
 export default function WatchlistRow(props) {
 
   const history = useHistory();
-  const handleClick = (ticker) => {
+  const handleClick = (ticker, uuid) => {
     history.push('/coins');
-    props.setCoin(ticker);
+    props.setCoin({ticker, uuid});
   } 
 
   return (
@@ -23,7 +23,8 @@ export default function WatchlistRow(props) {
       <td>
         <a href='/coins' onClick={(e) => {
             e.preventDefault();
-            handleClick(props.ticker);
+            console.log(props.ticker, props.uuid)
+            handleClick(props.ticker, props.uuid);
           }
         }>Show Coin</a>
       </td>
