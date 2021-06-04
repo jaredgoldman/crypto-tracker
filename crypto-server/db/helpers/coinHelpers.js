@@ -24,6 +24,25 @@ const addCoin = (coinSymbol) => {
   .catch((err) => err);
 }
 
+const deleteUserCoin = (userId, coinId) => {
+  const query = {
+    text: `DELETE FROM user_coins
+    WHERE coin_id IN
+        (
+          SELECT coin_id FROM user_coins 
+          JOIN users ON user_id = users.id
+          WHERE user_id = $1 AND coin_id = $2
+          LIMIT 1
+        )`,
+    values: [userId, coinId]
+  }
+
+  return db
+  .query(query)
+  .then(res => res.rowCount === 1)
+  .catch((err) => err);
+}
+
 const addUserCoin = (userId, coinId) => {
   const query = {
     text: `INSERT INTO user_coins (user_id, coin_id) 
@@ -65,4 +84,6 @@ const getUserCoin = (userId, coinId) => {
   .catch((err) => err);
 }
 
-module.exports = { getCoinByName, addCoin, addUserCoin, getUserCoins, getUserCoin }
+module.exports = { getCoinByName, addCoin, addUserCoin, deleteUserCoin, getUserCoins, getUserCoin }
+
+

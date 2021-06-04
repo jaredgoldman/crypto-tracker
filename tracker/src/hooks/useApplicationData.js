@@ -130,6 +130,21 @@ export default function useApplicationData() {
     })
   }
 
+  const deleteUserCoin = (coin) => {
+    const userId = cookies.user_id;
+    console.log(coin)
+    axios.post(`http://localhost:3001/api/coins/delete`, {userId, coin})
+    .then(res => {
+      const userCoinRes = res.data;
+      console.log(userCoinRes)
+      const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
+      setUserCoins(filteredUserCoins);
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
       // HELPER FUNCTIONS //
 
   // use userCoins to filter allCoins list 
@@ -154,6 +169,7 @@ export default function useApplicationData() {
     handleLogout, 
     handleRegister,
     addUserCoin,
+    deleteUserCoin,
     setCoin,
     setCandleLength,
     setCandles,

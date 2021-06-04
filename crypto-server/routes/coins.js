@@ -10,7 +10,8 @@ const {
 
 const { 
   getCoinByName, 
-  addCoin, 
+  addCoin,
+  deleteUserCoin,
   addUserCoin, 
   getUserCoin, 
   getUserCoins 
@@ -79,13 +80,25 @@ router.post('/add', (req, res) => {
   })
 })
 
+router.post('/delete', async (req, res) => {
+  const { userId, coin } = req.body;
+  try {
+    const userCoin = await getCoinByName(coin)
+    await deleteUserCoin(userId, userCoin.id);
+    const userCoins = await getUserCoins(userId)
+    return res.send(userCoins)
+  } catch(error) {
+    console.log(error)
+  }
+})
+
 // GET COIN DATA
 router.get('/show/:coin/:uuid/:candleLength', async (req, res) => {
   const { coin, candleLength, uuid } = req.params;
-  console.log(uuid)
   try {
     const candles = await getCandles(coin, candleLength);
     const coinInfo = await getCoinInfo(uuid)
+    
     return res.send({candles, coinInfo});
   } catch(error) {
     console.log(error.response.data)

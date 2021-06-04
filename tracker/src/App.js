@@ -21,6 +21,7 @@ export default function App() {
     handleLogout, 
     handleRegister, 
     addUserCoin,
+    deleteUserCoin,
     setCoin,
     setCandleLength,
     setCandles,
@@ -56,6 +57,7 @@ export default function App() {
               userCoins={userCoins} 
               allCoins={allCoins} 
               addUserCoin={addUserCoin}
+              deleteUserCoin={deleteUserCoin}
               setCoin={setCoin}
             />
           </Route>
