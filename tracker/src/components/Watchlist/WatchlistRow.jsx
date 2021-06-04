@@ -2,11 +2,11 @@ import { useHistory } from "react-router-dom";
 import './WatchlistRow.scss'
 
 export default function WatchlistRow(props) {
-  
+
   const history = useHistory();
   const handleClick = (ticker) => {
-    props.loadCoinData(ticker);
     history.push('/coins');
+    props.setCoin(ticker);
   } 
 
   return (

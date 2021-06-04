@@ -21,12 +21,15 @@ export default function App() {
     handleLogout, 
     handleRegister, 
     addUserCoin,
-    loadCoinData,
+    setCoin,
+    setCandleLength,
+    setCandleNumber,
+    setCandles,
     cookies, 
     alert, 
     allCoins,
     userCoins,
-    candles
+    coinState
   } = useApplicationData();
 
   return (
@@ -54,11 +57,16 @@ export default function App() {
               userCoins={userCoins} 
               allCoins={allCoins} 
               addUserCoin={addUserCoin}
-              loadCoinData={loadCoinData}
+              setCoin={setCoin}
             />
           </Route>
           <Route path="/coins">
-            <CoinDash candles={candles}/>
+            <CoinDash 
+              setCandleLength={setCandleLength}
+              setCandleNumber={setCandleNumber}
+              setCandles={setCandles}
+              coinState={coinState}
+             />
           </Route>
           <Route exact path="/">
           {!cookies.user_id ? <Redirect to="/login" /> :

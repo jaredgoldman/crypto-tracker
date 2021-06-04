@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useReducer } from 'react'
 import { useCookies } from 'react-cookie';
+import reducer from '../reducers/coins'
 
 import axios from 'axios'
 
@@ -56,18 +57,27 @@ export default function useApplicationData() {
   // coins user has on watchlist
   const [userCoins, setUserCoins] = useState(null);
   // individual coin data
-  const [candles, setCandles] = useState(null)
+  const [coinState, dispatch] = useReducer(reducer, {
+    coin: 'BTC',
+    candleLength: '1hr',
+    candleNumber: 24,
+    candles: null
+  });
+  
+  const setCandleLength = (timeframe) => {
+    dispatch({type: "SET_CANDLE_LENGTH", value: timeframe});
+  }
+  
+  const setCoin = (coin) => {
+    dispatch({type: "SET_COIN", value: coin});
+  }
+  
+  const setCandleNumber = (time) => {
+    dispatch({type: "SET_CANDLE_NUMBER", value: time})
+  }
 
-  // loads data for specific coin selected on watchlist
-  const loadCoinData = (coinSymbol) => {
-    console.log('firing axios request')
-    axios.get(`http://localhost:3001/api/coins/show/${coinSymbol}`)
-    .then(res => {
-      setCandles(res.data);
-    })
-    .catch(err => {
-      console.log(err)
-    })
+  const setCandles = (time) => {
+    dispatch({type: "SET_CANDLES", value: time})
   }
 
   // Load watchlist and top 100 coins when user signs in 
@@ -86,6 +96,19 @@ export default function useApplicationData() {
       })
     }
   }, [cookies.user_id])
+
+  // Load coin data for coin dashboard
+  useEffect(() => {
+    if (coinState.coin) {
+      axios.get(`http://localhost:3001/api/coins/show/${coinState.coin}`)
+      .then(res => {
+        setCandles(res.data);
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+  }, [coinState.coin])
 
   // adds a new coin to a users watchlist and returns entire list of user coins 
   const addUserCoin = (coinSymbol) => {
@@ -122,12 +145,15 @@ export default function useApplicationData() {
     handleLogout, 
     handleRegister,
     addUserCoin,
-    loadCoinData, 
+    setCoin,
+    setCandleLength,
+    setCandleNumber,
+    setCandles,
     cookies, 
     alert, 
     allCoins,
     userCoins,
-    candles
+    coinState
   }
 
 }
