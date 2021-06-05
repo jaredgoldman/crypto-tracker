@@ -8,6 +8,9 @@ export default function reducer(coinState, action) {
     case "SET_CANDLE_LENGTH":
       return {...coinState, candleLength: action.value} 
     case "SET_CANDLES":
-      return {...coinState, candles: action.value} 
+      return {...coinState, candles: action.value}
+    default:
+      return coinState;
   }
+  
 }

@@ -56,6 +56,8 @@ export default function useApplicationData() {
   const [allCoins, setAllCoins] = useState(null);
   // coins user has on watchlist
   const [userCoins, setUserCoins] = useState(null);
+  // set currency through which fiat numbers are provided
+  const [currency, setCurrency] = useState({uuid: "yhjMzLPhuIDl", ticker: "USD"});
   // individual coin data
   const [coinState, dispatch] = useReducer(reducer, {
     coin: {ticker: 'BTC', uuid: 'Qwsogvtv82FCd'},
@@ -64,6 +66,7 @@ export default function useApplicationData() {
     coinInfo: null
   });
   
+  // reducer functions for show coin page
   const setCoin = (coin) => {
     dispatch({type: "SET_COIN", value: coin});
   }
@@ -103,22 +106,21 @@ export default function useApplicationData() {
     if (coinState.coin || coinState.candleLength) {
       const coin = coinState.coin.ticker;
       const uuid = coinState.coin.uuid;
-      const URL = `http://localhost:3001/api/coins/show/${coin}/${uuid}/${coinState.candleLength}`
+      const URL = `http://localhost:3001/api/coins/show/${coin}/${uuid}/${coinState.candleLength}/${currency.ticker}/${currency.uuid}`
       axios.get(URL)
       .then(res => {
         setCandles(res.data.candles);
-        setCoinInfo(res.data.coinInfo);
+        setCoinInfo(res.data.coin);
       })
       .catch(err => {
         console.log(err)
       })
     }
-  }, [coinState.coin, coinState.candleLength])
+  }, [coinState.coin, coinState.candleLength, currency])
 
-  // adds a new coin to a users watchlist and returns entire list of user coins 
+  // adds a new coin, refreshes user coins
   const addUserCoin = (coinSymbol) => {
     const userId = cookies.user_id;
-
     axios.post(`http://localhost:3001/api/coins/add`, {userId, coinSymbol})
     .then(res => {
       if (res.data.alert) {
@@ -133,11 +135,15 @@ export default function useApplicationData() {
     })
   }
 
+  // deletes a coin, refreshes user coins
   const deleteUserCoin = (coin) => {
     const userId = cookies.user_id;
     axios.post(`http://localhost:3001/api/coins/delete`, {userId, coin})
     .then(res => {
-      const userCoinRes = res.data;
+      if (res.data.alert) {
+        return handleAlert(res.data.alert);
+      }
+      const userCoinRes = res.data.userCoins;
       const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
       setUserCoins(filteredUserCoins);
     })
@@ -148,9 +154,8 @@ export default function useApplicationData() {
 
       // HELPER FUNCTIONS //
 
-  // use userCoins to filter allCoins list 
+  // use userCoins as ref to filter watchlist
   const filterUserCoins = (userCoins, allCoins) => {
-    console.log(userCoins)
     const userCoinArr = [];
     userCoins.forEach(coin => {
       for (let c of allCoins) {
@@ -167,14 +172,18 @@ export default function useApplicationData() {
   // }
 
   return { 
+    // user
     handleLogin, 
     handleLogout, 
     handleRegister,
+    // coin
     addUserCoin,
     deleteUserCoin,
     setCoin,
     setCandleLength,
     setCandles,
+    setCurrency,
+    // state
     cookies, 
     alert, 
     allCoins,

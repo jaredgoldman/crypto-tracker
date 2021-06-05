@@ -1,32 +1,48 @@
 const axios = require('axios');
 
-// REQUESTS //
-
-const getCandles = async (coin, candleLength) => {
-  const candleData = formatCandleRequest(candleLength);
-  const URL = `https://min-api.cryptocompare.com/data/v2/histo${candleData.candleUnit}?fsym=${coin}&tsym=USD&limit=${candleData.candleAmount}&api_key=${process.env.CC_API}`
-  try {
-    const candles = await axios.get(URL);
-    console.log(candles.data)
-    return formatCandles(candles.data.Data.Data);
-  } catch(error) {
-    console.log(error)
+const crConfig = {
+  headers: {
+    'x-access-token': process.env.CR_API
   }
 }
+// REQUESTS //
 
-const getCoinInfo = async (uuid) => {
-  const config = {
-    headers: {
-      'x-access-token': process.env.CR_API
-    }
-  }
-  const URL = `https://api.coinranking.com/v2/coin/${uuid}`
+// const getCandles = async (coin, candleLength) => {
+//   const candleData = formatCandleRequest(candleLength);
+//   const URL = `https://min-api.cryptocompare.com/data/v2/histo${candleData.candleUnit}?fsym=${coin}&tsym=USD&limit=${candleData.candleAmount}&api_key=${process.env.CC_API}`
+//   try {
+//     const candles = await axios.get(URL);
+//     console.log(candles.data)
+//     return formatCandles(candles.data.Data.Data);
+//   } catch(error) {
+//     console.log(error)
+//   }
+// }
+
+const getCoinInfo = async (coin, uuid, candleLength, currencyTicker, currencyUuid) => {
+  let coinInfo = null;
+  let candles = null;
+
+  const candleData = formatCandleRequest(candleLength);
+
+  const infoURL = `https://api.coinranking.com/v2/coin/${uuid}?referenceCurrencyUuid=${currencyUuid}`
+  const candleURL = `https://min-api.cryptocompare.com/data/v2/histo${candleData.candleUnit}?fsym=${coin}&tsym=${currencyTicker}&limit=${candleData.candleAmount}&api_key=${process.env.CC_API}`
+
   try {
-    const coinInfo = await axios.get(URL, config)
-    return formatCoinInfo(coinInfo.data.data.coin);
+    coinInfo = await axios.get(infoURL, crConfig)
   } catch(error) {
     console.log(error)
   }
+
+  try {
+    candles = await axios.get(candleURL, crConfig)
+  } catch(error) {
+    console.log(error)
+  }
+
+  const formattedCandles = formatCandles(candles.data.Data.Data);
+  const formattedCoinInfo = formatCoinInfo(coinInfo.data.data.coin);
+  return {coin: formattedCoinInfo, candles: formattedCandles}
 }
 
 // REQUEST HELPER FUNCTIONS //
@@ -95,7 +111,6 @@ const formatCandleRequest = (candleLength) => {
 }
 
 module.exports = { 
-  formatCoins, 
-  getCandles,
+  formatCoins,
   getCoinInfo
 };

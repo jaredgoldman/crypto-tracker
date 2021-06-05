@@ -10,6 +10,7 @@ import {
 import LoginForm from "./components/LoginForm"
 import RegisterForm from "./components/RegisterForm"
 import CoinDash from "./components/CoinDash"
+import SettingsDash from "./components/SettingsDash"
 
 import useApplicationData from "./hooks/useApplicationData"
 import Watchlist from './components/Watchlist/Watchlist';
@@ -25,6 +26,7 @@ export default function App() {
     setCoin,
     setCandleLength,
     setCandles,
+    setCurrency,
     cookies, 
     alert, 
     allCoins,
@@ -38,10 +40,19 @@ export default function App() {
         <header>
           <nav>
             <Link className="nav-text" to="/">Crypto-Tracker</Link>
-            {!cookies.user_id && <Link className="nav-text" to="/login">Login</Link>}
-            {!cookies.user_id && <Link className="nav-text" to="/register">Register</Link>}
-            {cookies.user_id && <Link className="nav-text" to="/watchlist">Watchlist</Link>}
-            {cookies.user_id && <Link className="nav-text" to="/logout" onClick={() => handleLogout()}>Logout</Link>}
+            {!cookies.user_id && 
+              <div>
+                <Link className="nav-text" to="/login">Login</Link>
+                <Link className="nav-text" to="/register">Register</Link>
+              </div>
+            }
+            {cookies.user_id && 
+              <div>
+                <Link className="nav-text" to="/watchlist">Watchlist</Link>
+                <Link className="nav-text" to="/settings">Settings</Link>
+                <Link className="nav-text" to="/logout" onClick={() => handleLogout()}>Logout</Link>
+              </div>
+            }
           </nav>
         </header>
         <Switch>
@@ -68,6 +79,9 @@ export default function App() {
               setCandles={setCandles}
               coinState={coinState}
              />
+          </Route>
+          <Route path="/settings">
+            <SettingsDash setCurrency={setCurrency}/>
           </Route>
           <Route exact path="/">
           {!cookies.user_id ? <Redirect to="/login" /> :
