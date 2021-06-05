@@ -7,6 +7,7 @@ const getCandles = async (coin, candleLength) => {
   const URL = `https://min-api.cryptocompare.com/data/v2/histo${candleData.candleUnit}?fsym=${coin}&tsym=USD&limit=${candleData.candleAmount}&api_key=${process.env.CC_API}`
   try {
     const candles = await axios.get(URL);
+    console.log(candles.data)
     return formatCandles(candles.data.Data.Data);
   } catch(error) {
     console.log(error)
@@ -51,7 +52,7 @@ const formatCoins = (coins) => {
 // formats candles from crypto compare
 const formatCandles = (candles) => {
   const formattedCandles = candles.map(candle => {
-    return [candle.time, candle.open, candle.high, candle.low, candle.close];
+    return [candle.time * 1000, candle.open, candle.high, candle.low, candle.close];
   })
   return formattedCandles;
 }
