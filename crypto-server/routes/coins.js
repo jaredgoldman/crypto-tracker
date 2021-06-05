@@ -17,7 +17,7 @@ const {
   getUserCoins 
 } = require('../db/helpers/coinHelpers');
 
-// GET TOP 100 COINS FROM COIN RANKING AND USER COINS 
+// get top 100 coins from coin ranking and user coins 
 router.get('/:id', (req, res) => {
 
   const { id } = req.params;
@@ -45,14 +45,13 @@ router.get('/:id', (req, res) => {
 router.post('/add',  async (req, res) => {
   const { coinSymbol, userId } = req.body;
   let alert = null;
+  // check if coin is in db, if not add coin
   let coinHolder = await getCoinByName(coinSymbol)
   if (!coinHolder) {
     try {
-      // if no - add coin 
       coinHolder = await addCoin(coinSymbol)
-      console.log('new coin added to coins')
     } catch(error) {
-      console.log('error adding coin:', error)
+      alert = `error adding coin`
     }
   }
   // check if user has connection to coin 
@@ -60,72 +59,39 @@ router.post('/add',  async (req, res) => {
   if (!userCoin) {
     try {
       await addUserCoin(userId, coinHolder.id)
-      console.log('coin added to user_coins')
     } catch(error) {
-      console.log('error adding user_coin:', error)
+      alert = `error adding coin to user database`
     }
   } else {
     alert = `${coinSymbol} already on watchlist`
   }
+  // send all user coins and alert if alert
   const userCoins = await getUserCoins(userId)
-  console.log('sending response')
   return res.send({userCoins, alert})
 })
-  // if no - add coin 
-  // check if user has connection to coin 
-  // if no - add user_coin and send coins back
-  // if yes - send error 
-  
-//   let coinHolder = null;
-//   getCoinByName(coinSymbol).
-//   then(coin => {
-//     coinHolder = coin;
-//     if (!coin) {
-//       addCoin(coinSymbol)
-//       .then(coinInfo => {
-//         coinHolder = coinInfo;
-//       })
-//     }
-//     getUserCoin(userId, coinHolder)
-//     .then(coinConnect => {
-//       if (!coinConnect) {
-//         addUserCoin(userId, coinHolder.id)
-//         .then(userCoin => {
-//           getUserCoins(userId)
-//           .then(coins => {
-//             return res.status(200).json(coins)
-//           })
-//         })
-//       } else {
-//       return res.send('coin already on watchlist')
-//       }
-//     })
-//   })
-//   .catch(err => {
-//     console.log(err)
-//   })
-// })
 
+// delete user coin and send all user coins back
 router.post('/delete', async (req, res) => {
+  let alert = null;
   const { userId, coin } = req.body;
   try {
     const userCoin = await getCoinByName(coin)
     await deleteUserCoin(userId, userCoin.id);
-    const userCoins = await getUserCoins(userId)
-    return res.send(userCoins)
   } catch(error) {
-    console.log(error)
+    alert = 'error deleting coin'
   }
+  const userCoins = await getUserCoins(userId)
+  return res.send({userCoins, alert})
 })
 
-// GET COIN DATA
-router.get('/show/:coin/:uuid/:candleLength', async (req, res) => {
-  const { coin, candleLength, uuid } = req.params;
+// get data for coins show page
+router.get('/show/:coin/:uuid/:candleLength/:currencyTicker/:currencyUuid', async (req, res) => {
+  const { coin, candleLength, uuid, currencyTicker, currencyUuid } = req.params;
+  console.log(currencyUuid)
   try {
-    const candles = await getCandles(coin, candleLength);
-    const coinInfo = await getCoinInfo(uuid)
-    
-    return res.send({candles, coinInfo});
+    // const candles = await getCandles(coin, candleLength);
+    const coinInfo = await getCoinInfo(coin, uuid, candleLength, currencyTicker, currencyUuid)
+    return res.send(coinInfo);
   } catch(error) {
     console.log(error.response.data)
   }

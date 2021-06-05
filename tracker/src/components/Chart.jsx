@@ -4,7 +4,7 @@ import "./Chart.scss";
 
 export default function DisplayChart(props) {
 
-console.log(props.candles)
+// console.log(props.candles)
 
   const candles = props.candles.map(([date, ...values]) => {
     return {x: new Date(date),

@@ -7,7 +7,7 @@ const { coinInfo } = props
   return (
     <div className="coin-info">
       <div>
-        <img src={coinInfo.icon}></img>
+        <img src={coinInfo.icon} alt={`icon for ${coinInfo.ticker}`}></img>
       </div>
       <div>
         <h2>Symbol</h2>
