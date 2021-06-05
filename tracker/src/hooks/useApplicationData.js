@@ -121,7 +121,10 @@ export default function useApplicationData() {
 
     axios.post(`http://localhost:3001/api/coins/add`, {userId, coinSymbol})
     .then(res => {
-      const userCoinRes = res.data;
+      if (res.data.alert) {
+        return handleAlert(res.data.alert);
+      }
+      const userCoinRes = res.data.userCoins;
       const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
       setUserCoins(filteredUserCoins);
     })
@@ -132,11 +135,9 @@ export default function useApplicationData() {
 
   const deleteUserCoin = (coin) => {
     const userId = cookies.user_id;
-    console.log(coin)
     axios.post(`http://localhost:3001/api/coins/delete`, {userId, coin})
     .then(res => {
       const userCoinRes = res.data;
-      console.log(userCoinRes)
       const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
       setUserCoins(filteredUserCoins);
     })
@@ -149,6 +150,7 @@ export default function useApplicationData() {
 
   // use userCoins to filter allCoins list 
   const filterUserCoins = (userCoins, allCoins) => {
+    console.log(userCoins)
     const userCoinArr = [];
     userCoins.forEach(coin => {
       for (let c of allCoins) {

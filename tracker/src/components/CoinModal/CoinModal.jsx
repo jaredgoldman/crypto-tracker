@@ -5,7 +5,8 @@ export default function CoinModal(props) {
 
   const coinRows = props.rows.map((coin, i) => {
     return <CoinModalRow 
-      key={i}coin={coin.name} 
+      key={i}
+      coin={coin.name} 
       ticker={coin.ticker} 
       addUserCoin={props.addUserCoin}
     />
@@ -15,7 +16,9 @@ export default function CoinModal(props) {
     <div className="Modal">
       <div className="coin-table">
       <p>Add Coins to Watchlist</p>
-     
+      
+          {props.alert && <p>{props.alert}</p>}
+
           <table>
             <thead>
               <tr>

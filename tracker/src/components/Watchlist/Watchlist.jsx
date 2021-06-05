@@ -51,7 +51,7 @@ export default function Watchlist(props) {
         </tbody>
       </table>
 
-    {showModal && <CoinModal handleShowModal={handleShowModal} rows={props.allCoins} addUserCoin={props.addUserCoin}/>}
+    {showModal && <CoinModal handleShowModal={handleShowModal} rows={props.allCoins} addUserCoin={props.addUserCoin} alert={props.alert}/>}
      
     </div>
   )

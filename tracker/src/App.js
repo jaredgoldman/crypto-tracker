@@ -59,6 +59,7 @@ export default function App() {
               addUserCoin={addUserCoin}
               deleteUserCoin={deleteUserCoin}
               setCoin={setCoin}
+              alert={alert}
             />
           </Route>
           <Route path="/coins">
