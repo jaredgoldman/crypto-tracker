@@ -6,6 +6,7 @@ const cors = require('cors');
 
 const usersRouter = require('./routes/users');
 const coinRouter = require('./routes/coins');
+const exchangeRouter = require('./routes/exchange')
 const app = express();
 
 app.use(cors());
@@ -17,5 +18,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/users', usersRouter); 
 app.use('/api/coins', coinRouter);
+app.use('/api/exchange', exchangeRouter);
 
 module.exports = app;
