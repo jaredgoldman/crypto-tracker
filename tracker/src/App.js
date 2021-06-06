@@ -9,11 +9,12 @@ import {
 
 import LoginForm from "./components/LoginForm"
 import RegisterForm from "./components/RegisterForm"
+import Watchlist from './components/Watchlist/Watchlist';
 import CoinDash from "./components/CoinDash"
 import SettingsDash from "./components/SettingsDash"
+import ExchangeDash from "./components/ExchangeDash"
 
 import useApplicationData from "./hooks/useApplicationData"
-import Watchlist from './components/Watchlist/Watchlist';
 
 export default function App() {
 
@@ -27,6 +28,7 @@ export default function App() {
     setCandleLength,
     setCandles,
     setCurrency,
+    getExchanges,
     cookies, 
     alert, 
     allCoins,
@@ -49,6 +51,7 @@ export default function App() {
             {cookies.user_id && 
               <div>
                 <Link className="nav-text" to="/watchlist">Watchlist</Link>
+                <Link className="nav-text" to="/exchange">Exchanges</Link>
                 <Link className="nav-text" to="/settings">Settings</Link>
                 <Link className="nav-text" to="/logout" onClick={() => handleLogout()}>Logout</Link>
               </div>
@@ -79,6 +82,9 @@ export default function App() {
               setCandles={setCandles}
               coinState={coinState}
              />
+          </Route>
+          <Route path="/exchange">
+            <ExchangeDash getExchanges={getExchanges}/>
           </Route>
           <Route path="/settings">
             <SettingsDash setCurrency={setCurrency}/>
