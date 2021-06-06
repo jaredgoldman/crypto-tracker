@@ -1,7 +1,6 @@
 import { useState, useEffect, useReducer } from 'react'
 import { useCookies } from 'react-cookie';
 import reducer from '../reducers/coins'
-
 import axios from 'axios'
 
 export default function useApplicationData() {
@@ -65,6 +64,8 @@ export default function useApplicationData() {
     candles: null,
     coinInfo: null
   });
+  // exchanges offered by ccxt
+  const [exchanges, setExchanges] = useState(null)
   
   // reducer functions for show coin page
   const setCoin = (coin) => {
@@ -102,21 +103,17 @@ export default function useApplicationData() {
   }, [cookies.user_id])
 
   // Load coin data for coin dashboard
-  useEffect(() => {
-    if (coinState.coin || coinState.candleLength) {
-      const coin = coinState.coin.ticker;
-      const uuid = coinState.coin.uuid;
-      const URL = `http://localhost:3001/api/coins/show/${coin}/${uuid}/${coinState.candleLength}/${currency.ticker}/${currency.uuid}`
-      axios.get(URL)
-      .then(res => {
-        setCandles(res.data.candles);
-        setCoinInfo(res.data.coin);
-      })
-      .catch(err => {
-        console.log(err)
-      })
+  useEffect( () => {
+    async function fetchCoinData() {
+      await loadCoinData();
+      await getExchangedata(); 
     }
-  }, [coinState.coin, coinState.candleLength, currency])
+    if (coinState.coin || coinState.candleLength) {
+      fetchCoinData();
+    }
+  }, [coinState.coin, coinState.candleLength])
+
+
 
   // adds a new coin, refreshes user coins
   const addUserCoin = (coinSymbol) => {
@@ -152,6 +149,40 @@ export default function useApplicationData() {
     })
   }
 
+  // EXCHANGE HELPERS 
+
+  const getExchanges = async () => {
+    const URL = `http://localhost:3001/api/exchange`
+    const resExchanges = await axios.get(URL);
+    return resExchanges.data;
+  }
+
+  const getExchangedata = async () => {
+    try {
+      const ccxtExchanges = await getExchanges();
+      setExchanges(ccxtExchanges)
+    } catch(error) {
+      console.log(error)
+    }
+  }
+  
+  // COIN HELPERS
+
+  const loadCoinData = async () => {
+    const coin = coinState.coin.ticker;
+    const uuid = coinState.coin.uuid;
+    const URL = `http://localhost:3001/api/coins/show/${coin}/${uuid}/${coinState.candleLength}/${currency.ticker}/${currency.uuid}`
+
+    try {
+      const res = await axios.get(URL)
+      setCandles(res.data.candles);
+      setCoinInfo(res.data.coin);
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
       // HELPER FUNCTIONS //
 
   // use userCoins as ref to filter watchlist
@@ -167,28 +198,26 @@ export default function useApplicationData() {
     return userCoinArr
   }
 
-  // const filterUserCoins = (userCoins, allCoins) => {
-    
-  // }
-
   return { 
     // user
     handleLogin, 
     handleLogout, 
     handleRegister,
-    // coin
+    cookies,
+    alert, 
+    // coinegr
     addUserCoin,
     deleteUserCoin,
     setCoin,
     setCandleLength,
     setCandles,
     setCurrency,
-    // state
-    cookies, 
-    alert, 
     allCoins,
     userCoins,
-    coinState
+    coinState,
+    // exchange
+    getExchanges,
+    exchanges
   }
 
 }
