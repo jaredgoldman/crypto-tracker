@@ -22,14 +22,13 @@ router.post("/new", async (req, res) => {
   let alert = null;
 
   // grab balance and trades for user
-  const {balance, trades} = fetchUserExchangeInfo(exchange)
-
+  const {balance, trades} = await fetchUserExchangeInfo(exchange)
+  
   // check if exchange is in db 
   // if not, store exchange info in db
   let dbExchange = null;
   try {
     dbExchange = await getExchangeByName(exchangeData.exchangeName); // if no
-    console.log('exchange: ', dbExchange)
     if (!exchange) {
       dbExchange = await addExchange(exchangeData.exchangeName);
     }
@@ -41,8 +40,7 @@ router.post("/new", async (req, res) => {
   // store user account in db 
   let account = null;
   try {
-    account = await addUserAccount({userId: dbExchange.id, ...exchangeData});
-    console.log(account)
+    account = await addUserAccount({exchangeId: dbExchange.id, ...exchangeData});
   } catch(error) {
     console.log('error storing user account in db');
     console.log(error);
@@ -50,14 +48,14 @@ router.post("/new", async (req, res) => {
   
   // store transactions in db
   try {
-    for (let trade of trades ) {
-      await addUserTransaction({accountId: account.id, ...trade});
+    for (let trade of trades) {
+      const addedTransactions = await addUserTransaction({accountId: account.id, ...trade});
+      console.log(addedTransactions)
     }
   } catch(error) {
-    console.log('error adding user transactons');
+    console.log(error);
   }
  
-  console.log(balance, trades, alert);
   // res.send({balance, trades, alert});
 })
 
@@ -83,7 +81,7 @@ const fetchUserExchangeInfo = async (exchange) => {
     console.log('error fetching balance')
     console.log(error)
   }
-
+  
   return {
     balance, 
     trades

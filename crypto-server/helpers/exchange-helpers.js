@@ -24,7 +24,7 @@ const formatTrades = (trades) => {
       unitPrice: trade.price,
       amount: trade.amount,
       cost: trade.cost,
-      time: trade.timestamp,
+      time: trade.datetime,
       orderType: trade.type,
       side: trade.side,
       fee: trade.fee.cost,
