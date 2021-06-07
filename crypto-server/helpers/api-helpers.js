@@ -7,18 +7,6 @@ const crConfig = {
 }
 // REQUESTS //
 
-// const getCandles = async (coin, candleLength) => {
-//   const candleData = formatCandleRequest(candleLength);
-//   const URL = `https://min-api.cryptocompare.com/data/v2/histo${candleData.candleUnit}?fsym=${coin}&tsym=USD&limit=${candleData.candleAmount}&api_key=${process.env.CC_API}`
-//   try {
-//     const candles = await axios.get(URL);
-//     console.log(candles.data)
-//     return formatCandles(candles.data.Data.Data);
-//   } catch(error) {
-//     console.log(error)
-//   }
-// }
-
 const getCoinInfo = async (coin, uuid, candleLength, currencyTicker, currencyUuid) => {
   let coinInfo = null;
   let candles = null;

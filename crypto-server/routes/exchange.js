@@ -1,17 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const ccxt = require('ccxt');
-const { initializeExchange, formatTrades } = require('../helpers/exchange-helpers');
-const { addUserAccount, addExchange, getExchangeByName, addUserTransaction } = require('../db/helpers/exchangeHelpers')
+const { 
+  initializeExchange, 
+  fetchUserExchangeInfo 
+} = require('../helpers/exchange-helpers');
+
+const { 
+  addUserAccount, 
+  addExchange, 
+  getExchangeByName, 
+  addUserTransaction,
+  getUserAccounts
+} = require('../db/queries/exchange-queries')
 
 router.get("/", (req, res) => {
   res.send(ccxt.exchanges);
 })
-
-// exchangeName,
-// accountName,
-// apiKey,
-// secretKey
 
 router.post("/new", async (req, res) => {
   const exchangeData = req.body;
@@ -20,9 +25,17 @@ router.post("/new", async (req, res) => {
   const exchange = initializeExchange(exchangeData);
 
   let alert = null;
+  let balance = null;
+  let trades = null;
 
   // grab balance and trades for user
-  const {balance, trades} = await fetchUserExchangeInfo(exchange)
+  try {
+    const {resBalance, resTrades} = await fetchUserExchangeInfo(exchange)
+    trades = resBalance;
+    balance = resTrades;
+  } catch(error) {
+    console.log(error)
+  }
   
   // check if exchange is in db 
   // if not, store exchange info in db
@@ -59,33 +72,32 @@ router.post("/new", async (req, res) => {
   res.send({balance, trades});
 })
 
-// HELPERS //
+router.get('/user/:userId', async (req, res) => {
+  const { userId } = req.params;
 
-const fetchUserExchangeInfo = async (exchange) => {
-  let trades = null;
-  let balance = null;
+  const userBalances = {}
+  const userTrades = {}
+  const userAccounts = await getUserAccounts(userId);
+  res.send(
+    userAccounts
+  )
 
-  // grab balance
-  try {
-    balance = await exchange.fetchBalance();
-  } catch(error) {
-    console.log('error fetching balance')
-    console.log(error)
-  }
-
-  // grab trades
-  try {
-    const exchangeTrades = await exchange.fetchMyTrades();
-    trades = formatTrades(exchangeTrades);
-  } catch(error) {
-    console.log('error fetching balance')
-    console.log(error)
-  }
-  
-  return {
-    balance, 
-    trades
-  }
-}
+  // const userExchanges = userAccounts.forEach( async (account) => {
+  //   const exchangeData = {
+  //     exchangeName: account.exchange_name,
+  //     apiKey: account.api_key,
+  //     secretKey: account.api_secret
+  //   }
+  //   const exchange = initializeExchange(exchangeData)
+  //   const exchangeInfo = await fetchUserExchangeInfo(exchange);
+  //   console.log(exchangeInfo)
+  //   userBalances[account.exchange_name] = exchangeInfo.resBalance;
+  //   userTrades[account.exchange_name] = exchangeInfo.resTrades;
+  // })
+  // res.send({
+  //   userBalances,
+  //   userTrades
+  // })
+})
 
 module.exports = router;

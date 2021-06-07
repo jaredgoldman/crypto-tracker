@@ -109,6 +109,7 @@ export default function useApplicationData() {
 
   // GENERAL HELPERS // 
 
+  // when a user logs in...
   const loadDefaultData = async () => {
     const URL = `http://localhost:3001/api/coins/${cookies.user_id}`
     try {
@@ -118,6 +119,7 @@ export default function useApplicationData() {
       const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
       setAllCoins(allCoins);
       setUserCoins(filteredUserCoins);
+      // getUserExchangeData(cookies.user_id);
     } catch(error) {
       console.log(error)
     }
@@ -184,6 +186,17 @@ export default function useApplicationData() {
       setExchanges(ccxtExchanges)
     } catch(error) {
       console.log(error)
+    }
+  }
+
+  const getUserExchangeData = async (userId) => {
+    const URL = `http://localhost:3001/api/exchange/user/${userId}`
+    try {
+      const userExchangeData = await axios.get(URL);
+      setTrades(userExchangeData.trades);
+      setBalance(userExchangeData.balance);
+    } catch(error) {
+      console.log(error);
     }
   }
   

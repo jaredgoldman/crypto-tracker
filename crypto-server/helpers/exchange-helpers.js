@@ -1,4 +1,4 @@
-const ccxt = require('ccxt')
+const ccxt = require('ccxt');
 
 const initializeExchange = (exchangeData) => {
   const { exchangeName, apiKey, secretKey } = exchangeData;
@@ -10,6 +10,33 @@ const initializeExchange = (exchangeData) => {
     enableRateLimit: true
   });
   return exchange;
+}
+
+const fetchUserExchangeInfo = async (exchange) => {
+  let resTrades = null;
+  let resBalance = null;
+
+  // grab balance
+  try {
+    resBalance = await exchange.fetchBalance();
+  } catch(error) {
+    console.log('error fetching balance')
+    console.log(error)
+  }
+
+  // grab trades
+  try {
+    const exchangeTrades = await exchange.fetchMyTrades();
+    resTrades = formatTrades(exchangeTrades);
+  } catch(error) {
+    console.log('error fetching balance')
+    console.log(error)
+  }
+  
+  return {
+    resBalance, 
+    resTrades
+  }
 }
 
 const formatTrades = (trades) => {
@@ -37,4 +64,5 @@ const formatTrades = (trades) => {
 module.exports = { 
   initializeExchange,
   formatTrades,
+  fetchUserExchangeInfo
 }

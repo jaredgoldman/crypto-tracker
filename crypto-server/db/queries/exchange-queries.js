@@ -16,19 +16,6 @@ const addUserTransaction = (txnData) => {
     .catch(err => err);
 }
 
-// { baseCurrency: 'XRP',
-// quoteCurrency: 'CAD',
-// coinSymbol: 'XRP/CAD',
-// unitPrice: 0.62565,
-// amount: 4434.70973614,
-// cost: 2774.576146415991,
-// time: 1613510368587,
-// orderType: 'market',
-// side: 'sell',
-// fee: 7.21389799,
-// feeCurrency: 'CAD' },
-
-
 const addExchange = (exchangeName, exchangeWebsite) => {
   const query = {
     text: `INSERT INTO exchanges (name) VALUES ($1) RETURNING *` ,
@@ -67,8 +54,27 @@ const addUserAccount = (exchangeData) => {
     .catch(err => err);
 }
 
+const getUserAccounts = (userId) => {
+  const query = {
+
+    text: `SELECT accounts.account_name, accounts.api_key, accounts.api_secret, exchanges.name as exchange_name
+    FROM users
+    INNER JOIN accounts
+    ON users.id = accounts.user_id
+    INNER JOIN exchanges
+    ON accounts.exchange_id = exchanges.id
+    WHERE users.id = $1`,
+    values: [userId]
+  } 
+
+  return db.query(query)
+    .then(result => result.rows)
+    .catch(err => err);
+}
+
 module.exports = {
   addUserAccount,
+  getUserAccounts,
   addExchange,
   getExchangeByName,
   addUserTransaction

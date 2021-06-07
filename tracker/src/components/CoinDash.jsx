@@ -37,7 +37,7 @@ export default function CoinDash(props) {
       <CoinInfo coinInfo={coinState.coinInfo}/>
     </div>
 
-    {trades && 
+    {trades &&
       <div>
         <TradeTable rows={filteredTrades}/>
       </div> 
