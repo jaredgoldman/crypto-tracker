@@ -68,6 +68,10 @@ export default function useApplicationData() {
   });
   // exchanges offered by ccxt
   const [exchanges, setExchanges] = useState(null)
+  // user trades 
+  const [trades, setTrades] = useState(null);
+  // user balance
+  const [balance, setBalance] = useState(null);
   
   // reducer functions for show coin page
   const setCoin = (coin) => {
@@ -161,7 +165,8 @@ export default function useApplicationData() {
     const URL = `http://localhost:3001/api/exchange/new`
     try {
       const res = await axios.post(URL, {userId: cookies.user_id, ...exchangeData})
-      console.log(res)
+      setTrades(res.data.trades);
+      setBalance(res.data.balance);
     } catch(error) {
       console.log(error)
     }
@@ -231,7 +236,9 @@ export default function useApplicationData() {
     coinState,
     // exchange
     addExchange,
-    exchanges
+    exchanges,
+    trades,
+    balance
   }
 
 }

@@ -56,7 +56,7 @@ router.post("/new", async (req, res) => {
     console.log(error);
   }
  
-  // res.send({balance, trades, alert});
+  res.send({balance, trades});
 })
 
 // HELPERS //

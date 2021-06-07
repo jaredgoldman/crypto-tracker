@@ -19,22 +19,27 @@ import useApplicationData from "./hooks/useApplicationData"
 export default function App() {
 
   const { 
+    // user
     handleLogin, 
     handleLogout, 
-    handleRegister, 
+    handleRegister,
+    cookies,
+    alert, 
+    // coinegr
     addUserCoin,
     deleteUserCoin,
     setCoin,
     setCandleLength,
     setCandles,
     setCurrency,
-    addExchange,
-    exchanges,
-    cookies, 
-    alert, 
     allCoins,
     userCoins,
-    coinState
+    coinState,
+    // exchange
+    addExchange,
+    exchanges,
+    trades,
+    balance
   } = useApplicationData();
 
   return (
@@ -82,6 +87,8 @@ export default function App() {
               setCandleLength={setCandleLength}
               setCandles={setCandles}
               coinState={coinState}
+              trades={trades}
+              balance={balance}
              />
           </Route>
           <Route path="/exchange">
