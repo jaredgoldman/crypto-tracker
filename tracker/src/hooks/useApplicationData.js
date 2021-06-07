@@ -5,11 +5,13 @@ import axios from 'axios'
 
 export default function useApplicationData() {
 
-      // USER FUNCTIONS/STATE // 
+  // USER STATE // 
 
   const [cookies, setCookie, removeCookie] = useCookies(['user_id']);
   const [alert, setAlert] = useState(null);
 
+  // USER HELPERS //
+  
   const handleAlert = (alert) => {
     setAlert(alert)
     setTimeout(() => {
@@ -84,36 +86,40 @@ export default function useApplicationData() {
     dispatch({type: "SET_CANDLES", value: candles})
   }
 
+  // USEEFFECTS // 
+
   // Load watchlist and top 100 coins when user signs in 
   useEffect(() => {
     if (cookies.user_id) {
-      const URL = `http://localhost:3001/api/coins/${cookies.user_id}`
-      axios.get(URL)
-      .then(res => {
-        const allCoins = res.data.coins;
-        const userCoinRes = res.data.userCoins;
-        const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
-        setAllCoins(allCoins);
-        setUserCoins(filteredUserCoins);
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      loadDefaultData();
     }
   }, [cookies.user_id])
 
   // Load coin data for coin dashboard
   useEffect( () => {
-    async function fetchCoinData() {
-      await loadCoinData();
-      await getExchangedata(); 
-    }
     if (coinState.coin || coinState.candleLength) {
-      fetchCoinData();
+      loadCoinData();
+      getExchangedata(); 
     }
   }, [coinState.coin, coinState.candleLength])
 
+  // GENERAL HELPERS // 
 
+  const loadDefaultData = async () => {
+    const URL = `http://localhost:3001/api/coins/${cookies.user_id}`
+    try {
+      const defualtData = await axios.get(URL);
+      const allCoins = defualtData.data.coins;
+      const userCoinRes = defualtData.data.userCoins;
+      const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
+      setAllCoins(allCoins);
+      setUserCoins(filteredUserCoins);
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+  // COIN HELPERS //
 
   // adds a new coin, refreshes user coins
   const addUserCoin = (coinSymbol) => {
@@ -149,7 +155,17 @@ export default function useApplicationData() {
     })
   }
 
-  // EXCHANGE HELPERS 
+  // EXCHANGE HELPERS //
+
+  const addExchange = async (exchangeData) => {
+    const URL = `http://localhost:3001/api/exchange/new`
+    try {
+      const res = await axios.post(URL, {userId: cookies.user_id, ...exchangeData})
+      console.log(res)
+    } catch(error) {
+      console.log(error)
+    }
+  }
 
   const getExchanges = async () => {
     const URL = `http://localhost:3001/api/exchange`
@@ -166,7 +182,7 @@ export default function useApplicationData() {
     }
   }
   
-  // COIN HELPERS
+  // COIN HELPERS //
 
   const loadCoinData = async () => {
     const coin = coinState.coin.ticker;
@@ -182,9 +198,7 @@ export default function useApplicationData() {
     }
 
   }
-
-      // HELPER FUNCTIONS //
-
+  
   // use userCoins as ref to filter watchlist
   const filterUserCoins = (userCoins, allCoins) => {
     const userCoinArr = [];
@@ -216,7 +230,7 @@ export default function useApplicationData() {
     userCoins,
     coinState,
     // exchange
-    getExchanges,
+    addExchange,
     exchanges
   }
 

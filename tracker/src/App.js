@@ -28,7 +28,8 @@ export default function App() {
     setCandleLength,
     setCandles,
     setCurrency,
-    getExchanges,
+    addExchange,
+    exchanges,
     cookies, 
     alert, 
     allCoins,
@@ -84,7 +85,7 @@ export default function App() {
              />
           </Route>
           <Route path="/exchange">
-            <ExchangeDash getExchanges={getExchanges}/>
+            <ExchangeDash addExchange={addExchange} exchanges={exchanges}/>
           </Route>
           <Route path="/settings">
             <SettingsDash setCurrency={setCurrency}/>
