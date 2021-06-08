@@ -13,6 +13,9 @@ const {
   }
   getUserByEmail(email)
   .then(user => {
+    if (!user) {
+      return res.status(401).send("Error: invalid email");
+    }
     if (email && user.password === password) {
       return res.status(200).json(user.id);
     } 

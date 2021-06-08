@@ -1,21 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const ccxt = require('ccxt');
+
 const { 
   initializeExchange, 
-  fetchUserExchangeInfo 
+  fetchUserExchangeInfo, 
+  getCcxtExchanges,
+  addUserTransactions,
+  addBalance,
+  formatDbTrades
 } = require('../helpers/exchange-helpers');
 
 const { 
   addUserAccount, 
   addExchange, 
   getExchangeByName, 
-  addUserTransaction,
+  getUserTransactions,
   getUserAccounts
 } = require('../db/queries/exchange-queries')
 
 router.get("/", (req, res) => {
-  res.send(ccxt.exchanges);
+  const ccxtExchanges = getCcxtExchanges()
+  res.send(ccxtExchanges);
 })
 
 router.post("/new", async (req, res) => {
@@ -72,32 +77,46 @@ router.post("/new", async (req, res) => {
   res.send({balance, trades});
 })
 
+// gets all user exchange info 
 router.get('/user/:userId', async (req, res) => {
   const { userId } = req.params;
+  try {
+    const userAccounts = await getUserAccounts(userId);
+    let balance = {}
+  
+    userAccounts.forEach( async (account) => {
+      const accountId = account.id;
+      const exchangeData = {
+        exchangeName: account.exchange_name,
+        apiKey: account.api_key,
+        secretKey: account.api_secret
+      }
 
-  const userBalances = {}
-  const userTrades = {}
-  const userAccounts = await getUserAccounts(userId);
-  res.send(
-    userAccounts
-  )
+      // initialize each exchange
+      const exchange = initializeExchange(exchangeData);
+      // fetch trades and balance from exchange
+      const {resBalance, resTrades} = await fetchUserExchangeInfo(exchange);
+      // add transactions to db
+      await addUserTransactions(accountId, resTrades);
+      // add exchange balance to userBalance 
+      balance = addBalance(resBalance.total);
+  
+      try {
+        // grab all transactions from db 
+        const dbTransactions = await getUserTransactions(userId);
+        console.log(dbTransactions)
+        const transactions = formatDbTrades(dbTransactions);
+        // send back transactions and userbalance 
+        res.send({balance, transactions});
+      } catch(error) {
+        console.log(error);
+      } 
+         
+    })
+  } catch(error) {
+    console.log(error);
+  }
 
-  // const userExchanges = userAccounts.forEach( async (account) => {
-  //   const exchangeData = {
-  //     exchangeName: account.exchange_name,
-  //     apiKey: account.api_key,
-  //     secretKey: account.api_secret
-  //   }
-  //   const exchange = initializeExchange(exchangeData)
-  //   const exchangeInfo = await fetchUserExchangeInfo(exchange);
-  //   console.log(exchangeInfo)
-  //   userBalances[account.exchange_name] = exchangeInfo.resBalance;
-  //   userTrades[account.exchange_name] = exchangeInfo.resTrades;
-  // })
-  // res.send({
-  //   userBalances,
-  //   userTrades
-  // })
 })
 
 module.exports = router;

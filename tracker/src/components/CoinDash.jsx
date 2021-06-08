@@ -7,6 +7,8 @@ import TradeTable from "./TradeTable/TradeTable"
 export default function CoinDash(props) {
   const { coinState, setCandleLength, trades } = props;
 
+  console.log(trades)
+  
   const handleSetCandleLength = (e) => {
     setCandleLength(e.target.value)
   }

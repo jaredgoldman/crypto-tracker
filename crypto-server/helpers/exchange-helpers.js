@@ -1,4 +1,11 @@
 const ccxt = require('ccxt');
+const { 
+  addUserTransaction
+} = require('../db/queries/exchange-queries')
+
+const getCcxtExchanges = () => {
+  return ccxt.exchanges
+}
 
 const initializeExchange = (exchangeData) => {
   const { exchangeName, apiKey, secretKey } = exchangeData;
@@ -45,6 +52,7 @@ const formatTrades = (trades) => {
     const baseCurrency = trade.symbol.split('/')[0];
     const quoteCurrency = trade.symbol.split('/')[1];
     formattedTrades.push({
+      transactionId: trade.id,
       baseCurrency,
       quoteCurrency,
       coinSymbol: trade.symbol,
@@ -61,8 +69,56 @@ const formatTrades = (trades) => {
   return formattedTrades;
 }
 
+const formatDbTrades = (trades) => {
+  const formattedTrades = []
+  trades.forEach(trade => {
+    formattedTrades.push({
+      transactionId: trade.transaction_id,
+      baseCurrency: trade.base_currency,
+      quoteCurrency: trade.quote_currency,
+      coinSymbol: trade.coin_symbol,
+      unitPrice: trade.unit_price,
+      amount: trade.amount,
+      cost: trade.cost,
+      time: trade.transaction_time,
+      orderType: trade.order_type,
+      side: trade.side,
+      fee: trade.fee,
+      feeCurrency: trade.feeCurrency
+    })
+  })
+  return formattedTrades;
+}
+
+const addBalance = (balances) => {
+  let userBalance = {}
+  for (let balance in balances) {
+    if (!userBalance[balance]) {
+      userBalance[balance] = balances[balance];
+    } else {
+      userBalance[balance] += balances[balance];
+    }
+  }
+  return userBalance;
+}
+
+const addUserTransactions = async (accountId, trades) => {
+  trades.forEach( async (trade) => {
+    try {
+      await addUserTransaction({accountId, ...trade});
+    } catch(error) {
+      console.log(error);
+    }
+  })
+}
+
 module.exports = { 
+  getCcxtExchanges,
   initializeExchange,
   formatTrades,
-  fetchUserExchangeInfo
+  formatDbTrades,
+  fetchUserExchangeInfo,
+  addUserTransactions,
+  addBalance,
+  formatDbTrades
 }

@@ -2,8 +2,11 @@ import { useState, useEffect, useReducer } from 'react'
 import { useCookies } from 'react-cookie';
 import reducer from '../reducers/coins'
 import axios from 'axios'
+import useExchangeData  from './useExchangeData'
 
 export default function useApplicationData() {
+
+  // const { exchangeDataTest } = useExchangeData();
 
   // USER STATE // 
 
@@ -119,7 +122,7 @@ export default function useApplicationData() {
       const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
       setAllCoins(allCoins);
       setUserCoins(filteredUserCoins);
-      // getUserExchangeData(cookies.user_id);
+      getUserExchangeData(cookies.user_id);
     } catch(error) {
       console.log(error)
     }
@@ -193,8 +196,8 @@ export default function useApplicationData() {
     const URL = `http://localhost:3001/api/exchange/user/${userId}`
     try {
       const userExchangeData = await axios.get(URL);
-      setTrades(userExchangeData.trades);
-      setBalance(userExchangeData.balance);
+      setTrades(userExchangeData.data.transactions);
+      setBalance(userExchangeData.data.balance);
     } catch(error) {
       console.log(error);
     }
