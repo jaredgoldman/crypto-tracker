@@ -104,8 +104,8 @@ router.get('/user/:userId', async (req, res) => {
       try {
         // grab all transactions from db 
         const dbTransactions = await getUserTransactions(userId);
-        console.log(dbTransactions)
         const transactions = formatDbTrades(dbTransactions);
+        console.log(transactions)
         // send back transactions and userbalance 
         res.send({balance, transactions});
       } catch(error) {

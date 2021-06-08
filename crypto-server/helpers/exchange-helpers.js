@@ -83,7 +83,7 @@ const formatDbTrades = (trades) => {
       time: trade.transaction_time,
       orderType: trade.order_type,
       side: trade.side,
-      fee: trade.fee,
+      fee: trade.transaction_fee,
       feeCurrency: trade.feeCurrency
     })
   })
