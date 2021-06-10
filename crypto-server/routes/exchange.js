@@ -26,20 +26,26 @@ router.get("/", (req, res) => {
 router.post("/new", async (req, res) => {
   const exchangeData = req.body;
 
+  if (!exchangeData.exchangeName || !exchangeData.apiKey || !exchangeData.secretKey) {
+    return res.send({alert: `please enter valid credentials`})
+  }
+
   // initiliaze exchange 
   const exchange = initializeExchange(exchangeData);
+  
+  console.log('new exchange entered');
 
-  let alert = null;
   let balance = null;
   let trades = null;
 
   // grab balance and trades for user
   try {
-    const {resBalance, resTrades} = await fetchUserExchangeInfo(exchange)
-    trades = resBalance;
-    balance = resTrades;
+    const {resBalance, resTrades} = await fetchUserExchangeInfo(exchange);
+    trades = resTrades;
+    balance = resBalance;
   } catch(error) {
-    console.log(error)
+    console.log('error fetching user exchange info')
+    return res.send({alert: 'error fetching user exchange info'})
   }
   
   // check if exchange is in db 
@@ -51,8 +57,8 @@ router.post("/new", async (req, res) => {
       dbExchange = await addExchange(exchangeData.exchangeName);
     }
   } catch(error) {
-    console.log('error adding exchange');
-    console.log(error);
+    console.log('error adding exchange')
+    return res.send({alert: 'error adding exchange'});
   }
   
   // store user account in db 
@@ -60,21 +66,18 @@ router.post("/new", async (req, res) => {
   try {
     account = await addUserAccount({exchangeId: dbExchange.id, ...exchangeData});
   } catch(error) {
-    console.log('error storing user account in db');
-    console.log(error);
+    console.log('error adding account to db')
+    return res.send({alert: 'error adding account to db'});
   }
   
   // store transactions in db
   try {
-    for (let trade of trades) {
-      const addedTransactions = await addUserTransaction({accountId: account.id, ...trade});
-      console.log(addedTransactions)
-    }
+    const addedTransactions = await addUserTransactions(account.id, trades);
   } catch(error) {
-    console.log(error);
+    console.log('error adding transactions to db')
+    return res.send({alert: 'error adding transactions to db'});
   }
- 
-  res.send({balance, trades});
+  return res.send({balance, trades});
 })
 
 // gets all user exchange info 
@@ -105,7 +108,6 @@ router.get('/user/:userId', async (req, res) => {
         // grab all transactions from db 
         const dbTransactions = await getUserTransactions(userId);
         const transactions = formatDbTrades(dbTransactions);
-        console.log(transactions)
         // send back transactions and userbalance 
         res.send({balance, transactions});
       } catch(error) {

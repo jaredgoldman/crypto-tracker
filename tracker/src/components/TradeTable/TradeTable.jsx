@@ -11,6 +11,7 @@ export default function TradeTable(props) {
       price={row.unitPrice}
       amount={row.amount}
       cost={row.cost}
+      exchangeName={row.exchangeName}
       time={row.time}
       orderType={row.orderType}
       side={row.side}
@@ -41,6 +42,7 @@ export default function TradeTable(props) {
             <td>Price</td>
             <td>Amount</td>
             <td>Cost</td>
+            <td>Exchange Name</td>
             <td>Date</td>
             <td>Order Type</td>
             <td>Order Side</td>

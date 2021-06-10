@@ -2,12 +2,25 @@ const db = require('../index');
 
 const getUserTransactions = (userId) => {
   const query = {
-    text: `SELECT account_id, transaction_id, coin_symbol, base_currency, quote_currency, side, order_type, unit_price, amount, cost, transaction_fee
+    text: `SELECT account_id, 
+      transaction_id, 
+      exchanges.name as exchange_name, 
+      coin_symbol, 
+      base_currency, 
+      quote_currency, 
+      side, 
+      order_type, 
+      unit_price, 
+      amount, 
+      cost, 
+      transaction_fee
     FROM transactions
     INNER JOIN accounts
     ON transactions.account_id = accounts.id
     INNER JOIN users
     ON users.id = accounts.user_id
+    INNER JOIN exchanges
+    ON accounts.exchange_id = exchanges.id
     WHERE users.id = $1`,
     values: [userId]
     }

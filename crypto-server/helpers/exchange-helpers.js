@@ -8,14 +8,15 @@ const getCcxtExchanges = () => {
 }
 
 const initializeExchange = (exchangeData) => {
-  const { exchangeName, apiKey, secretKey } = exchangeData;
+  const { exchangeName, apiKey, secretKey, sandboxMode } = exchangeData;
   const exchangeId = exchangeName;
   const exchangeClass = ccxt[exchangeId];
   const exchange = new exchangeClass({
     apiKey: apiKey,
     secret: secretKey,
-    enableRateLimit: true
+    enableRateLimit: true,  
   });
+  exchange.setSandboxMode(sandboxMode)
   return exchange;
 }
 
@@ -33,8 +34,9 @@ const fetchUserExchangeInfo = async (exchange) => {
 
   // grab trades
   try {
-    const exchangeTrades = await exchange.fetchMyTrades();
-    resTrades = formatTrades(exchangeTrades);
+    // const exchangeTrades = await exchange.fetchMyTrades();
+    const exchangeTrades = await fetchIterativeTrades(exchange)
+    resTrades = formatTrades(exchangeTrades, exchange.name);
   } catch(error) {
     console.log('error fetching balance')
     console.log(error)
@@ -46,7 +48,21 @@ const fetchUserExchangeInfo = async (exchange) => {
   }
 }
 
-const formatTrades = (trades) => {
+const fetchIterativeTrades = async (exchange) => {
+  let tradeArray = [];
+  const markets = await exchange.fetchMarkets();
+
+  for (let market of markets) {
+    const trades = await exchange.fetchMyTrades(market.symbol)
+    if (trades != false) {
+      tradeArray = [...trades, ...tradeArray]
+    }
+  }
+
+  return tradeArray;
+}
+
+const formatTrades = (trades, exchangeName) => {
   const formattedTrades = []
   trades.forEach(trade => {
     const baseCurrency = trade.symbol.split('/')[0];
@@ -59,11 +75,13 @@ const formatTrades = (trades) => {
       unitPrice: trade.price,
       amount: trade.amount,
       cost: trade.cost,
+      exchangeName: exchangeName,
       time: trade.datetime,
       orderType: trade.type,
       side: trade.side,
       fee: trade.fee.cost,
-      feeCurrency: trade.fee.currency
+      feeCurrency: trade.fee.currency,
+      market: market
     })
   })
   return formattedTrades;
@@ -80,6 +98,7 @@ const formatDbTrades = (trades) => {
       unitPrice: trade.unit_price,
       amount: trade.amount,
       cost: trade.cost,
+      exchangeName: trade.exchange_name,
       time: trade.transaction_time,
       orderType: trade.order_type,
       side: trade.side,
@@ -106,6 +125,7 @@ const addUserTransactions = async (accountId, trades) => {
   trades.forEach( async (trade) => {
     try {
       await addUserTransaction({accountId, ...trade});
+      return 'transactions added '
     } catch(error) {
       console.log(error);
     }

@@ -92,7 +92,7 @@ export default function App() {
              />
           </Route>
           <Route path="/exchange">
-            <ExchangeDash addExchange={addExchange} exchanges={exchanges}/>
+            <ExchangeDash addExchange={addExchange} exchanges={exchanges} alert={alert}/>
           </Route>
           <Route path="/settings">
             <SettingsDash setCurrency={setCurrency}/>

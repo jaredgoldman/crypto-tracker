@@ -170,6 +170,9 @@ export default function useApplicationData() {
     const URL = `http://localhost:3001/api/exchange/new`
     try {
       const res = await axios.post(URL, {userId: cookies.user_id, ...exchangeData})
+      if (res.data.alert) {
+        return handleAlert(res.data.alert);
+      }
       setTrades(res.data.trades);
       setBalance(res.data.balance);
     } catch(error) {
@@ -195,9 +198,12 @@ export default function useApplicationData() {
   const getUserExchangeData = async (userId) => {
     const URL = `http://localhost:3001/api/exchange/user/${userId}`
     try {
-      const userExchangeData = await axios.get(URL);
-      setTrades(userExchangeData.data.transactions);
-      setBalance(userExchangeData.data.balance);
+      const res = await axios.get(URL);
+      if (res.data.alert) {
+        return handleAlert(res.data.alert);
+      }
+      setTrades(res.data.transactions);
+      setBalance(res.data.balance);
     } catch(error) {
       console.log(error);
     }

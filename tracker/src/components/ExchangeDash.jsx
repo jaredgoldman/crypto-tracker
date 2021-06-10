@@ -1,19 +1,23 @@
 import { useState } from 'react'
 
 export default function ExchangeDash(props) {
-  const { addExchange, exchanges } = props; 
+  const { addExchange, exchanges, alert } = props; 
 
   const [exchangeName, setExchangeName] = useState('aax');
   const [accountName, setAccountName] = useState(null);
   const [apiKey, setApiKey] = useState(null);
   const [secretKey, setSecretKey] = useState(null);
+  const [sandboxMode, setSandboxMode] = useState(false)
+
+  console.log(sandboxMode)
 
   const handleAddExchange = () => {
     addExchange({
       exchangeName,
       accountName,
       apiKey,
-      secretKey
+      secretKey,
+      sandboxMode
     });
   }
 
@@ -33,9 +37,23 @@ export default function ExchangeDash(props) {
     setExchangeName(e.target.value)
   }
 
-  const exchangeOptions = exchanges.map((exchange, i) => {
-    return <option value={exchange} key ={i}>{exchange}</option>
-  })
+  const handleSandboxMode = () => {
+    if (!sandboxMode) {
+      setSandboxMode(true);
+    } else {
+      setSandboxMode(false);
+    }
+  }
+
+  // temporary fix to stop site from crashing when loading exchanges
+  const displayExchangeOptions = () => {
+    if (exchanges) {
+      return exchanges.map((exchange, i) => {
+        return <option value={exchange} key ={i}>{exchange}</option>
+      })
+    }
+    return <option>Loading...</option>
+  }
 
   return (
     <div className="form-container">
@@ -43,7 +61,7 @@ export default function ExchangeDash(props) {
       <p>Add Exchange</p>
       
       <select onChange={(e) => handleSelectExchangeName(e)}>
-        {exchangeOptions}
+        {displayExchangeOptions()}
       </select>
 
       <form 
@@ -78,6 +96,13 @@ export default function ExchangeDash(props) {
           onChange={(e) => {handleSecretKey(e)}}
         >
         </input>
+        <div>
+          <label>sandbox mode?</label>
+            <input
+              type='checkbox'
+              onChange={() => {handleSandboxMode()}}
+            />
+        </div>
         <div>
           <input type="submit" className="button"/>
         </div>
