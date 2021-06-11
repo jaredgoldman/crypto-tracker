@@ -121,7 +121,7 @@ export default function useApplicationData() {
       const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
       setAllCoins(allCoins);
       setUserCoins(filteredUserCoins);
-      getUserExchangeData(cookies.user_id);
+      // getUserExchangeData(cookies.user_id);
     } catch(error) {
       console.log(error)
     }
@@ -198,31 +198,35 @@ export default function useApplicationData() {
     }
   }
 
-  const getUserExchangeData = async (userId) => {
-    const URL = `http://localhost:3001/api/exchange/user/${userId}`
-    try {
-      const res = await axios.get(URL);
-      if (res.data.alert) {
-        return handleAlert(res.data.alert);
-      }
-      setTrades(res.data.transactions);
-      // setBalance(res.data.balance);
-    } catch(error) {
-      console.log(error);
-    }
-  }
+  // const getUserExchangeData = async (userId) => {
+  //   const URL = `http://localhost:3001/api/exchange/user/${userId}`
+  //   try {
+  //     const res = await axios.get(URL);
+  //     if (res.data.alert) {
+  //       return handleAlert(res.data.alert);
+  //     }
+  //     setTrades(res.data.transactions);
+  //     // setBalance(res.data.balance);
+  //   } catch(error) {
+  //     console.log(error);
+  //   }
+  // }
   
   // COIN HELPERS //
 
   const loadCoinData = async () => {
+    const userId = cookies.user_id;
     const coin = coinState.coin.ticker;
     const uuid = coinState.coin.uuid;
-    const URL = `http://localhost:3001/api/coins/show/${coin}/${uuid}/${coinState.candleLength}/${currency.ticker}/${currency.uuid}`
+    const URL = `http://localhost:3001/api/coins/show/${userId}/${coin}/${uuid}/${coinState.candleLength}/${currency.ticker}/${currency.uuid}`
 
     try {
-      const res = await axios.get(URL)
-      setCandles(res.data.candles);
-      setCoinInfo(res.data.coin);
+      const res = await axios.get(URL);
+      console.log(res.data)
+      const {coinInfo, userCoinTrades} = res.data;
+      setCandles(coinInfo.candles);
+      setCoinInfo(coinInfo.coin);
+      setTrades(userCoinTrades);
     } catch (error) {
       console.log(error)
     }

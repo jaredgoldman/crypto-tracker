@@ -14,8 +14,13 @@ const {
   deleteUserCoin,
   addUserCoin, 
   getUserCoin, 
-  getUserCoins 
+  getUserCoins,
+  getUserTransactionsByCoin
 } = require('../db/queries/coin-queries');
+
+const { formatDbTrades } = require('../helpers/exchange-helpers')
+
+
 
 // get top 100 coins from coin ranking and user coins 
 router.get('/:id', (req, res) => {
@@ -85,16 +90,28 @@ router.post('/delete', async (req, res) => {
 })
 
 // get data for coins show page
-router.get('/show/:coin/:uuid/:candleLength/:currencyTicker/:currencyUuid', async (req, res) => {
-  const { coin, candleLength, uuid, currencyTicker, currencyUuid } = req.params;
-  console.log(currencyUuid)
+router.get('/show/:userId/:coin/:uuid/:candleLength/:currencyTicker/:currencyUuid', async (req, res) => {
+  const { userId, coin, candleLength, uuid, currencyTicker, currencyUuid } = req.params;
+
+  let coinInfo = null;
+  let userCoinTrades = null;
+
   try {
-    // const candles = await getCandles(coin, candleLength);
-    const coinInfo = await getCoinInfo(coin, uuid, candleLength, currencyTicker, currencyUuid)
-    return res.send(coinInfo);
+    coinInfo = await getCoinInfo(coin, uuid, candleLength, currencyTicker, currencyUuid);
   } catch(error) {
-    console.log(error.response.data)
+    console.log(error)
+    console.log('error getting coin info')
   }
+
+  try {
+    dbTrades = await getUserTransactionsByCoin(userId, coin);
+    userCoinTrades = formatDbTrades(dbTrades)
+  } catch(error) {
+    console.log(error)
+    console.log('error getting user trades')
+  }
+
+  return res.send({coinInfo, userCoinTrades});
 })
 
 module.exports = router;

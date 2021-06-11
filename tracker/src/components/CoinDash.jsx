@@ -11,10 +11,10 @@ export default function CoinDash(props) {
     setCandleLength(e.target.value)
   }
 
-  const filterTrades = () => {
-    const filteredTrades = trades.filter(trade => coinState.coin.ticker === trade.baseCurrency)
-    return filteredTrades
-  }
+  // const filterTrades = () => {
+  //   const filteredTrades = trades.filter(trade => coinState.coin.ticker === trade.baseCurrency)
+  //   return filteredTrades
+  // }
 
   return (
   <div className="coin-dashboard">
@@ -38,7 +38,7 @@ export default function CoinDash(props) {
 
     {trades &&
       <div>
-        <TradeTable rows={filterTrades()}/>
+        <TradeTable rows={trades}/>
       </div> 
     }
 

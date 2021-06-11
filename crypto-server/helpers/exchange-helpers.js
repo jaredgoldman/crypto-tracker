@@ -95,7 +95,7 @@ const fetchIterativeTrades = async (exchange) => {
   return tradeArray;
 }
 
-const formatTrades = (trades, exchangeName) => {
+const formatTrades = (trades) => {
   const formattedTrades = []
   trades.forEach(trade => {
     const baseCurrency = trade.symbol.split('/')[0];
@@ -108,7 +108,7 @@ const formatTrades = (trades, exchangeName) => {
       unitPrice: trade.price,
       amount: trade.amount,
       cost: trade.cost,
-      exchangeName: exchangeName,
+      exchangeName: trade.exchange_name,
       time: trade.datetime,
       orderType: trade.type,
       side: trade.side,
