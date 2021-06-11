@@ -68,6 +68,8 @@ export default function useApplicationData() {
     candles: null,
     coinInfo: null
   });
+
+  const [userCoinStats, setUserCoinStats] = useState(null)
   // exchanges offered by ccxt
   const [exchanges, setExchanges] = useState(null)
   // user trades 
@@ -171,10 +173,11 @@ export default function useApplicationData() {
 
     try {
       const res = await axios.get(URL);
-      const {coinInfo, userCoinTrades} = res.data;
+      const {coinInfo, userCoinTrades, userCoinStats} = res.data;
       setCandles(coinInfo.candles);
       setCoinInfo(coinInfo.coin);
       setTrades(userCoinTrades);
+      setUserCoinStats(userCoinStats);
     } catch (error) {
       console.log(error)
     }
@@ -263,6 +266,7 @@ export default function useApplicationData() {
     addExchange,
     exchanges,
     trades,
+    userCoinStats
     // balance
   }
 

@@ -4,8 +4,8 @@ const axios = require('axios');
 
 const { 
   formatCoins, 
-  getCandles, 
-  getCoinInfo
+  getCoinInfo,
+  getUserStats
 } = require('../helpers/api-helpers');
 
 const { 
@@ -90,14 +90,15 @@ router.post('/delete', async (req, res) => {
 })
 
 // get data for coins show page
-router.get('/show/:userId/:coin/:uuid/:candleLength/:currencyTicker/:currencyUuid', async (req, res) => {
-  const { userId, coin, candleLength, uuid, currencyTicker, currencyUuid } = req.params;
+router.get('/show/:userId/:coin/:uuid/:candleLength/:currency/:currencyUuid', async (req, res) => {
+  const { userId, coin, candleLength, uuid, currency, currencyUuid } = req.params;
 
   let coinInfo = null;
   let userCoinTrades = null;
+  let userCoinStats = null;
 
   try {
-    coinInfo = await getCoinInfo(coin, uuid, candleLength, currencyTicker, currencyUuid);
+    coinInfo = await getCoinInfo(coin, uuid, candleLength, currency, currencyUuid);
   } catch(error) {
     console.log(error)
     console.log('error getting coin info')
@@ -111,7 +112,15 @@ router.get('/show/:userId/:coin/:uuid/:candleLength/:currencyTicker/:currencyUui
     console.log('error getting user trades')
   }
 
-  return res.send({coinInfo, userCoinTrades});
+  try {
+    // depending on currencyticker, calculate profit and loss, average price 
+    userCoinStats = await getUserStats(userCoinTrades, currency, coinInfo);
+  } catch(error) {
+    console.log(error)
+    console.log('error getting coin stats')
+  }
+
+  return res.send({coinInfo, userCoinTrades, userCoinStats});
 })
 
 module.exports = router;

@@ -2,6 +2,7 @@ import './CoinDash.scss'
 
 import Chart from "./Chart"
 import CoinInfo from "./CoinInfo"
+import UserCoinInfo from "./UserCoinInfo"
 import TradeTable from "./TradeTable/TradeTable"
 
 export default function CoinDash(props) {
@@ -28,12 +29,16 @@ export default function CoinDash(props) {
       </select>
     </div>
 
-    <div className="chart-container">
-      <Chart candles={coinState.candles}/>
-    </div>
+    {coinState.candles && 
+      <div className="chart-container">
+        <Chart candles={coinState.candles}/>
+      </div> 
+    }
+
 
     <div className="info-container">
       <CoinInfo coinInfo={coinState.coinInfo}/>
+      <UserCoinInfo userCoinStats={props.userCoinStats}/>
     </div>
 
     {trades &&

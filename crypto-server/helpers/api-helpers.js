@@ -98,7 +98,67 @@ const formatCandleRequest = (candleLength) => {
   }
 }
 
+// COIN STATS HELPERS //
+const getUserStats = async (trades, currency, coinInfo) => {
+  // get conversion rate
+  const rates = await getConversionRates(currency);
+  // loop through each trade
+  const convertedTrades = convertTrades(trades, currency, rates); 
+
+  const pL = calculatePL(trades, coinInfo.coin.price);
+ 
+  const average = calculateAverage(trades);
+
+  return { pL, average }
+}
+
+const calculatePL = (trades, currentPrice) => {
+
+  let costs = 0;
+  let amounts = 0;
+    for(let trade of trades) {
+      costs += trade.cost;
+      amounts += trade.amount;
+      // console.log(costs, amounts)
+    }
+  let pL =(((currentPrice * amounts) - costs) /costs) * 100;
+  return pL
+  // return ((pL > 0) ? "+" + pL : pL);
+}
+
+const calculateAverage = (trades) => {
+  let priceTotal = 0;
+  let tradesArray = [];
+  trades.forEach(trade => {
+      priceTotal += trade.unitPrice;  
+      tradesArray.push(trade);
+  })
+  return (priceTotal / tradesArray.length).toFixed(2);
+}
+
+const convertTrades = (trades, currency, rates) => {
+  return trades.map(trade => {
+    if (trade.quoteCurrency === currency || `${currency}T`) {
+        return trade;
+    } 
+    return {
+      unitPrice: trade.unitPrice * rates[trade.quoteCurrency],
+      cost: trade.cost * rates[trade.quoteCurrency],
+      amount: trade.amount,
+      quoteCurrency: currency,
+      converted: true,
+      ...trade
+    }
+  })
+}
+
+const getConversionRates = async (currency) => {
+  const res = await axios.get(`https://v6.exchangerate-api.com/v6/${process.env.ER_API}/latest/${currency}`);
+  return res.data.conversion_rates;
+}
+
 module.exports = { 
   formatCoins,
-  getCoinInfo
+  getCoinInfo,
+  getUserStats
 };
