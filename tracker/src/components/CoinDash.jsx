@@ -2,17 +2,19 @@ import './CoinDash.scss'
 
 import Chart from "./Chart"
 import CoinInfo from "./CoinInfo"
+import TradeTable from "./TradeTable/TradeTable"
 
 export default function CoinDash(props) {
-  const { coinState, setCandleLength } = props;
-
+  const { coinState, setCandleLength, trades } = props;
+  
   const handleSetCandleLength = (e) => {
     setCandleLength(e.target.value)
   }
 
-  // const handleSetCandleNumber = (e) => {
-  //   setCandleNumber(e.target.value)
-  // }
+  const filterTrades = () => {
+    const filteredTrades = trades.filter(trade => coinState.coin.ticker === trade.baseCurrency)
+    return filteredTrades
+  }
 
   return (
   <div className="coin-dashboard">
@@ -34,6 +36,15 @@ export default function CoinDash(props) {
       <CoinInfo coinInfo={coinState.coinInfo}/>
     </div>
 
+    {trades &&
+      <div>
+        <TradeTable rows={filterTrades()}/>
+      </div> 
+    }
+
   </div>
   )
+
+
 }
+

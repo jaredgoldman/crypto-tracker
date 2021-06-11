@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const {getUserByEmail, addUser} = require('../db/helpers/userHelpers');
+const {
+  getUserByEmail, 
+  addUser
+} = require('../db/queries/user-queries');
 
  // USER LOGIN
  router.post('/login', (req, res) => {
@@ -10,6 +13,9 @@ const {getUserByEmail, addUser} = require('../db/helpers/userHelpers');
   }
   getUserByEmail(email)
   .then(user => {
+    if (!user) {
+      return res.status(401).send("Error: invalid email");
+    }
     if (email && user.password === password) {
       return res.status(200).json(user.id);
     } 

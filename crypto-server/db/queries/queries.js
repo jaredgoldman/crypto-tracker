@@ -55,7 +55,7 @@ const db = require('../index')
   }
 
   // 5- GET /api/users/exchange/:id === get user exchange 
-  const getUserExchanges = (userId) => {
+  const getUserAccounts = (userId) => {
     const query = {
 
       text: `SELECT accounts.api_key, accounts.api_secret, exchanges.name as exchange_name

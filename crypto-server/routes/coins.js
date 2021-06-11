@@ -15,7 +15,7 @@ const {
   addUserCoin, 
   getUserCoin, 
   getUserCoins 
-} = require('../db/helpers/coinHelpers');
+} = require('../db/queries/coin-queries');
 
 // get top 100 coins from coin ranking and user coins 
 router.get('/:id', (req, res) => {
