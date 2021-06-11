@@ -49,17 +49,8 @@ const addAccountToDb = async (exchangeData) => {
   return account;
 }
 
-const fetchUserExchangeInfo = async (exchange) => {
+const fetchUserExchangeTrades = async (exchange) => {
   let resTrades = null;
-  // let resBalance = null;
-
-  // grab balance
-  // try {
-  //   resBalance = await exchange.fetchBalance();
-  // } catch(error) {
-  //   console.log('error fetching balance')
-  //   console.log(error)
-  // }
 
   // grab trades
   let exchangeTrades = null;
@@ -75,10 +66,7 @@ const fetchUserExchangeInfo = async (exchange) => {
     console.log(error)
   }
   
-  return {
-    // resBalance, 
-    resTrades
-  }
+  return resTrades
 }
 
 const fetchIterativeTrades = async (exchange) => {
@@ -95,7 +83,7 @@ const fetchIterativeTrades = async (exchange) => {
   return tradeArray;
 }
 
-const formatTrades = (trades) => {
+const formatTrades = (trades, exchangeName) => {
   const formattedTrades = []
   trades.forEach(trade => {
     const baseCurrency = trade.symbol.split('/')[0];
@@ -108,7 +96,7 @@ const formatTrades = (trades) => {
       unitPrice: trade.price,
       amount: trade.amount,
       cost: trade.cost,
-      exchangeName: trade.exchange_name,
+      exchangeName,
       time: trade.datetime,
       orderType: trade.type,
       side: trade.side,
@@ -154,6 +142,7 @@ const addBalance = (balances) => {
 }
 
 const addUserTransactions = async (accountId, trades) => {
+  console.log(trades)
   trades.forEach( async trade => {
     try {
       const addedTransaction = await addUserTransaction({accountId, ...trade});
@@ -170,7 +159,7 @@ module.exports = {
   addAccountToDb,
   formatTrades,
   formatDbTrades,
-  fetchUserExchangeInfo,
+  fetchUserExchangeTrades,
   addUserTransactions,
   addBalance,
   formatDbTrades

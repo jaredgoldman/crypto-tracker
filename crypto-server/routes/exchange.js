@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const {  
-  fetchUserExchangeInfo, 
+  fetchUserExchangeTrades, 
   getCcxtExchanges,
   addUserTransactions,
   // addBalance,
@@ -27,7 +27,7 @@ router.get("/", (req, res) => {
 // add new exchange
 router.post("/new", async (req, res) => {
   const exchangeData = req.body;
-  
+
   let account = null;
   let trades = null;
   let dbTransactions = null;
@@ -36,7 +36,8 @@ router.post("/new", async (req, res) => {
   try {
     account = await addAccountToDb(exchangeData)
   } catch(error) {
-    res.send({alert: 'error adding account to db'})
+    // res.send({alert: 'error adding account to db'})
+    console.log(error)
   }
 
   // initialize ccxt exchange
@@ -44,16 +45,18 @@ router.post("/new", async (req, res) => {
 
   // fetch trades and balance from exchange 
   try {
-    trades = await fetchUserExchangeInfo(exchange);
+    trades = await fetchUserExchangeTrades(exchange);
   } catch(error) {
-    res.send({alert: `error fetching user info from exchange`})
+    // res.send({alert: `error fetching user info from exchange`})
+    console.log(error)
   }
 
   // add user transactions to database
   try {
     await addUserTransactions(account.id, trades);
   } catch(error) {
-    res.send({alert: 'error adding transactions'})
+    // res.send({alert: 'error adding transactions'})
+    console.log(error)
   }
 
   // ADD USER BALANCE HERE
@@ -61,7 +64,8 @@ router.post("/new", async (req, res) => {
   try {
      dbTransactions = await getUserTransactions(exchangeData.userId);
    } catch(error) {
-     res.send({alert: 'error retreiving trades from database'})
+    //  res.send({alert: 'error retreiving trades from database'})
+    console.log(error)
    } 
 
    const transactions = formatDbTrades(dbTransactions);
@@ -100,7 +104,7 @@ module.exports = router;
 
 //   // grab balance and trades for user
 //   try {
-//     const {resBalance, resTrades} = await fetchUserExchangeInfo(exchange);
+//     const {resBalance, resTrades} = await fetchUserExchangeTrades(exchange);
 //     trades = resTrades;
 //     balance = resBalance;
 //   } catch(error) {
