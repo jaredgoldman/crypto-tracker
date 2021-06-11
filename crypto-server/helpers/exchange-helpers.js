@@ -1,6 +1,8 @@
 const ccxt = require('ccxt');
 const { 
-  addUserTransaction
+  addUserTransaction,
+  getExchangeByName,
+  addUserAccount
 } = require('../db/queries/exchange-queries')
 
 const getCcxtExchanges = () => {
@@ -20,22 +22,53 @@ const initializeExchange = (exchangeData) => {
   return exchange;
 }
 
-const fetchUserExchangeInfo = async (exchange) => {
-  let resTrades = null;
-  let resBalance = null;
-
-  // grab balance
+ // check if exchange is in db 
+// if not, store exchange info in db
+const addAccountToDb = async (exchangeData) => {
+  let dbExchange = null;
   try {
-    resBalance = await exchange.fetchBalance();
+    dbExchange = await getExchangeByName(exchangeData.exchangeName); 
+    if (!dbExchange) {
+      dbExchange = await addExchange(exchangeData.exchangeName);
+    }
+    console.log('exchange added')
   } catch(error) {
-    console.log('error fetching balance')
+    console.log('error adding exchange')
     console.log(error)
+    return 'error adding exchange'
   }
 
-  // grab trades
+  let account = null;
   try {
-    // const exchangeTrades = await exchange.fetchMyTrades();
-    const exchangeTrades = await fetchIterativeTrades(exchange)
+    account = await addUserAccount({exchangeId: dbExchange.id, ...exchangeData})
+    console.log('user account added')
+  } catch(error) {
+    console.log('error adding account to db')
+    return 'error adding account to db'
+  }
+  return account;
+}
+
+const fetchUserExchangeInfo = async (exchange) => {
+  let resTrades = null;
+  // let resBalance = null;
+
+  // grab balance
+  // try {
+  //   resBalance = await exchange.fetchBalance();
+  // } catch(error) {
+  //   console.log('error fetching balance')
+  //   console.log(error)
+  // }
+
+  // grab trades
+  let exchangeTrades = null;
+  try {
+    if (exchange.name === 'Kraken') {
+      exchangeTrades = await exchange.fetchMyTrades();
+    } else {
+      exchangeTrades = await fetchIterativeTrades(exchange)
+    }
     resTrades = formatTrades(exchangeTrades, exchange.name);
   } catch(error) {
     console.log('error fetching balance')
@@ -43,7 +76,7 @@ const fetchUserExchangeInfo = async (exchange) => {
   }
   
   return {
-    resBalance, 
+    // resBalance, 
     resTrades
   }
 }
@@ -81,7 +114,6 @@ const formatTrades = (trades, exchangeName) => {
       side: trade.side,
       fee: trade.fee.cost,
       feeCurrency: trade.fee.currency,
-      market: market
     })
   })
   return formattedTrades;
@@ -122,9 +154,9 @@ const addBalance = (balances) => {
 }
 
 const addUserTransactions = async (accountId, trades) => {
-  trades.forEach( async (trade) => {
+  trades.forEach( async trade => {
     try {
-      await addUserTransaction({accountId, ...trade});
+      const addedTransaction = await addUserTransaction({accountId, ...trade});
       return 'transactions added '
     } catch(error) {
       console.log(error);
@@ -135,6 +167,7 @@ const addUserTransactions = async (accountId, trades) => {
 module.exports = { 
   getCcxtExchanges,
   initializeExchange,
+  addAccountToDb,
   formatTrades,
   formatDbTrades,
   fetchUserExchangeInfo,

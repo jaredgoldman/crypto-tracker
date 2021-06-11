@@ -80,10 +80,10 @@ const getExchangeByName = (exchangeName) => {
 }
 
 const addUserAccount = (exchangeData) => {
-  const { accountName, userId, exchangeId, apiKey, apiSecret } = exchangeData;
+  const { accountName, userId, exchangeId, apiKey, secretKey } = exchangeData;
     const query = {
       text: `INSERT INTO accounts (account_name, user_id, exchange_id, api_key, api_secret) VALUES ($1, $2, $3, $4, $5) RETURNING *` ,
-      values: [accountName, userId, exchangeId, apiKey, apiSecret]
+      values: [accountName, userId, exchangeId, apiKey, secretKey]
     }
 
   return db.query(query)

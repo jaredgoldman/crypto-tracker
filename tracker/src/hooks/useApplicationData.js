@@ -2,7 +2,6 @@ import { useState, useEffect, useReducer } from 'react'
 import { useCookies } from 'react-cookie';
 import reducer from '../reducers/coins'
 import axios from 'axios'
-import useExchangeData  from './useExchangeData'
 
 export default function useApplicationData() {
 
@@ -74,7 +73,7 @@ export default function useApplicationData() {
   // user trades 
   const [trades, setTrades] = useState(null);
   // user balance
-  const [balance, setBalance] = useState(null);
+  // const [balance, setBalance] = useState(null);
   
   // reducer functions for show coin page
   const setCoin = (coin) => {
@@ -167,14 +166,18 @@ export default function useApplicationData() {
   // EXCHANGE HELPERS //
 
   const addExchange = async (exchangeData) => {
+    if (!exchangeData.exchangeName || !exchangeData.apiKey || !exchangeData.secretKey) {
+      return handleAlert(`please enter valid credentials`)
+    }
     const URL = `http://localhost:3001/api/exchange/new`
     try {
       const res = await axios.post(URL, {userId: cookies.user_id, ...exchangeData})
-      if (res.data.alert) {
+      if (alert) {
         return handleAlert(res.data.alert);
       }
+      console.log(res.data.trades)
       setTrades(res.data.trades);
-      setBalance(res.data.balance);
+      // setBalance(res.data.balance);
     } catch(error) {
       console.log(error)
     }
@@ -203,7 +206,7 @@ export default function useApplicationData() {
         return handleAlert(res.data.alert);
       }
       setTrades(res.data.transactions);
-      setBalance(res.data.balance);
+      // setBalance(res.data.balance);
     } catch(error) {
       console.log(error);
     }
@@ -260,7 +263,7 @@ export default function useApplicationData() {
     addExchange,
     exchanges,
     trades,
-    balance
+    // balance
   }
 
 }

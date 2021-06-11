@@ -9,8 +9,6 @@ export default function ExchangeDash(props) {
   const [secretKey, setSecretKey] = useState(null);
   const [sandboxMode, setSandboxMode] = useState(false)
 
-  console.log(sandboxMode)
-
   const handleAddExchange = () => {
     addExchange({
       exchangeName,
@@ -57,7 +55,7 @@ export default function ExchangeDash(props) {
 
   return (
     <div className="form-container">
-      {props.alert && <div>{props.alert}</div>}
+      {alert && <div>{alert}</div>}
       <p>Add Exchange</p>
       
       <select onChange={(e) => handleSelectExchangeName(e)}>

@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS transactions CASCADE;
 CREATE TABLE transactions(
     id SERIAL PRIMARY KEY NOT NULL,
     account_id INTEGER REFERENCES accounts(id),
-    transaction_id VARCHAr(25),
+    transaction_id VARCHAr(50),
     coin_symbol VARCHAR(10),
     base_currency VARCHAR(10),
     quote_currency VARCHAR(10),

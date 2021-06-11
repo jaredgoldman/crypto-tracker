@@ -30,11 +30,11 @@ export default function WatchlistRow(props) {
             handleSetCoin(props.ticker, props.uuid);
           }
         }>Show Coin</a>
-        <a href='' onClick={(e) => {
+        <button onClick={(e) => {
             e.preventDefault();
             handleDeleteUserCoin(props.ticker)
           }
-        }> Remove Coin</a>
+        }> Remove Coin</button>
         
       </td>
     </tr>
