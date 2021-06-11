@@ -84,6 +84,37 @@ const getUserCoin = (userId, coinId) => {
   .catch((err) => err);
 }
 
-module.exports = { getCoinByName, addCoin, addUserCoin, deleteUserCoin, getUserCoins, getUserCoin }
+const getUserTransactionsByCoin = (userId, coinId) => {
+  const query = {
+    text: `SELECT account_id, 
+      transaction_id, 
+      exchanges.name as exchange_name, 
+      coin_symbol, 
+      base_currency, 
+      quote_currency, 
+      side, 
+      order_type, 
+      unit_price, 
+      amount, 
+      cost, 
+      transaction_fee
+    FROM transactions
+    INNER JOIN accounts
+    ON transactions.account_id = accounts.id
+    INNER JOIN users
+    ON users.id = accounts.user_id
+    INNER JOIN exchanges
+    ON accounts.exchange_id = exchanges.id
+    INNER JOIN coins
+    ON transactions.base_currency = coins.symbol 
+    WHERE users.id = $1 AND coins.symbol = $2`,
+    values: [userId, coinId]
+    }
+
+  return db.query(query)
+    .then(result => result.rows)
+    .catch(err => err);
+}
 
 
+module.exports = { getCoinByName, addCoin, addUserCoin, deleteUserCoin, getUserCoins, getUserCoin, getUserTransactionsByCoin }

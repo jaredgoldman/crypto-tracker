@@ -39,7 +39,8 @@ export default function App() {
     addExchange,
     exchanges,
     trades,
-    balance
+    balance,
+    userCoinStats
   } = useApplicationData();
 
   return (
@@ -89,6 +90,7 @@ export default function App() {
               coinState={coinState}
               trades={trades}
               balance={balance}
+              userCoinStats={userCoinStats}
              />
           </Route>
           <Route path="/exchange">

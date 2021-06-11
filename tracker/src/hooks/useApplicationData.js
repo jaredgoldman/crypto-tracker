@@ -68,6 +68,8 @@ export default function useApplicationData() {
     candles: null,
     coinInfo: null
   });
+
+  const [userCoinStats, setUserCoinStats] = useState(null)
   // exchanges offered by ccxt
   const [exchanges, setExchanges] = useState(null)
   // user trades 
@@ -121,7 +123,6 @@ export default function useApplicationData() {
       const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
       setAllCoins(allCoins);
       setUserCoins(filteredUserCoins);
-      getUserExchangeData(cookies.user_id);
     } catch(error) {
       console.log(error)
     }
@@ -163,6 +164,39 @@ export default function useApplicationData() {
     })
   }
 
+  // when user selects individual coin, we requests data, candles and user trades 
+  const loadCoinData = async () => {
+    const userId = cookies.user_id;
+    const coin = coinState.coin.ticker;
+    const uuid = coinState.coin.uuid;
+    const URL = `http://localhost:3001/api/coins/show/${userId}/${coin}/${uuid}/${coinState.candleLength}/${currency.ticker}/${currency.uuid}`
+
+    try {
+      const res = await axios.get(URL);
+      const {coinInfo, userCoinTrades, userCoinStats} = res.data;
+      setCandles(coinInfo.candles);
+      setCoinInfo(coinInfo.coin);
+      setTrades(userCoinTrades);
+      setUserCoinStats(userCoinStats);
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+  
+  // use userCoins as ref to filter watchlist
+  const filterUserCoins = (userCoins, allCoins) => {
+    const userCoinArr = [];
+    userCoins.forEach(coin => {
+      for (let c of allCoins) {
+        if (coin.symbol === c.ticker) {
+          userCoinArr.push(c);
+        }
+      }
+    })
+    return userCoinArr
+  }
+
   // EXCHANGE HELPERS //
 
   const addExchange = async (exchangeData) => {
@@ -175,7 +209,6 @@ export default function useApplicationData() {
       if (alert) {
         return handleAlert(res.data.alert);
       }
-      console.log(res.data.trades)
       setTrades(res.data.trades);
       // setBalance(res.data.balance);
     } catch(error) {
@@ -198,50 +231,20 @@ export default function useApplicationData() {
     }
   }
 
-  const getUserExchangeData = async (userId) => {
-    const URL = `http://localhost:3001/api/exchange/user/${userId}`
-    try {
-      const res = await axios.get(URL);
-      if (res.data.alert) {
-        return handleAlert(res.data.alert);
-      }
-      setTrades(res.data.transactions);
-      // setBalance(res.data.balance);
-    } catch(error) {
-      console.log(error);
-    }
-  }
+  // const getUserExchangeData = async (userId) => {
+  //   const URL = `http://localhost:3001/api/exchange/user/${userId}`
+  //   try {
+  //     const res = await axios.get(URL);
+  //     if (res.data.alert) {
+  //       return handleAlert(res.data.alert);
+  //     }
+  //     setTrades(res.data.transactions);
+  //     // setBalance(res.data.balance);
+  //   } catch(error) {
+  //     console.log(error);
+  //   }
+  // }
   
-  // COIN HELPERS //
-
-  const loadCoinData = async () => {
-    const coin = coinState.coin.ticker;
-    const uuid = coinState.coin.uuid;
-    const URL = `http://localhost:3001/api/coins/show/${coin}/${uuid}/${coinState.candleLength}/${currency.ticker}/${currency.uuid}`
-
-    try {
-      const res = await axios.get(URL)
-      setCandles(res.data.candles);
-      setCoinInfo(res.data.coin);
-    } catch (error) {
-      console.log(error)
-    }
-
-  }
-  
-  // use userCoins as ref to filter watchlist
-  const filterUserCoins = (userCoins, allCoins) => {
-    const userCoinArr = [];
-    userCoins.forEach(coin => {
-      for (let c of allCoins) {
-        if (coin.symbol === c.ticker) {
-          userCoinArr.push(c);
-        }
-      }
-    })
-    return userCoinArr
-  }
-
   return { 
     // user
     handleLogin, 
@@ -263,6 +266,7 @@ export default function useApplicationData() {
     addExchange,
     exchanges,
     trades,
+    userCoinStats
     // balance
   }
 
