@@ -3,6 +3,7 @@ import reducer from '../reducers/coins'
 import axios from 'axios'
 
 import useUserData from './useUserData'
+import useDefaultActions from './useDefaultActions';
 
 export default function useApplicationData() {
 
@@ -13,11 +14,14 @@ export default function useApplicationData() {
     cookies,
     handleAlert,
     alert,
-    filterUserCoins,
     setUserCoins,
     allCoins,
     userCoins
   } = useUserData();
+
+  const {
+    filterUserCoins
+  } = useDefaultActions();
 
       // COIN FUNCTIONS/STATE //
 

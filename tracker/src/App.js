@@ -16,6 +16,7 @@ import ExchangeDash from "./components/ExchangeDash"
 
 import useApplicationData from "./hooks/useApplicationData"
 import useUserData from "./hooks/useUserData"
+import useDefaultActions from "./hooks/useDefaultActions"
 
 export default function App() {
 
@@ -43,10 +44,13 @@ export default function App() {
     handleLogout, 
     handleRegister,
     cookies,
-    alert, 
+    alert
+  } = useUserData();
+
+  const {
     allCoins,
     userCoins
-  } = useUserData();
+  } = useDefaultActions();
   
 
   return (
