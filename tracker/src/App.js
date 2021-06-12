@@ -16,7 +16,6 @@ import ExchangeDash from "./components/ExchangeDash"
 
 import useApplicationData from "./hooks/useApplicationData"
 import useUserData from "./hooks/useUserData"
-import useDefaultActions from "./hooks/useDefaultActions"
 import useExchangeData from "./hooks/useExchangeData"
 
 
@@ -39,14 +38,10 @@ export default function App() {
     handleLogin, 
     handleLogout, 
     handleRegister,
+    handleAlert,
     cookies,
     alert
   } = useUserData();
-
-  const {
-    allCoins,
-    userCoins
-  } = useDefaultActions();
 
   const { 
     addExchange, 
@@ -87,8 +82,8 @@ export default function App() {
           </Route>
           <Route path="/watchlist">
             <Watchlist 
-              userCoins={userCoins} 
-              allCoins={allCoins} 
+              handleAlert={handleAlert}
+              cookies={cookies}
               addUserCoin={addUserCoin}
               deleteUserCoin={deleteUserCoin}
               setCoin={setCoin}

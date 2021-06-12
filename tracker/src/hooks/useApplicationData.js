@@ -3,21 +3,14 @@ import reducer from '../reducers/coins'
 import axios from 'axios'
 
 import useUserData from './useUserData'
-import useDefaultActions from './useDefaultActions';
 
 export default function useApplicationData() {
 
   const {    
     cookies,
-    handleAlert,
-    setUserCoins,
     allCoins,
     userCoins
   } = useUserData();
-
-  const {
-    filterUserCoins
-  } = useDefaultActions();
 
   // STATE //
   const [currency, setCurrency] = useState({uuid: "yhjMzLPhuIDl", ticker: "USD"});
@@ -58,38 +51,38 @@ export default function useApplicationData() {
   // COIN HELPERS //
 
   // adds a new coin, refreshes user coins
-  const addUserCoin = (coinSymbol) => {
-    const userId = cookies.user_id;
-    axios.post(`http://localhost:3001/api/coins/add`, {userId, coinSymbol})
-    .then(res => {
-      if (res.data.alert) {
-        return handleAlert(res.data.alert);
-      }
-      const userCoinRes = res.data.userCoins;
-      const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
-      setUserCoins(filteredUserCoins);
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
+  // const addUserCoin = (coinSymbol) => {
+  //   const userId = cookies.user_id;
+  //   axios.post(`http://localhost:3001/api/coins/add`, {userId, coinSymbol})
+  //   .then(res => {
+  //     if (res.data.alert) {
+  //       return handleAlert(res.data.alert);
+  //     }
+  //     const userCoinRes = res.data.userCoins;
+  //     const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
+  //     setUserCoins(filteredUserCoins);
+  //   })
+  //   .catch(err => {
+  //     console.log(err)
+  //   })
+  // }
 
-  // deletes a coin, refreshes user coins
-  const deleteUserCoin = (coin) => {
-    const userId = cookies.user_id;
-    axios.post(`http://localhost:3001/api/coins/delete`, {userId, coin})
-    .then(res => {
-      if (res.data.alert) {
-        return handleAlert(res.data.alert);
-      }
-      const userCoinRes = res.data.userCoins;
-      const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
-      setUserCoins(filteredUserCoins);
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
+  // // deletes a coin, refreshes user coins
+  // const deleteUserCoin = (coin) => {
+  //   const userId = cookies.user_id;
+  //   axios.post(`http://localhost:3001/api/coins/delete`, {userId, coin})
+  //   .then(res => {
+  //     if (res.data.alert) {
+  //       return handleAlert(res.data.alert);
+  //     }
+  //     const userCoinRes = res.data.userCoins;
+  //     const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
+  //     setUserCoins(filteredUserCoins);
+  //   })
+  //   .catch(err => {
+  //     console.log(err)
+  //   })
+  // }
 
   // when user selects individual coin, we requests data, candles and user trades 
   const loadCoinData = async () => {
@@ -113,8 +106,6 @@ export default function useApplicationData() {
   
   return { 
     // coinegr
-    addUserCoin,
-    deleteUserCoin,
     setCoin,
     setCandleLength,
     setCandles,

@@ -23,27 +23,23 @@ const { formatDbTrades } = require('../helpers/exchange-helpers')
 
 
 // get top 100 coins from coin ranking and user coins 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
 
   const { id } = req.params;
   const URL = `https://api.coinranking.com/v2/coins?limit=100`
-  const config = {
-    headers: {
-      'x-access-token': process.env.CR_API
-    }
+  const config = { headers: { 'x-access-token': process.env.CR_API } }
+  let coins = null;
+  let userCoins = null;
+  
+  try {
+    const res = await axios.get(URL, config)
+    coins = formatCoins(res.data.data.coins);
+    userCoins = await getUserCoins(id)
+  } catch(error) {
+    return res.send 
   }
-
-  axios.get(URL, config)
-  .then(response => {
-    // grab user coins from database 
-    getUserCoins(id).then(userCoins => {
-      const coins = formatCoins(response.data.data.coins);
-      return res.status(200).json({userCoins, coins});
-    })
-  })
-  .catch(err => {
-    console.log(err)
-  })
+ 
+  return res.status(200).json({userCoins, coins});
 })
 
 // ADD USER COIN AND SEND ALL USER COINS BACK
