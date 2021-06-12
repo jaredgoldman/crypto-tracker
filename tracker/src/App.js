@@ -17,6 +17,8 @@ import ExchangeDash from "./components/ExchangeDash"
 import useApplicationData from "./hooks/useApplicationData"
 import useUserData from "./hooks/useUserData"
 import useDefaultActions from "./hooks/useDefaultActions"
+import useExchangeData from "./hooks/useExchangeData"
+
 
 export default function App() {
 
@@ -32,10 +34,7 @@ export default function App() {
     // userCoins,
     coinState,
     // exchange
-    addExchange,
-    exchanges,
     trades,
-    balance,
     userCoinStats
   } = useApplicationData();
 
@@ -51,6 +50,8 @@ export default function App() {
     allCoins,
     userCoins
   } = useDefaultActions();
+
+  const { addExchange, exchanges } = useExchangeData();
   
 
   return (
@@ -100,7 +101,7 @@ export default function App() {
               setCandles={setCandles}
               coinState={coinState}
               trades={trades}
-              balance={balance}
+              // balance={balance}
               userCoinStats={userCoinStats}
              />
           </Route>

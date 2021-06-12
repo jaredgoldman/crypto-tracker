@@ -77,7 +77,6 @@ export default function useApplicationData() {
   useEffect( () => {
     if (coinState.coin || coinState.candleLength) {
       loadCoinData();
-      getExchangedata(); 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coinState.coin, coinState.candleLength])
@@ -170,22 +169,22 @@ export default function useApplicationData() {
 
   // EXCHANGE HELPERS //
 
-  const addExchange = async (exchangeData) => {
-    if (!exchangeData.exchangeName || !exchangeData.apiKey || !exchangeData.secretKey) {
-      return handleAlert(`please enter valid credentials`)
-    }
-    const URL = `http://localhost:3001/api/exchange/new`
-    try {
-      const res = await axios.post(URL, {userId: cookies.user_id, ...exchangeData})
-      if (alert) {
-        return handleAlert(res.data.alert);
-      }
-      setTrades(res.data.trades);
-      // setBalance(res.data.balance);
-    } catch(error) {
-      console.log(error)
-    }
-  }
+  // const addExchange = async (exchangeData) => {
+  //   if (!exchangeData.exchangeName || !exchangeData.apiKey || !exchangeData.secretKey) {
+  //     return handleAlert(`please enter valid credentials`)
+  //   }
+  //   const URL = `http://localhost:3001/api/exchange/new`
+  //   try {
+  //     const res = await axios.post(URL, {userId: cookies.user_id, ...exchangeData})
+  //     if (alert) {
+  //       return handleAlert(res.data.alert);
+  //     }
+  //     setTrades(res.data.trades);
+  //     // setBalance(res.data.balance);
+  //   } catch(error) {
+  //     console.log(error)
+  //   }
+  // }
 
   const getExchanges = async () => {
     const URL = `http://localhost:3001/api/exchange`
@@ -216,11 +215,11 @@ export default function useApplicationData() {
     setCandleLength,
     setCandles,
     setCurrency,
+    setTrades,
     allCoins,
     userCoins,
     coinState,
     // exchange
-    addExchange,
     exchanges,
     trades,
     userCoinStats

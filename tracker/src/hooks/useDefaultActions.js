@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 import useUserData from './useUserData'
-import useCoinData from './useCoinData'
-import useExchangeData from './useExchangeData'
+import useExchangeData from './useExchangeData';
 
 export default function useDefaultsActions() {
 
