@@ -36,6 +36,9 @@ export default function UseUserData() {
   
   const handleRegister = (userData) => {
     const { firstName, lastName, password, email } = userData;
+    if (!firstName || !lastName || !email || !password) {
+      return handleAlert("Please enter a valid email and password")
+    }
     axios
     .post(`http://localhost:3001/api/users/register`, {firstName, lastName, password, email})
     .then(res => {

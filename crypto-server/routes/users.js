@@ -27,24 +27,26 @@ const {
 });
 
   // USER REGISTER
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const {firstName, lastName, email, password} = req.body;
+  let user = null;
 
-  if (!firstName || !lastName || !email || !password) {
-    return res.send("Please enter a valid email and password")
-  }
-  getUserByEmail(email)
-  .then(user => {
+  try {
+    user = await getUserByEmail(email);
     if (user) {
       return res.send("Sorry, there is already a user registered with this email")
     }
-    addUser(firstName, lastName, email, password).then(user => {
-      return res.send(user.id);
-    })
-  })
-  .catch(err => {
-    console.log(err)
-  })
+  } catch(error) {
+    res.send({alert: 'db error'})
+  }
+
+  try {
+    await addUser(firstName, lastName, email, password)
+  } catch(error) {
+    res.send({alert: 'error adding user'})
+  }
+
+  return res.send(user.id);
 });
 
 module.exports = router;
