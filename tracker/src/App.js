@@ -30,10 +30,7 @@ export default function App() {
     setCandleLength,
     setCandles,
     setCurrency,
-    // allCoins,
-    // userCoins,
     coinState,
-    // exchange
     trades,
     userCoinStats
   } = useApplicationData();
@@ -51,7 +48,10 @@ export default function App() {
     userCoins
   } = useDefaultActions();
 
-  const { addExchange, exchanges } = useExchangeData();
+  const { 
+    addExchange, 
+    exchanges 
+  } = useExchangeData();
   
 
   return (

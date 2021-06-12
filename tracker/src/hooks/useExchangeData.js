@@ -47,6 +47,7 @@ export default function useExchangeData() {
     if (cookies.user_id) {
       getExchangeData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cookies.user_id])
 
   return { addExchange, exchanges } 
