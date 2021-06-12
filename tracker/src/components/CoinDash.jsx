@@ -33,18 +33,23 @@ export default function CoinDash(props) {
 
 
     <div className="info-container">
-      <CoinInfo coinInfo={coinState.coinInfo}/>
-      <UserCoinInfo userCoinStats={userCoinStats}/> 
+      { coinState.coinInfo && <CoinInfo coinInfo={coinState.coinInfo}/> }
+      { trades.length > 0 ? 
+        <UserCoinInfo userCoinStats={userCoinStats}/> :
+        <div>Add an exchange account to see coin stats</div> 
+      }
     </div>
 
+    { trades.length > 0 ?
       <div>
         <TradeTable rows={trades}/>
-      </div> 
+      </div> :
+      <div>Add an exchange account to see trades</div>
+    }
 
   </div>
 
   )
-
 
 }
 

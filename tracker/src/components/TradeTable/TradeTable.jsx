@@ -19,18 +19,6 @@ export default function TradeTable(props) {
       currency={row.feeCurrency}
     />
   })
-
-  // { baseCurrency: 'XRP',
-// quoteCurrency: 'CAD',
-// coinSymbol: 'XRP/CAD',
-// unitPrice: 0.62565,
-// amount: 4434.70973614,
-// cost: 2774.576146415991,
-// time: 1613510368587,
-// orderType: 'market',
-// side: 'sell',
-// fee: 7.21389799,
-// feeCurrency: 'CAD' },
   
   return (
     <div className="trade-table">

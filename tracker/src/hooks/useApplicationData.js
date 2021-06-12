@@ -8,12 +8,8 @@ import useDefaultActions from './useDefaultActions';
 export default function useApplicationData() {
 
   const {    
-    handleLogin, 
-    handleLogout, 
-    handleRegister,
     cookies,
     handleAlert,
-    alert,
     setUserCoins,
     allCoins,
     userCoins
@@ -23,22 +19,18 @@ export default function useApplicationData() {
     filterUserCoins
   } = useDefaultActions();
 
-      // COIN FUNCTIONS/STATE //
-
+  // STATE //
   const [currency, setCurrency] = useState({uuid: "yhjMzLPhuIDl", ticker: "USD"});
-
+  const [userCoinStats, setUserCoinStats] = useState(null)
+  const [trades, setTrades] = useState(null);
   const [coinState, dispatch] = useReducer(reducer, {
     coin: {ticker: 'BTC', uuid: 'Qwsogvtv82FCd'},
     candleLength: 'day',
     candles: null,
     coinInfo: null
   });
-
-  const [userCoinStats, setUserCoinStats] = useState(null)
-
-  const [trades, setTrades] = useState(null);
   
-  // reducer functions for show coin page
+  // REDUCER // 
   const setCoin = (coin) => {
     dispatch({type: "SET_COIN", value: coin});
   }
@@ -55,8 +47,7 @@ export default function useApplicationData() {
     dispatch({type: "SET_CANDLES", value: candles})
   }
 
-  // USEEFFECTS // 
-
+  // USEEFFECTS //
   useEffect( () => {
     if (coinState.coin || coinState.candleLength) {
       loadCoinData();
@@ -121,12 +112,6 @@ export default function useApplicationData() {
   }
   
   return { 
-    // user
-    handleLogin, 
-    handleLogout, 
-    handleRegister,
-    cookies,
-    alert, 
     // coinegr
     addUserCoin,
     deleteUserCoin,
