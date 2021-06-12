@@ -14,45 +14,36 @@ export default function UseUserData() {
     }, 3000)
   }
   
-  const handleLogin = (userData) => {
+  const handleLogin = async (userData) => {
     const { password, email } = userData;
-    axios
-    .post(`http://localhost:3001/api/users/login`, {password, email})
-    .then((res) => {
-      if (res.status === 200) {
-        setCookie('user_id', res.data, { path: '/' });
-      }
-    })
-    .catch((err) => {
-      if (err.response) {
-        handleAlert(err.response.data);
-      }
-    });
+    if (!password || !email) {
+      handleAlert('please enter a valid password and email')
+    }
+    const res = await axios.post(`http://localhost:3001/api/users/login`, {password, email})
+    if (res.data.alert) {
+      return handleAlert(res.data.alert)
+    }
+    if (res.status === 200) {
+      setCookie('user_id', res.data, { path: '/' });
+    }
   }
   
   const handleLogout = () => {
     removeCookie("user_id");
   }
   
-  const handleRegister = (userData) => {
+  const handleRegister = async (userData) => {
     const { firstName, lastName, password, email } = userData;
     if (!firstName || !lastName || !email || !password) {
       return handleAlert("Please enter a valid email and password")
     }
-    axios
-    .post(`http://localhost:3001/api/users/register`, {firstName, lastName, password, email})
-    .then(res => {
-      if (res) {
-        setCookie('user_id', res.data.id, { path: '/' });
-      }
-    })
-    .catch((err) => {
-      if (err.response) {
-        handleAlert(err.response.data)
-      }
-    });
+    const res = await axios.post(`http://localhost:3001/api/users/register`, {firstName, lastName, password, email})
+    if (res.data.alert) {
+      return handleAlert(res.data.alert)
+    }
+    if (res) {
+      setCookie('user_id', res.data.id, { path: '/' });
+    }
   }
-
   return { handleLogin, handleLogout, handleAlert, handleRegister, cookies, alert } 
-
 }

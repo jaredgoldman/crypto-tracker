@@ -6,7 +6,7 @@ import UserCoinInfo from "./UserCoinInfo"
 import TradeTable from "./TradeTable/TradeTable"
 
 export default function CoinDash(props) {
-  const { coinState, setCandleLength, trades } = props;
+  const { coinState, userCoinStats, setCandleLength, trades } = props;
   
   const handleSetCandleLength = (e) => {
     setCandleLength(e.target.value)
@@ -35,13 +35,15 @@ export default function CoinDash(props) {
       </div> 
     }
 
-    
+
     <div className="info-container">
       <CoinInfo coinInfo={coinState.coinInfo}/>
-      <UserCoinInfo userCoinStats={props.userCoinStats}/>
+      {trades == true && 
+        <UserCoinInfo userCoinStats={userCoinStats}/> 
+      }
     </div>
 
-    {trades &&
+    {trades == true &&
       <div>
         <TradeTable rows={trades}/>
       </div> 

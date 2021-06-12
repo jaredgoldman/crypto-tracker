@@ -6,24 +6,24 @@ const {
 } = require('../db/queries/user-queries');
 
  // USER LOGIN
- router.post('/login', (req, res) => {
+ router.post('/login', async (req, res) => {
   const {email, password} = req.body;
-  if (!email || !password) {
-    return res.status(409).send("Please enter a valid email and password")
-  }
-  getUserByEmail(email)
-  .then(user => {
+  user = null;
+
+  try {
+    user = await getUserByEmail(email)
     if (!user) {
-      return res.status(401).send("Error: invalid email");
+      return res.send({alert: 'invalid user credentials'});
     }
-    if (email && user.password === password) {
-      return res.status(200).json(user.id);
-    } 
-    return res.status(401).send("Error: Invalid credentials");
-  })
-  .catch(err => {
-    console.log(err)
-  })
+  } catch(error) {
+    res.send({alert: 'error getting user from db'})
+  }
+  
+  if (email && user.password === password) {
+    return res.json(user.id);
+  } 
+  return res.send({alert: 'invalid user credentials'})
+ 
 });
 
   // USER REGISTER
