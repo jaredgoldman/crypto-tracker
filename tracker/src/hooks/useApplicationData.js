@@ -230,20 +230,6 @@ export default function useApplicationData() {
       console.log(error)
     }
   }
-
-  // const getUserExchangeData = async (userId) => {
-  //   const URL = `http://localhost:3001/api/exchange/user/${userId}`
-  //   try {
-  //     const res = await axios.get(URL);
-  //     if (res.data.alert) {
-  //       return handleAlert(res.data.alert);
-  //     }
-  //     setTrades(res.data.transactions);
-  //     // setBalance(res.data.balance);
-  //   } catch(error) {
-  //     console.log(error);
-  //   }
-  // }
   
   return { 
     // user
