@@ -12,12 +12,8 @@ export default function CoinDash(props) {
     setCandleLength(e.target.value)
   }
 
-  // const filterTrades = () => {
-  //   const filteredTrades = trades.filter(trade => coinState.coin.ticker === trade.baseCurrency)
-  //   return filteredTrades
-  // }
-
   return (
+    
   <div className="coin-dashboard">
 
     <div>
@@ -38,18 +34,15 @@ export default function CoinDash(props) {
 
     <div className="info-container">
       <CoinInfo coinInfo={coinState.coinInfo}/>
-      {trades == true && 
-        <UserCoinInfo userCoinStats={userCoinStats}/> 
-      }
+      <UserCoinInfo userCoinStats={userCoinStats}/> 
     </div>
 
-    {trades == true &&
       <div>
         <TradeTable rows={trades}/>
       </div> 
-    }
 
   </div>
+
   )
 
 

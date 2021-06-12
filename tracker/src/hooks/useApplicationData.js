@@ -1,5 +1,4 @@
 import { useState, useEffect, useReducer } from 'react'
-import { useCookies } from 'react-cookie';
 import reducer from '../reducers/coins'
 import axios from 'axios'
 
@@ -13,62 +12,19 @@ export default function useApplicationData() {
     handleRegister,
     cookies,
     handleAlert,
-    alert
+    alert,
+    filterUserCoins,
+    setUserCoins,
+    allCoins,
+    userCoins
   } = useUserData();
-  // const { exchangeDataTest } = useExchangeData();
-
-  // // USER STATE // 
-
-  // const [cookies, setCookie, removeCookie] = useCookies(['user_id']);
-  // const [alert, setAlert] = useState(null);
-
-  // // USER HELPERS //
-  
-  // const handleAlert = (alert) => {
-  //   setAlert(alert)
-  //   setTimeout(() => {
-  //     setAlert(null);
-  //   }, 3000)
-  // }
-
-  // const handleLogin = (userData) => {
-  //   const { password, email } = userData;
-  //   axios
-  //   .post(`http://localhost:3001/api/users/login`, {password, email})
-  //   .then((res) => {
-  //     if (res.status === 200) {
-  //       setCookie('user_id', res.data, { path: '/' });
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     handleAlert(err.response.data);
-  //   });
-  // }
-
-  // const handleLogout = () => {
-  //   removeCookie("user_id");
-  // }
-
-  // const handleRegister = (userData) => {
-  //   const { firstName, lastName, password, email } = userData;
-  //   axios
-  //   .post(`http://localhost:3001/api/users/register`, {firstName, lastName, password, email})
-  //   .then(res => {
-  //     if (res) {
-  //       return setCookie('user_id', res.data.id, { path: '/' });
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     handleAlert(err.response.data)
-  //   });
-  // }
 
       // COIN FUNCTIONS/STATE //
 
   // coins from crypto ranking
-  const [allCoins, setAllCoins] = useState(null);
+  // const [allCoins, setAllCoins] = useState(null);
   // coins user has on watchlist
-  const [userCoins, setUserCoins] = useState(null);
+  // const [userCoins, setUserCoins] = useState(null);
   // set currency through which fiat numbers are provided
   const [currency, setCurrency] = useState({uuid: "yhjMzLPhuIDl", ticker: "USD"});
   // individual coin data
@@ -107,11 +63,11 @@ export default function useApplicationData() {
   // USEEFFECTS // 
 
   // Load watchlist and top 100 coins when user signs in 
-  useEffect(() => {
-    if (cookies.user_id) {
-      loadDefaultData();
-    }
-  }, [cookies.user_id])
+  // useEffect(() => {
+  //   if (cookies.user_id) {
+  //     loadDefaultData();
+  //   }
+  // }, [cookies.user_id])
 
   // Load coin data for coin dashboard
   useEffect( () => {
@@ -119,24 +75,25 @@ export default function useApplicationData() {
       loadCoinData();
       getExchangedata(); 
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coinState.coin, coinState.candleLength])
 
   // GENERAL HELPERS // 
 
   // when a user logs in...
-  const loadDefaultData = async () => {
-    const URL = `http://localhost:3001/api/coins/${cookies.user_id}`
-    try {
-      const defualtData = await axios.get(URL);
-      const allCoins = defualtData.data.coins;
-      const userCoinRes = defualtData.data.userCoins;
-      const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
-      setAllCoins(allCoins);
-      setUserCoins(filteredUserCoins);
-    } catch(error) {
-      console.log(error)
-    }
-  }
+  // const loadDefaultData = async () => {
+  //   const URL = `http://localhost:3001/api/coins/${cookies.user_id}`
+  //   try {
+  //     const defualtData = await axios.get(URL);
+  //     const allCoins = defualtData.data.coins;
+  //     const userCoinRes = defualtData.data.userCoins;
+  //     const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
+  //     setAllCoins(allCoins);
+  //     setUserCoins(filteredUserCoins);
+  //   } catch(error) {
+  //     console.log(error)
+  //   }
+  // }
 
   // COIN HELPERS //
 
@@ -194,18 +151,18 @@ export default function useApplicationData() {
 
   }
   
-  // use userCoins as ref to filter watchlist
-  const filterUserCoins = (userCoins, allCoins) => {
-    const userCoinArr = [];
-    userCoins.forEach(coin => {
-      for (let c of allCoins) {
-        if (coin.symbol === c.ticker) {
-          userCoinArr.push(c);
-        }
-      }
-    })
-    return userCoinArr
-  }
+  // // use userCoins as ref to filter watchlist
+  // const filterUserCoins = (userCoins, allCoins) => {
+  //   const userCoinArr = [];
+  //   userCoins.forEach(coin => {
+  //     for (let c of allCoins) {
+  //       if (coin.symbol === c.ticker) {
+  //         userCoinArr.push(c);
+  //       }
+  //     }
+  //   })
+  //   return userCoinArr
+  // }
 
   // EXCHANGE HELPERS //
 

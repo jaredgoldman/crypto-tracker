@@ -20,7 +20,7 @@ const {
   }
   
   if (email && user.password === password) {
-    return res.json(user.id);
+    return res.send({user_id: user.id});
   } 
   return res.send({alert: 'invalid user credentials'})
  

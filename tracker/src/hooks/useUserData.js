@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
@@ -24,10 +24,18 @@ export default function UseUserData() {
       return handleAlert(res.data.alert)
     }
     if (res.status === 200) {
-      setCookie('user_id', res.data, { path: '/' });
+      setCookie('user_id', res.data.user_id, { path: '/' });
     }
   }
-  
+
+  // when user logs in, load all coins and coin watchlist 
+  useEffect(() => {
+    if (cookies.user_id) {
+      loadDefaultData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cookies.user_id])
+
   const handleLogout = () => {
     removeCookie("user_id");
   }
@@ -45,5 +53,50 @@ export default function UseUserData() {
       setCookie('user_id', res.data.id, { path: '/' });
     }
   }
-  return { handleLogin, handleLogout, handleAlert, handleRegister, cookies, alert } 
+
+  // coins from crypto ranking
+  const [allCoins, setAllCoins] = useState(null);
+  // coins user has on watchlist
+  const [userCoins, setUserCoins] = useState(null);
+
+  const loadDefaultData = async () => {
+    console.log(cookies.user_id)
+    const URL = `http://localhost:3001/api/coins/${cookies.user_id}`
+    try {
+      const defualtData = await axios.get(URL);
+      const allCoins = defualtData.data.coins;
+      const userCoinRes = defualtData.data.userCoins;
+      const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
+      setAllCoins(allCoins);
+      setUserCoins(filteredUserCoins);
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+   // use userCoins as ref to filter watchlist
+   const filterUserCoins = (userCoins, allCoins) => {
+    const userCoinArr = [];
+    userCoins.forEach(coin => {
+      for (let c of allCoins) {
+        if (coin.symbol === c.ticker) {
+          userCoinArr.push(c);
+        }
+      }
+    })
+    return userCoinArr
+  }
+
+  return { 
+    handleLogin, 
+    handleLogout, 
+    handleAlert, 
+    handleRegister, 
+    filterUserCoins, 
+    setUserCoins,
+    cookies, 
+    alert, 
+    allCoins, 
+    userCoins 
+  } 
 }

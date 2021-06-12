@@ -35,6 +35,7 @@ export default function LoginForm(props) {
           className="input-field" 
           type="text" 
           placeholder="enter your email"
+          autoComplete="on"
           onChange={(e) => {handleEmail(e)}}
         >
         </input>
@@ -43,6 +44,7 @@ export default function LoginForm(props) {
           className="input-field" 
           type="password" 
           placeholder="enter your password"
+          autoComplete="on"
           onChange={(e) => {handlePassword(e)}}
         >
         </input>

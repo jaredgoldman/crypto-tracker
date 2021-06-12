@@ -27,8 +27,8 @@ export default function App() {
     setCandleLength,
     setCandles,
     setCurrency,
-    allCoins,
-    userCoins,
+    // allCoins,
+    // userCoins,
     coinState,
     // exchange
     addExchange,
@@ -42,9 +42,10 @@ export default function App() {
     handleLogin, 
     handleLogout, 
     handleRegister,
-    handleAlert,
     cookies,
     alert, 
+    allCoins,
+    userCoins
   } = useUserData();
   
 
