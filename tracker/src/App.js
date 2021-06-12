@@ -15,17 +15,12 @@ import SettingsDash from "./components/SettingsDash"
 import ExchangeDash from "./components/ExchangeDash"
 
 import useApplicationData from "./hooks/useApplicationData"
+import useUserData from "./hooks/useUserData"
 
 export default function App() {
 
   const { 
-    // user
-    handleLogin, 
-    handleLogout, 
-    handleRegister,
-    cookies,
-    alert, 
-    // coinegr
+    // coins
     addUserCoin,
     deleteUserCoin,
     setCoin,
@@ -42,6 +37,16 @@ export default function App() {
     balance,
     userCoinStats
   } = useApplicationData();
+
+  const {    
+    handleLogin, 
+    handleLogout, 
+    handleRegister,
+    handleAlert,
+    cookies,
+    alert, 
+  } = useUserData();
+  
 
   return (
     <main>
@@ -71,7 +76,8 @@ export default function App() {
             <LoginForm handleLogin={handleLogin} alert={alert}/> }
           </Route>
           <Route path="/register">
-            <RegisterForm handleRegister={handleRegister} alert={alert}/>
+          {cookies.user_id ? <Redirect to="/" /> :
+            <RegisterForm handleRegister={handleRegister} alert={alert}/> }
           </Route>
           <Route path="/watchlist">
             <Watchlist 

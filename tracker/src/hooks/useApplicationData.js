@@ -3,55 +3,65 @@ import { useCookies } from 'react-cookie';
 import reducer from '../reducers/coins'
 import axios from 'axios'
 
+import useUserData from './useUserData'
+
 export default function useApplicationData() {
 
+  const {    
+    handleLogin, 
+    handleLogout, 
+    handleRegister,
+    cookies,
+    handleAlert,
+    alert
+  } = useUserData();
   // const { exchangeDataTest } = useExchangeData();
 
-  // USER STATE // 
+  // // USER STATE // 
 
-  const [cookies, setCookie, removeCookie] = useCookies(['user_id']);
-  const [alert, setAlert] = useState(null);
+  // const [cookies, setCookie, removeCookie] = useCookies(['user_id']);
+  // const [alert, setAlert] = useState(null);
 
-  // USER HELPERS //
+  // // USER HELPERS //
   
-  const handleAlert = (alert) => {
-    setAlert(alert)
-    setTimeout(() => {
-      setAlert(null);
-    }, 3000)
-  }
+  // const handleAlert = (alert) => {
+  //   setAlert(alert)
+  //   setTimeout(() => {
+  //     setAlert(null);
+  //   }, 3000)
+  // }
 
-  const handleLogin = (userData) => {
-    const { password, email } = userData;
-    axios
-    .post(`http://localhost:3001/api/users/login`, {password, email})
-    .then((res) => {
-      if (res.status === 200) {
-        setCookie('user_id', res.data, { path: '/' });
-      }
-    })
-    .catch((err) => {
-      handleAlert(err.response.data);
-    });
-  }
+  // const handleLogin = (userData) => {
+  //   const { password, email } = userData;
+  //   axios
+  //   .post(`http://localhost:3001/api/users/login`, {password, email})
+  //   .then((res) => {
+  //     if (res.status === 200) {
+  //       setCookie('user_id', res.data, { path: '/' });
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     handleAlert(err.response.data);
+  //   });
+  // }
 
-  const handleLogout = () => {
-    removeCookie("user_id");
-  }
+  // const handleLogout = () => {
+  //   removeCookie("user_id");
+  // }
 
-  const handleRegister = (userData) => {
-    const { firstName, lastName, password, email } = userData;
-    axios
-    .post(`http://localhost:3001/api/users/register`, {firstName, lastName, password, email})
-    .then(res => {
-      if (res) {
-        return setCookie('user_id', res.data.id, { path: '/' });
-      }
-    })
-    .catch((err) => {
-      handleAlert(err.response.data)
-    });
-  }
+  // const handleRegister = (userData) => {
+  //   const { firstName, lastName, password, email } = userData;
+  //   axios
+  //   .post(`http://localhost:3001/api/users/register`, {firstName, lastName, password, email})
+  //   .then(res => {
+  //     if (res) {
+  //       return setCookie('user_id', res.data.id, { path: '/' });
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     handleAlert(err.response.data)
+  //   });
+  // }
 
       // COIN FUNCTIONS/STATE //
 

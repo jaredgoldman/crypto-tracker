@@ -35,7 +35,7 @@ export default function CoinDash(props) {
       </div> 
     }
 
-
+    
     <div className="info-container">
       <CoinInfo coinInfo={coinState.coinInfo}/>
       <UserCoinInfo userCoinStats={props.userCoinStats}/>
