@@ -66,13 +66,13 @@ const formatCoinInfo = (coinInfo) => {
     ticker: coinInfo.symbol,
     icon: coinInfo.iconUrl,
     website: coinInfo.websiteUrl,
-    totalSupply: coinInfo.supply.total,
-    volume: coinInfo['24hVolume'],
-    marketCap: coinInfo.marketCap,
-    price: coinInfo.price,
-    btcPrice: coinInfo.btcPrice,
-    change: coinInfo.change,
-    rank: coinInfo.rank,
+    totalSupply: parseInt(coinInfo.supply.total),
+    volume: parseInt(coinInfo['24hVolume']),
+    marketCap: parseInt(coinInfo.marketCap),
+    price: parseInt(coinInfo.price),
+    btcPrice: parseInt(coinInfo.btcPrice),
+    change: parseInt(coinInfo.change),
+    rank: parseInt(coinInfo.rank),
     allTimeHigh: coinInfo.allTimeHigh
   }
 }

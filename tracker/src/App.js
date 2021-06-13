@@ -31,7 +31,8 @@ export default function App() {
     setCurrency,
     coinState,
     trades,
-    userCoinStats
+    userCoinStats,
+    currency
   } = useCoinData();
 
   const {    
@@ -96,6 +97,7 @@ export default function App() {
               setCandles={setCandles}
               coinState={coinState}
               trades={trades}
+              currency={currency}
               // balance={balance}
               userCoinStats={userCoinStats}
              />

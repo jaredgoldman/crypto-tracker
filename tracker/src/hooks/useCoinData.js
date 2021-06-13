@@ -81,7 +81,8 @@ export default function useCoinData() {
     userCoins,
     coinState,
     trades,
-    userCoinStats
+    userCoinStats,
+    currency
   }
 
 }
