@@ -96,6 +96,7 @@ const getUserTransactionsByCoin = (userId, coinId) => {
       order_type, 
       unit_price, 
       amount, 
+      transaction_time,
       cost, 
       transaction_fee
     FROM transactions
