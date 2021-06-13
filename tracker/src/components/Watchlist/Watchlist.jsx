@@ -19,6 +19,7 @@ export default function Watchlist(props) {
   useEffect(() => {
     "USEEFFECT"
     loadDefaultData();
+    // eslint-disable-next-line
   } ,[])
 
   const loadDefaultData = async () => {
@@ -102,14 +103,12 @@ export default function Watchlist(props) {
     {userCoins ? <table>
         <thead>
           <tr>
-            <td>Icon</td>
             <td>Ticker</td>
             <td>Rank</td>
             <td>Name</td>
             <td>Price</td>
             <td>24h%</td>
-            <td>Volume (24h)</td>y
-            
+            <td>Volume (24h)</td>
             <td>Market Cap</td>
             <td></td>
           </tr>

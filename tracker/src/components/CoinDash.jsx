@@ -25,6 +25,8 @@ export default function CoinDash(props) {
       </select>
     </div>
 
+    <a href='/watchlist'>Back to Watchlist</a>
+
     {coinState.candles && 
       <div className="chart-container">
         <Chart candles={coinState.candles}/>
@@ -40,7 +42,7 @@ export default function CoinDash(props) {
       }
     </div>
 
-    { trades.length > 0 ?
+    { trades && trades.length > 0 ?
       <div>
         <TradeTable rows={trades}/>
       </div> :

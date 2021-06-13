@@ -51,8 +51,6 @@ export default function UseUserData() {
     handleLogout, 
     handleAlert, 
     handleRegister, 
-    // filterUserCoins, 
-    // setUserCoins,
     cookies, 
     alert, 
   } 

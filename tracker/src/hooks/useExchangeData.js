@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import useApplicationData from "./useApplicationData"
+import useCoinData from "./useCoinData"
 import useUserData from "./useUserData"
 import axios from 'axios'
 
@@ -8,7 +8,7 @@ export default function useExchangeData() {
    // exchanges offered by ccxt
   const [exchanges, setExchanges] = useState(null)
 
-  const { setTrades } = useApplicationData();
+  const { setTrades } = useCoinData();
   const { handleAlert, cookies } = useUserData();
 
   const addExchange = async (exchangeData) => {
