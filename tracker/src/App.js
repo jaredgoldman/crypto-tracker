@@ -14,34 +14,40 @@ import CoinDash from "./components/CoinDash"
 import SettingsDash from "./components/SettingsDash"
 import ExchangeDash from "./components/ExchangeDash"
 
-import useApplicationData from "./hooks/useApplicationData"
+import useCoinData from "./hooks/useCoinData"
+import useUserData from "./hooks/useUserData"
+import useExchangeData from "./hooks/useExchangeData"
+
 
 export default function App() {
 
   const { 
-    // user
-    handleLogin, 
-    handleLogout, 
-    handleRegister,
-    cookies,
-    alert, 
-    // coinegr
+    // coins
     addUserCoin,
     deleteUserCoin,
     setCoin,
     setCandleLength,
     setCandles,
     setCurrency,
-    allCoins,
-    userCoins,
     coinState,
-    // exchange
-    addExchange,
-    exchanges,
     trades,
-    balance,
     userCoinStats
-  } = useApplicationData();
+  } = useCoinData();
+
+  const {    
+    handleLogin, 
+    handleLogout, 
+    handleRegister,
+    handleAlert,
+    cookies,
+    alert
+  } = useUserData();
+
+  const { 
+    addExchange, 
+    exchanges 
+  } = useExchangeData();
+  
 
   return (
     <main>
@@ -67,16 +73,17 @@ export default function App() {
         </header>
         <Switch>
           <Route path="/login">
-          {cookies.user_id ? <Redirect to="/" /> :
+          {cookies.user_id ? <Redirect to="/watchlist" /> :
             <LoginForm handleLogin={handleLogin} alert={alert}/> }
           </Route>
           <Route path="/register">
-            <RegisterForm handleRegister={handleRegister} alert={alert}/>
+          {cookies.user_id ? <Redirect to="/watchlist" /> :
+            <RegisterForm handleRegister={handleRegister} alert={alert}/> }
           </Route>
           <Route path="/watchlist">
             <Watchlist 
-              userCoins={userCoins} 
-              allCoins={allCoins} 
+              handleAlert={handleAlert}
+              cookies={cookies}
               addUserCoin={addUserCoin}
               deleteUserCoin={deleteUserCoin}
               setCoin={setCoin}
@@ -89,7 +96,7 @@ export default function App() {
               setCandles={setCandles}
               coinState={coinState}
               trades={trades}
-              balance={balance}
+              // balance={balance}
               userCoinStats={userCoinStats}
              />
           </Route>

@@ -5,7 +5,6 @@ const {
   fetchUserExchangeTrades, 
   getCcxtExchanges,
   addUserTransactions,
-  // addBalance,
   formatDbTrades,
   addAccountToDb,
   initializeExchange
@@ -101,45 +100,3 @@ router.get('/user/:userId', async (req, res) => {
 })
 
 module.exports = router;
-
-//   // grab balance and trades for user
-//   try {
-//     const {resBalance, resTrades} = await fetchUserExchangeTrades(exchange);
-//     trades = resTrades;
-//     balance = resBalance;
-//   } catch(error) {
-//     console.log('error fetching user exchange info')
-//     return res.send({alert: 'error fetching user exchange info'})
-//   }
-
-
-  
-//   // store transactions in db
-//   try {
-//     const addedTransactions = await addUserTransactions(account.id, trades);
-//   } catch(error) {
-//     console.log('error adding transactions to db')
-//     return res.send({alert: 'error adding transactions to db'});
-//   }
-//   return res.send({balance, trades});
-
-
-// initialize account code
-  // let dbExchange = null;
-  // try {
-  //   dbExchange = await getExchangeByName(exchangeData.exchangeName); 
-  //   if (!dbExchange) {
-  //     dbExchange = await addExchange(exchangeData.exchangeName);
-  //   }
-  // } catch(error) {
-  //   console.log('error adding exchange')
-  //   return res.send({alert: 'error adding exchange'});
-  // }
-
-  // let account = null;
-  // try {
-  //   account = await addUserAccount({exchangeId: dbExchange.id, ...exchangeData});
-  // } catch(error) {
-  //   console.log('error adding account to db')
-  //   return res.send({alert: 'error adding account to db'});
-  // }

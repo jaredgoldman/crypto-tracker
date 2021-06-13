@@ -6,18 +6,14 @@ import UserCoinInfo from "./UserCoinInfo"
 import TradeTable from "./TradeTable/TradeTable"
 
 export default function CoinDash(props) {
-  const { coinState, setCandleLength, trades } = props;
+  const { coinState, userCoinStats, setCandleLength, trades } = props;
   
   const handleSetCandleLength = (e) => {
     setCandleLength(e.target.value)
   }
 
-  // const filterTrades = () => {
-  //   const filteredTrades = trades.filter(trade => coinState.coin.ticker === trade.baseCurrency)
-  //   return filteredTrades
-  // }
-
   return (
+    
   <div className="coin-dashboard">
 
     <div>
@@ -29,6 +25,8 @@ export default function CoinDash(props) {
       </select>
     </div>
 
+    <a href='/watchlist'>Back to Watchlist</a>
+
     {coinState.candles && 
       <div className="chart-container">
         <Chart candles={coinState.candles}/>
@@ -37,19 +35,23 @@ export default function CoinDash(props) {
 
 
     <div className="info-container">
-      <CoinInfo coinInfo={coinState.coinInfo}/>
-      <UserCoinInfo userCoinStats={props.userCoinStats}/>
+      { coinState.coinInfo && <CoinInfo coinInfo={coinState.coinInfo}/> }
+      { trades.length > 0 ? 
+        <UserCoinInfo userCoinStats={userCoinStats}/> :
+        <div>Add an exchange account to see coin stats</div> 
+      }
     </div>
 
-    {trades &&
+    { trades && trades.length > 0 ?
       <div>
         <TradeTable rows={trades}/>
-      </div> 
+      </div> :
+      <div>Add an exchange account to see trades</div>
     }
 
   </div>
-  )
 
+  )
 
 }
 

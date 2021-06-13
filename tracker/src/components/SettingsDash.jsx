@@ -31,6 +31,7 @@ export default function settingsDash(props) {
   return (
 
     <div>
+
       <div>Quote Currency</div>
       <select onChange={(e) => handleQuoteCurrency(e.target.value)}>
         <option value={"USD"}>USD</option>
@@ -39,7 +40,11 @@ export default function settingsDash(props) {
         <option value={"GBP"}>GBP</option>
         <option value={"AUD"}>AUD</option>
       </select>
+      
+      <a href='/watchlist'>Back to Watchlist</a>
+
     </div>
+
 
   )
 }
