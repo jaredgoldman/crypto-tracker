@@ -17,7 +17,6 @@ export default function Watchlist(props) {
   }
 
   useEffect(() => {
-    "USEEFFECT"
     loadDefaultData();
     // eslint-disable-next-line
   } ,[])
@@ -80,27 +79,13 @@ export default function Watchlist(props) {
     return userCoinArr
     }
 
-  // userCoins.map((row, i) => {
-  //   return <WatchlistRow
-  //     key={i}
-  //     coinLogo={row.iconUrl}
-  //     ticker={row.ticker}
-  //     rank={row.rank}
-  //     name={row.name}
-  //     price={row.price}
-  //     changePercent={row.changePercent}
-  //     volume={row.volume}
-  //     marketCap={row.marketCap}
-  //     uuid={row.uuid}
-  //     setCoin={setCoin}
-  //     deleteUserCoin={deleteUserCoin}
-  //   />
-  // })
+
 
   return (
     <div className="table-wrapper">
       <button onClick={() => handleShowModal()}>Add Coins</button>
-    {userCoins ? <table>
+    {userCoins ? 
+    <table>
         <thead>
           <tr>
             <td>Ticker</td>

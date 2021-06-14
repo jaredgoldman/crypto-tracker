@@ -41,12 +41,12 @@ export default function useCoinData() {
   }
 
   // load coin data every time a user selects a new coin
-  useEffect( () => {
-    if (coinState.coin || coinState.candleLength) {
-      loadCoinData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coinState.coin, coinState.candleLength])
+  // useEffect( () => {
+  //   if (coinState.coin || coinState.candleLength) {
+  //     loadCoinData();
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [coinState.coin, coinState.candleLength])
 
   // when user selects individual coin, we requests data, candles and user trades 
   const loadCoinData = async () => {
@@ -63,8 +63,12 @@ export default function useCoinData() {
       const {coinInfo, userCoinTrades, userCoinStats} = res.data;
       setCandles(coinInfo.candles);
       setCoinInfo(coinInfo.coin);
-      setTrades(userCoinTrades);
-      setUserCoinStats(userCoinStats);
+      if (!userCoinTrades.length) {
+        setTrades(null);
+      }
+      if (!userCoinStats.pL) {
+        setUserCoinStats(null);
+      }
     } catch (error) {
       console.log(error)
     }
@@ -77,6 +81,7 @@ export default function useCoinData() {
     setCandles,
     setCurrency,
     setTrades,
+    loadCoinData,
     allCoins,
     userCoins,
     coinState,

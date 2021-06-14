@@ -6,10 +6,20 @@ import axios from 'axios'
 export default function useExchangeData() {
   
    // exchanges offered by ccxt
-  const [exchanges, setExchanges] = useState(null)
-
+  const [exchanges, setExchanges] = useState(null);
+  const [allTrades, setAllTrades] = useState(null);
   const { setTrades } = useCoinData();
   const { handleAlert, cookies } = useUserData();
+
+  const getAllTrades = async () => {
+    const URL = `http://localhost:3001/api/exchange/trades/${cookies.user_id}`
+    const res = axios.get(URL);
+    if (res.ok) {
+      console.log(res.data);
+      return setAllTrades(res.data);
+    }
+    console.log('error getting trades');
+  }
 
   const addExchange = async (exchangeData) => {
     if (!exchangeData.exchangeName || !exchangeData.apiKey || !exchangeData.secretKey) {
@@ -50,5 +60,5 @@ export default function useExchangeData() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cookies.user_id])
 
-  return { addExchange, exchanges } 
+  return { addExchange, exchanges, getAllTrades, allTrades } 
 }

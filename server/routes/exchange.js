@@ -12,7 +12,7 @@ const {
 
 const {
   getUserTransactions,
-  getUserAccounts
+  getUserAccounts,
 } = require('../db/queries/exchange-queries')
 
       // EXCHANGE ROUTES //
@@ -97,6 +97,19 @@ router.get('/user/:userId', async (req, res) => {
     console.log(error);
   }
 
+})
+
+router.get('/trades/:userId', async (req, res) => {
+  const { userId } = req.params;
+  let allTrades = null;
+
+  try {
+    allTrades = await getUserTransactions(userId);
+  } catch(error) {
+    console.log(error.response.data);
+  }
+  
+  res.send(allTrades)
 })
 
 module.exports = router;

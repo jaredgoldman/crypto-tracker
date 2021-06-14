@@ -11,6 +11,7 @@ import LoginForm from "./components/LoginForm"
 import RegisterForm from "./components/RegisterForm"
 import Watchlist from './components/Watchlist/Watchlist';
 import CoinDash from "./components/CoinDash"
+import TradeTable from './components/TradeTable/TradeTable';
 import SettingsDash from "./components/SettingsDash"
 import ExchangeDash from "./components/ExchangeDash"
 
@@ -29,6 +30,7 @@ export default function App() {
     setCandleLength,
     setCandles,
     setCurrency,
+    loadCoinData,
     coinState,
     trades,
     userCoinStats,
@@ -45,8 +47,10 @@ export default function App() {
   } = useUserData();
 
   const { 
-    addExchange, 
-    exchanges 
+    addExchange,
+    getAllTrades, 
+    exchanges,
+    allTrades 
   } = useExchangeData();
   
 
@@ -66,6 +70,7 @@ export default function App() {
               <div>
                 <Link className="nav-text" to="/watchlist">Watchlist</Link>
                 <Link className="nav-text" to="/exchange">Exchanges</Link>
+                <Link className="nav-text" to="/trades">Trades</Link>
                 <Link className="nav-text" to="/settings">Settings</Link>
                 <Link className="nav-text" to="/logout" onClick={() => handleLogout()}>Logout</Link>
               </div>
@@ -80,6 +85,9 @@ export default function App() {
           <Route path="/register">
           {cookies.user_id ? <Redirect to="/watchlist" /> :
             <RegisterForm handleRegister={handleRegister} alert={alert}/> }
+          <Route path="/logout">
+            <Redirect to="/login"/>
+          </Route>
           </Route>
           <Route path="/watchlist">
             <Watchlist 
@@ -92,15 +100,22 @@ export default function App() {
             />
           </Route>
           <Route path="/coins">
+            {coinState ?
             <CoinDash 
               setCandleLength={setCandleLength}
               setCandles={setCandles}
               coinState={coinState}
               trades={trades}
               currency={currency}
-              // balance={balance}
+              loadCoinData={loadCoinData}
               userCoinStats={userCoinStats}
              />
+             :
+             <div>loading...</div>
+            }
+          </Route>
+          <Route path="/trades">
+            <TradeTable getAllTrades={getAllTrades} rows={allTrades}></TradeTable>
           </Route>
           <Route path="/exchange">
             <ExchangeDash addExchange={addExchange} exchanges={exchanges} alert={alert}/>

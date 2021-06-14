@@ -29,7 +29,7 @@ const { coinInfo, currency } = props
       <div>
         <h2>Price</h2>
         <p>
-          {coinInfo.price < 1 ? coinInfo.price.toFixed(8) : coinInfo.price.toFixed(2) }
+          {coinInfo.price < 1 ? coinInfo.price.toFixed(8) : coinInfo.price.toFixed(2) } {currency.ticker}
         </p>
       </div>
       <div>
@@ -44,20 +44,20 @@ const { coinInfo, currency } = props
       </div>
       <div>
         <h2>Total Supply</h2>
-        <p>{coinInfo.totalSupply} {coinInfo.ticker}</p>
+        <p>${coinInfo.totalSupply} {coinInfo.ticker}</p>
       </div>
       <div>
         <h2>Market Cap</h2>
-        <p>{coinInfo.marketCap} {currency.ticker}</p>
+        <p>${coinInfo.marketCap} {currency.ticker}</p>
       </div>
       <div>
         <h2>Volume</h2>
-        <p>{coinInfo.volume} {currency.ticker}</p>
+        <p>${coinInfo.volume} {currency.ticker}</p>
       </div>
       <div>
         <h2>ATH</h2>
-        <p>{coinInfo.allTimeHigh.price} {currency.ticker}</p>
-        <p>{coinInfo.allTimeHigh.timestamp} {currency.ticker}</p>
+        <p>${coinInfo.allTimeHigh.price} {currency.ticker}</p>
+        <p>${coinInfo.allTimeHigh.timestamp} {currency.ticker}</p>
       </div>
     </div>
   )

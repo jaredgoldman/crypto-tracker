@@ -1,8 +1,16 @@
 import React from 'react'
 import TradeTableRow from "./TradeTableRow"
 import "./TradeTable.scss";
+import { useEffect } from 'react';
 
 export default function TradeTable(props) {
+const { rows } = props
+
+  useEffect(() => {
+    if (props.getAllTrades) {
+      props.getAllTrades();
+    }
+  }, [])
 
   const tableRows = props.rows.map(row => {
     return <TradeTableRow 

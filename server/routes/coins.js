@@ -116,7 +116,6 @@ router.get('/show/:userId/:coin/:uuid/:candleLength/:currency/:currencyUuid', as
     console.log('error getting coin stats')
   }
 
-  console.log(userCoinTrades)
   return res.send({coinInfo, userCoinTrades, userCoinStats});
 })
 
