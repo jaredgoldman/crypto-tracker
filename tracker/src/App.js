@@ -24,8 +24,6 @@ export default function App() {
 
   const { 
     // coins
-    addUserCoin,
-    deleteUserCoin,
     setCoin,
     setCandleLength,
     setCandles,
@@ -93,8 +91,6 @@ export default function App() {
             <Watchlist 
               handleAlert={handleAlert}
               cookies={cookies}
-              addUserCoin={addUserCoin}
-              deleteUserCoin={deleteUserCoin}
               setCoin={setCoin}
               alert={alert}
             />

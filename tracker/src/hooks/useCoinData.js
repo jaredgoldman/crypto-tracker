@@ -17,7 +17,7 @@ export default function useCoinData() {
   const [userCoinStats, setUserCoinStats] = useState(null)
   const [trades, setTrades] = useState(null);
   const [coinState, dispatch] = useReducer(reducer, {
-    coin: {ticker: 'BTC', uuid: 'Qwsogvtv82FCd'},
+    coin: null,
     candleLength: 'day',
     candles: null,
     coinInfo: null

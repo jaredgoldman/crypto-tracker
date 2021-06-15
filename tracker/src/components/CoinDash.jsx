@@ -21,8 +21,9 @@ export default function CoinDash(props) {
   return (
   
   <div className="coin-dashboard">
-    {coinState.coin ?
+    {coinState.coin && coinState.candles && coinState.coinInfo ?
     <div>
+      
       <div>
         <div>Select Timeframe</div>
         <select onChange={(e) => handleSetCandleLength(e)}>
@@ -35,9 +36,11 @@ export default function CoinDash(props) {
       <a href='/watchlist'>Back to Watchlist</a>
 
 
-        <div className="chart-container">
-          <Chart candles={coinState.candles}/>
-        </div> 
+    
+      <div className="chart-container">
+        <Chart candles={coinState.candles}/>
+      </div> 
+    
       
       <div className="info-container">
         <CoinInfo 
