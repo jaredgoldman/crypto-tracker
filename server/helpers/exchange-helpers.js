@@ -110,6 +110,7 @@ const formatTrades = (trades, exchangeName) => {
 const formatDbTrades = (trades) => {
   const formattedTrades = []
   trades.forEach(trade => {
+    console.log(trade.transaction_time)
     formattedTrades.push({
       transactionId: trade.transaction_id,
       baseCurrency: trade.base_currency,
