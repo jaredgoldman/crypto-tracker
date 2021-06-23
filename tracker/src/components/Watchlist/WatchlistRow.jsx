@@ -1,14 +1,18 @@
 import { useHistory } from "react-router-dom";
+import useCoinData from "../../hooks/useCoinData";
 import './WatchlistRow.scss'
+
 
 export default function WatchlistRow(props) {
 
   const history = useHistory();
-  const handleSetCoin = (ticker, uuid) => {
-    history.push('/coins');
-    props.setCoin({ticker, uuid});
-  } 
+  const { setCoin } = props
 
+  const handleSetCoin = async (ticker, uuid) => {
+    setCoin({ticker, uuid})
+    history.push('/coins')
+  } 
+  
   const handleDeleteUserCoin = (ticker) => {
     props.deleteUserCoin(ticker);
   } 
@@ -24,17 +28,19 @@ export default function WatchlistRow(props) {
       <td>{props.volume}</td>
       <td>{props.marketCap}</td>
       <td>
+
         <a href='/coins' onClick={(e) => {
             e.preventDefault();
             handleSetCoin(props.ticker, props.uuid);
           }
         }>Show Coin</a>
+
         <button onClick={(e) => {
             e.preventDefault();
             handleDeleteUserCoin(props.ticker)
           }
         }> Remove Coin</button>
-        
+
       </td>
     </tr>
 

@@ -20,8 +20,6 @@ const {
 
 const { formatDbTrades } = require('../helpers/exchange-helpers')
 
-
-
 // get top 100 coins from coin ranking and user coins 
 router.get('/:id', async (req, res) => {
 

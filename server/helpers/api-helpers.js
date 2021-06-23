@@ -7,7 +7,14 @@ const crConfig = {
 }
 // REQUESTS //
 
-const getCoinInfo = async (coin, uuid, candleLength, currencyTicker, currencyUuid) => {
+const getCoinInfo = async (
+  coin, 
+  uuid, 
+  candleLength, 
+  currencyTicker, 
+  currencyUuid
+) => {
+  
   let coinInfo = null;
   let candles = null;
 
