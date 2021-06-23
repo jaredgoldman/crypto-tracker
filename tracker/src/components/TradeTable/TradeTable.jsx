@@ -10,9 +10,9 @@ const { rows } = props
     if (props.getAllTrades) {
       props.getAllTrades();
     }
-  }, [])
+  }, [props])
 
-  const tableRows = props.rows.map(row => {
+  const tableRows = rows.map(row => {
     return <TradeTableRow 
       key={row.id}
       symbol={row.coinSymbol}

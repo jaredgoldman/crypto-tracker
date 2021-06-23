@@ -2,14 +2,13 @@ import "./Watchlist.scss"
 import WatchlistRow from "./WatchlistRow"
 import CoinModal from '../CoinModal/CoinModal'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import useWatchListData from "../../hooks/useWatchListData"
 import UseUserData from "../../hooks/useUserData"
-import useCoinData from "../../hooks/useCoinData"
 
-export default function Watchlist() {
+export default function Watchlist(props) {
+  const { setCoin } = props;
   const { alert } = UseUserData();
-  const { setCoin } = useCoinData();  
+  
   const {
     addUserCoin, 
     deleteUserCoin, 

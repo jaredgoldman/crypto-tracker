@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
-import useCoinData from "./useCoinData"
 import useUserData from "./useUserData"
 import axios from 'axios'
+
 
 export default function useExchangeData() {
   
    // exchanges offered by ccxt
   const [exchanges, setExchanges] = useState(null);
   const [allTrades, setAllTrades] = useState(null);
-  const { setTrades } = useCoinData();
+  // const [exchangeTrades, setExchangeTrades] = useState([]);
   const { handleAlert, cookies } = useUserData();
 
   const getAllTrades = async () => {
@@ -31,7 +31,7 @@ export default function useExchangeData() {
       if (alert) {
         return handleAlert(res.data.alert);
       }
-      setTrades(res.data.trades);
+      // setExchangeTrades(res.data.trades);
       // setBalance(res.data.balance);
     } catch(error) {
       console.log(error)

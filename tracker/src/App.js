@@ -1,4 +1,5 @@
 import './App.scss';
+import { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,28 +13,13 @@ import RegisterForm from "./components/RegisterForm"
 import Watchlist from './components/Watchlist/Watchlist';
 import CoinDash from "./components/CoinDash"
 import TradeTable from './components/TradeTable/TradeTable';
-import SettingsDash from "./components/SettingsDash"
 import ExchangeDash from "./components/ExchangeDash"
 
-import useCoinData from "./hooks/useCoinData"
 import useUserData from "./hooks/useUserData"
 import useExchangeData from "./hooks/useExchangeData"
 
 
 export default function App() {
-
-  const { 
-    // coins
-    setCoin,
-    setCandleLength,
-    setCandles,
-    setCurrency,
-    loadCoinData,
-    coinState,
-    trades,
-    userCoinStats,
-    currency
-  } = useCoinData();
 
   const {    
     handleLogin, 
@@ -51,7 +37,8 @@ export default function App() {
     allTrades 
   } = useExchangeData();
   
-
+  const [coin, setCoin] = useState({})
+  
   return (
     <main>
       <Router>
@@ -69,7 +56,6 @@ export default function App() {
                 <Link className="nav-text" to="/watchlist">Watchlist</Link>
                 <Link className="nav-text" to="/exchange">Exchanges</Link>
                 <Link className="nav-text" to="/trades">Trades</Link>
-                <Link className="nav-text" to="/settings">Settings</Link>
                 <Link className="nav-text" to="/logout" onClick={() => handleLogout()}>Logout</Link>
               </div>
             }
@@ -91,23 +77,15 @@ export default function App() {
             <Watchlist 
               handleAlert={handleAlert}
               cookies={cookies}
-              setCoin={setCoin}
               alert={alert}
+              setCoin={setCoin}
             />
           </Route>
           <Route path="/coins">
-            {coinState ?
-            <CoinDash 
-              setCandleLength={setCandleLength}
-              setCandles={setCandles}
-              coinState={coinState}
-              trades={trades}
-              currency={currency}
-              loadCoinData={loadCoinData}
-              userCoinStats={userCoinStats}
-             />
-             :
-             <div>loading...</div>
+            {coin ?
+              <CoinDash coin={coin}/>
+              :
+              <div>loading...</div>
             }
           </Route>
           <Route path="/trades">
@@ -115,9 +93,6 @@ export default function App() {
           </Route>
           <Route path="/exchange">
             <ExchangeDash addExchange={addExchange} exchanges={exchanges} alert={alert}/>
-          </Route>
-          <Route path="/settings">
-            <SettingsDash setCurrency={setCurrency}/>
           </Route>
           <Route exact path="/">
           {!cookies.user_id ? <Redirect to="/login" /> :
