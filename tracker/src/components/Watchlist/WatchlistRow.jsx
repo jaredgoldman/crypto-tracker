@@ -1,5 +1,4 @@
 import { useHistory } from "react-router-dom";
-import useCoinData from "../../hooks/useCoinData";
 import './WatchlistRow.scss'
 
 

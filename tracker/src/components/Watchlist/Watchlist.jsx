@@ -4,7 +4,6 @@ import CoinModal from '../CoinModal/CoinModal'
 import { useState, useEffect } from 'react'
 import useWatchListData from "../../hooks/useWatchListData"
 import UseUserData from "../../hooks/useUserData"
-import useCoinData from "../../hooks/useCoinData"
 
 export default function Watchlist(props) {
   const { setCoin } = props;

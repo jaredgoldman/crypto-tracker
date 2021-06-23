@@ -15,7 +15,6 @@ import CoinDash from "./components/CoinDash"
 import TradeTable from './components/TradeTable/TradeTable';
 import ExchangeDash from "./components/ExchangeDash"
 
-import useCoinData from "./hooks/useCoinData"
 import useUserData from "./hooks/useUserData"
 import useExchangeData from "./hooks/useExchangeData"
 

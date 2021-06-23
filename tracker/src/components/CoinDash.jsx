@@ -9,6 +9,7 @@ import UserCoinInfo from "./UserCoinInfo"
 import TradeTable from "./TradeTable/TradeTable"
 
 import useUserData from '../hooks/useUserData'
+import useExchangeData from '../hooks/useExchangeData'
 
 export default function CoinDash(props) {
   const { coin } = props
@@ -16,26 +17,24 @@ export default function CoinDash(props) {
 
   const [candleLength, setCandleLength] = useState('day')
   const [currency, setCurrency] = useState({uuid: "yhjMzLPhuIDl", ticker: "USD"})
+  const [trades, setTrades] = useState([])
 
-  const [coinState, dispatch] = useReducer(reducer, {
+  const [coinState, setCoinState] = useState({
     candles: null,
     coinInfo: null,
-    trades: null,
     userCoinStats: null,
   });
 
   const {
     candles,
     coinInfo,
-    trades,
     userCoinStats,
   } = coinState
 
-  // REDUCER FOR COINSTATE // 
-
-  const setCoinData = (coinData) => {
-    dispatch({type: 'SET_COIN_DATA', value: coinData})
-  }
+  const {
+    setExchangeTrades,
+    exchangeTrades
+  } = useExchangeData();
 
   useEffect( () => {
     loadCoinData();
@@ -57,7 +56,13 @@ export default function CoinDash(props) {
     } catch (error) {
       console.log(error)
     }
-    await setCoinData(res.data)
+    const { coinInfo, userCoinStats, userCoinTrades } = res.data
+    setCoinState({
+      coinInfo: coinInfo.coin,
+      candles: coinInfo.candles,
+      userCoinStats
+    })
+    setTrades(userCoinTrades);
   }
 
   const handleSetCandleLength = (e) => {
