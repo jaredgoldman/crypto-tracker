@@ -18,6 +18,7 @@ export default function CoinDash(props) {
   const [candleLength, setCandleLength] = useState('day')
   const [currency, setCurrency] = useState({uuid: "yhjMzLPhuIDl", ticker: "USD"})
   const [trades, setTrades] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const [coinState, setCoinState] = useState({
     candles: null,
@@ -36,8 +37,10 @@ export default function CoinDash(props) {
     exchangeTrades
   } = useExchangeData();
 
-  useEffect( () => {
-    loadCoinData();
+  useEffect( async () => {
+    setLoading(true)
+    await loadCoinData();
+    setLoading(false)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coin, currency, candleLength])
 
@@ -97,6 +100,7 @@ export default function CoinDash(props) {
   return (
   
   <div className="coin-dashboard">
+   
     {coinState.candles ?
     
     <div>
@@ -121,11 +125,13 @@ export default function CoinDash(props) {
       <a href='/watchlist'>Back to Watchlist</a>
 
 
-  
+    {loading ? 
+      <div>Loading Coin...</div>
+      :
       <div className="chart-container">
         <Chart candles={candles}/>
       </div> 
-    
+    }
       
       <div className="info-container">
         <CoinInfo 
@@ -152,9 +158,9 @@ export default function CoinDash(props) {
       } 
     
    
-    </div> : 
-    <div>Loading...</div>}
-
+    </div> 
+    : 
+    <div>Loading...</div> }
   </div>
 
   )
