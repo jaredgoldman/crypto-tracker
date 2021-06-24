@@ -40,7 +40,7 @@ const { coinInfo, currency } = props
       </div>
       <div>
         <h2>24h Change</h2>
-        <p>{coinInfo.change} %</p>
+        <p>{coinInfo.change}%</p>
       </div>
       <div>
         <h2>Total Supply</h2>

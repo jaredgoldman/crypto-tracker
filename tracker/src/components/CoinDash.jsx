@@ -1,6 +1,5 @@
 import { useReducer, useEffect, useState } from 'react'
 import axios from 'axios'
-import reducer from '../reducers/coins'
 import './CoinDash.scss'
 
 import Chart from "./Chart"
