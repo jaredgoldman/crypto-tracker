@@ -14,6 +14,7 @@ import Watchlist from './components/Watchlist/Watchlist';
 import CoinDash from "./components/CoinDash"
 import TradeTable from './components/TradeTable/TradeTable';
 import ExchangeDash from "./components/ExchangeDash"
+import HomePage from './components/HomePage';
 
 import useUserData from "./hooks/useUserData"
 import useExchangeData from "./hooks/useExchangeData"
@@ -96,10 +97,11 @@ export default function App() {
           </Route>
           <Route exact path="/">
           {!cookies.user_id ? <Redirect to="/login" /> :
-            <h1>home page</h1> }
+            <HomePage/> }
           </Route>
         </Switch>
       </Router>
+      <footer className="footer">This is the footer</footer>
     </main>
   )
  

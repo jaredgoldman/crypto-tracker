@@ -1,7 +1,6 @@
 import { useHistory } from "react-router-dom";
 import './WatchlistRow.scss'
 
-
 export default function WatchlistRow(props) {
 
   const history = useHistory();

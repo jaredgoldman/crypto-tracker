@@ -1,0 +1,36 @@
+.homepage-wrapper {
+  display: flex;
+  flex-direction: column;
+  font-family: Righteous;
+
+
+  .main-heading {
+    display: flex;
+    align-items: center;
+    height: 15em;
+    background-color: beige;
+    padding-left: 3em;
+    font-size: 30px;
+  }
+
+  .module-one {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    padding-right: 3em;
+    height: 15em;
+    background-color: cadetblue;
+    font-size: 30px
+  }
+
+  .module-two {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding-left: 3em;
+    height: 13em;
+    background-color: rgb(78, 172, 92);
+    font-size: 30px
+  }
+
+}

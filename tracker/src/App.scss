@@ -30,4 +30,14 @@ nav {
   padding: 20px;
   font-family: 'Righteous', cursive;
   float: right;
+  text-decoration: none;
+}
+
+footer {
+  background-color: black;
+  color: white;
+  height: 5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
