@@ -1,5 +1,7 @@
 main {
   color: black;
+  display: flex;
+  flex-direction: column;
 }
 
 nav {
@@ -33,11 +35,15 @@ nav {
   text-decoration: none;
 }
 
-footer {
-  background-color: black;
-  color: white;
-  height: 5em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+// footer {
+//   position:absolute;
+//   left:0;
+//   bottom:0;
+//   right:0;
+//   background-color: black;
+//   color: white;
+//   height: 5em;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }

@@ -139,7 +139,7 @@ export default function CoinDash(props) {
         /> 
       </div>
 
-      {userCoinStats && trades ?
+      {userCoinStats && trades.length ?
       <div className="user-info-container">
 
         <UserCoinInfo 

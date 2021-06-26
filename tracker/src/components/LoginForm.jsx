@@ -20,7 +20,9 @@ export default function LoginForm(props) {
   return (
     <div className="form-container">
       {props.alert && <div>{props.alert}</div>}
-      <p>Login</p>
+      <div className="form-heading">
+        <p>Login</p>
+      </div>
       
       <form 
         action="" 
@@ -30,25 +32,31 @@ export default function LoginForm(props) {
           handleLogin(userData)
         }
       }>
-        <label>Email</label>
-        <input 
-          className="input-field" 
-          type="text" 
-          placeholder="enter your email"
-          autoComplete="on"
-          onChange={(e) => {handleEmail(e)}}
-        >
-        </input>
-        <label>Password</label>
-        <input 
-          className="input-field" 
-          type="password" 
-          placeholder="enter your password"
-          autoComplete="on"
-          onChange={(e) => {handlePassword(e)}}
-        >
-        </input>
-        <div>
+        <div className="inputs-wrapper">
+          <div className="input-wrapper">
+            <label>Email:</label>
+            <input 
+              className="input-field" 
+              type="text" 
+              placeholder="enter your email"
+              autoComplete="on"
+              onChange={(e) => {handleEmail(e)}}
+            >
+            </input>
+          </div>
+          <div className="input-wrapper">
+            <label>Password:</label>
+            <input 
+              className="input-field" 
+              type="password" 
+              placeholder="enter your password"
+              autoComplete="on"
+              onChange={(e) => {handlePassword(e)}}
+            >
+            </input>
+          </div>
+        </div>
+        <div className="button-wrapper">
           <input type="submit" className="button"/>
         </div>
       </form>

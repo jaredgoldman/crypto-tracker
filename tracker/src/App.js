@@ -15,6 +15,7 @@ import CoinDash from "./components/CoinDash"
 import TradeTable from './components/TradeTable/TradeTable';
 import ExchangeDash from "./components/ExchangeDash"
 import HomePage from './components/HomePage';
+import Footer from './components/Footer'
 
 import useUserData from "./hooks/useUserData"
 import useExchangeData from "./hooks/useExchangeData"
@@ -62,6 +63,7 @@ export default function App() {
             }
           </nav>
         </header>
+        <div className="routes-wrapper">
         <Switch>
           <Route path="/login">
           {cookies.user_id ? <Redirect to="/watchlist" /> :
@@ -96,12 +98,13 @@ export default function App() {
             <ExchangeDash addExchange={addExchange} exchanges={exchanges} alert={alert}/>
           </Route>
           <Route exact path="/">
-          {!cookies.user_id ? <Redirect to="/login" /> :
-            <HomePage/> }
+          {/* {!cookies.user_id ? <Redirect to="/login" /> : */}
+            <HomePage/> 
           </Route>
         </Switch>
+        </div>
       </Router>
-      <footer className="footer">This is the footer</footer>
+      <Footer/>
     </main>
   )
  

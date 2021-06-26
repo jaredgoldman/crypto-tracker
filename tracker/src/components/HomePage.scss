@@ -3,34 +3,46 @@
   flex-direction: column;
   font-family: Righteous;
 
+  .homepage-icons {
+    padding: 1em;
+
+    svg {
+      padding: 10px;
+      width: 120px;
+      height: 120px;
+    }
+  }
 
   .main-heading {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 15em;
-    background-color: beige;
-    padding-left: 3em;
+    background-color: rgb(121, 121, 121);
+    padding: 0em 6em 0em 3em;
     font-size: 30px;
   }
 
   .module-one {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     flex-direction: row-reverse;
-    padding-right: 3em;
-    height: 15em;
+    padding: 0em 5em 0em 4em ;
+    height: 11em;
     background-color: cadetblue;
-    font-size: 30px
+    font-size: 40px
   }
 
   .module-two {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     flex-direction: row;
-    padding-left: 3em;
-    height: 13em;
+    padding: 0em 3em 0em 3em;
+    height: 11em;
     background-color: rgb(78, 172, 92);
-    font-size: 30px
+    font-size: 40px
   }
 
 }
