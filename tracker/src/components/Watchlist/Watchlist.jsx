@@ -83,7 +83,7 @@ export default function Watchlist(props) {
     <div className="watchlist-wrapper">
       <h1 className="watchlist-heading">Your Watchlist</h1>
       <div className="table-wrapper">
-        <button onClick={() => handleShowModal()}>Add Coins</button>
+        <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
       {userCoins ? 
       <table>
           <thead>

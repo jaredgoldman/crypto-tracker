@@ -2,6 +2,17 @@ import { useHistory } from "react-router-dom";
 import './WatchlistRow.scss'
 
 export default function WatchlistRow(props) {
+  const {
+    ticker,
+    uuid,
+    rank, 
+    name, 
+    price, 
+    changePercent, 
+    volume, 
+    marketCap,
+    deleteUserCoin
+  } = props;
 
   const history = useHistory();
   const { setCoin } = props
@@ -12,30 +23,30 @@ export default function WatchlistRow(props) {
   } 
   
   const handleDeleteUserCoin = (ticker) => {
-    props.deleteUserCoin(ticker);
+    deleteUserCoin(ticker);
   } 
-
+  
   return (
 
     <tr>
-      <td>{props.ticker}</td>
-      <td>{props.rank}</td>
-      <td>{props.name}</td>
-      <td>{props.price}</td>
-      <td>{props.changePercent}</td>
-      <td>{props.volume}</td>
-      <td>{props.marketCap}</td>
+      <td>{ticker}</td>
+      <td>#{rank}</td>
+      <td>{name}</td>
+      <td>${Number(price).toFixed(4)}</td>
+      <td>{Number(changePercent).toFixed(2)}%</td>
+      <td>{`${Number(volume).toFixed(0)} ${ticker}`}</td>
+      <td>{`${Number(marketCap).toFixed(0)} ${ticker}`}</td>
       <td>
 
         <a href='/coins' onClick={(e) => {
             e.preventDefault();
-            handleSetCoin(props.ticker, props.uuid);
+            handleSetCoin(ticker, uuid);
           }
         }>Show Coin</a>
 
         <button onClick={(e) => {
             e.preventDefault();
-            handleDeleteUserCoin(props.ticker)
+            handleDeleteUserCoin(ticker)
           }
         }> Remove Coin</button>
 
