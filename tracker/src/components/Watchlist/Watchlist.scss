@@ -1,8 +1,22 @@
+.watchlist-wrapper {
+  padding: 0em 2em;
+}
+
+.watchlist-heading {
+  display: flex;
+  justify-content: center;
+  font-family: Secular One;
+  padding-top: 1em;
+  color: rgb(23, 128, 221);
+}
+
 .table-wrapper {
   text-align: center;
   margin-top: 2%;
   margin-bottom: 200px;
   display: block;
+  height: 100%;
+  width: 100%;
 }
 
 table {

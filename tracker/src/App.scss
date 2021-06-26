@@ -2,13 +2,15 @@ main {
   color: black;
   display: flex;
   flex-direction: column;
+  overflow: auto;
+  padding-bottom: 100px
 }
 
 nav {
   display: flex;
   justify-content: space-between;
   border: none;
-  background: #38537B;
+  background: #7aa7eb;
   padding: 15px 0;
   border-radius: 0;
   margin-bottom: 0;

@@ -1,13 +1,17 @@
 footer {
   display: flex;
   align-items: center;
-  height: 5em;
-  background-color: black;
-  color: white;
+  height: 4em;
+  background-color: rgb(111, 209, 102);
+  color: black;
   padding: 1em;
+  position: relative;
+  margin-top: -100px;
+  height: 100px;
+  clear: both;
 }
 
 a {
-  color: rgb(232, 170, 170);
+  color: black;
   text-decoration: none;
 }
