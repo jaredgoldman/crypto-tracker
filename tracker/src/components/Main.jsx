@@ -20,7 +20,7 @@ import useUserData from "../hooks/useUserData"
 import useExchangeData from "../hooks/useExchangeData"
 
 export default function Main() {
-  const [coin, setCoin] = useState({ticker: "BTC", uuid: "Qwsogvtv82FCd"})
+  const [coin, setCoin] = useState({ticker: "BTC", uuid: "Qwsogvtv82FCd", name: "Bitcoin"})
   
   const {    
     handleLogin, 
@@ -67,9 +67,9 @@ export default function Main() {
           <Route path="/register">
           {cookies.user_id ? <Redirect to="/watchlist" /> :
             <RegisterForm handleRegister={handleRegister} alert={alert}/> }
+          </Route>
           <Route path="/logout">
             <Redirect to="/login"/>
-          </Route>
           </Route>
           <Route path="/watchlist">
             <Watchlist 

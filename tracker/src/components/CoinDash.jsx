@@ -96,7 +96,7 @@ export default function CoinDash(props) {
     <a href='/watchlist'>Back to Watchlist</a>
    {coinInfo && <div className="coindash-header"> 
       <img src={coinInfo.icon} className="coin-icon" alt={`icon for ${coinInfo.ticker}`}></img>
-      <h2>This Coins Name</h2>
+      <h2>{coin.name}</h2>
     </div> }
     {coinState.candles ?
 

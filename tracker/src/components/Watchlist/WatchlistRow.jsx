@@ -17,8 +17,8 @@ export default function WatchlistRow(props) {
   const history = useHistory();
   const { setCoin } = props
 
-  const handleSetCoin = async (ticker, uuid) => {
-    setCoin({ticker, uuid})
+  const handleSetCoin = async (ticker, uuid, name) => {
+    setCoin({ticker, uuid, name})
     history.push('/coins')
   } 
   
@@ -40,7 +40,7 @@ export default function WatchlistRow(props) {
 
         <a href='/coins' onClick={(e) => {
             e.preventDefault();
-            handleSetCoin(ticker, uuid);
+            handleSetCoin(ticker, uuid, name);
           }
         }>Show Coin</a>
 
