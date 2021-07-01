@@ -1,4 +1,4 @@
-import './LoginForm.scss'
+import './Form.scss'
 import { useState } from 'react'
 
 export default function LoginForm(props) {
@@ -18,7 +18,6 @@ export default function LoginForm(props) {
   }
 
   return (
-    <div className="form-wrapper">
       <div className="form-container">
         {props.alert && <div>{props.alert}</div>}
         <div className="form-heading">
@@ -63,6 +62,5 @@ export default function LoginForm(props) {
         </form>
 
       </div>
-    </div>
   )
 }

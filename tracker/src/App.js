@@ -6,7 +6,9 @@ export default function App() {
 
   return (
     <div class="App">
-      <Main/>
+      <div className="main-wrapper">
+        <Main/>
+      </div>
       <Footer/>
     </div>
   )
