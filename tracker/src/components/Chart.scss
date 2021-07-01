@@ -2,16 +2,25 @@
   font-family: sans-serif;
   margin-top: 10px;
   margin-left: 0px;
-  margin-right: 100px;
+  margin-right: 75px;
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-self: center;
 }
 
-  label {
-    padding-top: .5em;
+label {
+  padding-top: .5em;
+}
+
+.select-timeframe {
+  padding-left: 1em;
+  
+  h5 {
+    margin-bottom: 5px;
   }
+}
 
 @media only screen and (max-width: 1024px) {
   .Chart {

@@ -99,6 +99,7 @@ router.get('/user/:userId', async (req, res) => {
 
 })
 
+// get all user trades 
 router.get('/trades/:userId', async (req, res) => {
   const { userId } = req.params;
   let allTrades = null;
@@ -108,8 +109,8 @@ router.get('/trades/:userId', async (req, res) => {
   } catch(error) {
     console.log(error.response.data);
   }
-  
-  res.send(allTrades)
+  const formattedTrades = formatDbTrades(allTrades)
+  res.send(formattedTrades)
 })
 
 module.exports = router;

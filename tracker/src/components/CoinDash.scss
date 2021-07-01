@@ -1,0 +1,29 @@
+.coindash-wrapper {
+  padding: 2em;
+}
+
+.coindash-header {
+  display: flex;
+  justify-content: center;
+  padding: 2.5em 0em;
+}
+
+.coin-icon {
+  width: 4.3em;
+  margin-right: 1em;
+}
+
+.chart-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-right: 2em;
+}
+
+.coindash-heading {
+  display: flex;
+  justify-content: center;
+  font-family: Secular One;
+  padding-top: 1em;
+  color: rgb(23, 128, 221);
+}

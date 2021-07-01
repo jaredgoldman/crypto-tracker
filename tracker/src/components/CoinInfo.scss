@@ -1,4 +1,29 @@
-img {
-  width: 5em;
-  height: 5em;
+.coininfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.coininfo-select {
+  
+  h5 {
+    margin-bottom: 5px;
+  }
+}
+
+.coininfo-table {
+  border: none;
+  width: 30em;
+  
+  td {
+    text-align: left;
+    border: none;
+  }
+
+  p {
+    margin: .55em 0;
+  }
+  
+  h2 {
+    margin: .4em 0; 
+  }
 }

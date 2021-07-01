@@ -4,8 +4,6 @@ import "./Chart.scss";
 
 export default function DisplayChart(props) {
 
-// console.log(props.candles)
-
   const candles = props.candles.map(([date, ...values]) => {
     return {x: new Date(date),
     y: values}})
@@ -45,6 +43,16 @@ export default function DisplayChart(props) {
           <ReactApexChart options={chartData.options} series={chartData.series} type="candlestick" width={chart_width} height={chart_height} />
         </div>
       </div>
+
+      <div className="select-timeframe">
+        <h5>Select Timeframe</h5>
+        <select onChange={(e) => props.handleSetTimeframe(e)}>
+          <option value={'day'}>day</option>
+          <option value={'week'}>week</option>
+          <option value={'month'}>month</option>
+        </select>
+      </div>
+
     </div>
   );
 }

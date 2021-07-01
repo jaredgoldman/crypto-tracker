@@ -1,0 +1,17 @@
+.user-coin-stats {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2em;
+  padding-left: 1em;
+}
+
+.stats {
+  display: flex;
+
+  .stat {
+    text-align: center;
+    padding: 1em 3em;
+  }
+}

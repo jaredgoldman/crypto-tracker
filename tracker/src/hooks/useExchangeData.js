@@ -12,7 +12,7 @@ export default function useExchangeData() {
   const { handleAlert, cookies } = useUserData();
 
   const getAllTrades = async () => {
-    const URL = `http://localhost:3001/api/exchange/trades/${cookies.user_id}`
+    const URL = `http://localhost:3004/api/exchange/trades/${cookies.user_id}`
     const res = axios.get(URL);
     if (res.ok) {
       console.log(res.data);
@@ -25,7 +25,7 @@ export default function useExchangeData() {
     if (!exchangeData.exchangeName || !exchangeData.apiKey || !exchangeData.secretKey) {
       return handleAlert(`please enter valid credentials`)
     }
-    const URL = `http://localhost:3001/api/exchange/new`
+    const URL = `http://localhost:3004/api/exchange/new`
     try {
       const res = await axios.post(URL, {userId: cookies.user_id, ...exchangeData})
       if (alert) {
@@ -39,7 +39,7 @@ export default function useExchangeData() {
   }
 
   const getExchanges = async () => {
-    const URL = `http://localhost:3001/api/exchange`
+    const URL = `http://localhost:3004/api/exchange`
     const resExchanges = await axios.get(URL);
     return resExchanges.data;
   }

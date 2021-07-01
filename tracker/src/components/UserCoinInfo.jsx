@@ -1,16 +1,27 @@
+import "./UserCoinInfo.scss"
+
 export default function UserCoinInfo(props) {
   const { userCoinStats, currency } = props
   const { pL, average} = userCoinStats
+
   return (
+    <div className="user-coin-stats">
+      <h2 className="coindash-heading">Asset Performance</h2>
 
-    <div>
-      <h2>User Coin Stats</h2>
+      <div className="stats">
+        <div className="stat">
+          <h3>{'P&L'}</h3>
+          <p
+            style={parseInt(pL) < 0 ? {color: "red"} : {color: "green"}}
+          >{pL.toFixed(2)} %</p>
+        </div>
 
-      <h3>{'P&L'}</h3>
-      <div>{pL.toFixed(2)} %</div>
+        <div className="stat">
+          <h3>Average</h3>
+          <p>${average} {currency.ticker}</p>
+        </div>
 
-      <h3>Average</h3>
-      <div>${average} {currency.ticker}</div>
+      </div>
 
     </div>
     

@@ -80,7 +80,8 @@ const formatCoinInfo = (coinInfo) => {
     btcPrice: parseInt(coinInfo.btcPrice),
     change: parseInt(coinInfo.change),
     rank: parseInt(coinInfo.rank),
-    allTimeHigh: coinInfo.allTimeHigh
+    allTimeHigh: coinInfo.allTimeHigh,
+    description: coinInfo.description
   }
 }
 
@@ -126,11 +127,9 @@ const calculatePL = (trades, currentPrice) => {
     for(let trade of trades) {
       costs += trade.cost;
       amounts += trade.amount;
-      // console.log(costs, amounts)
     }
   let pL =(((currentPrice * amounts) - costs) /costs) * 100;
   return pL
-  // return ((pL > 0) ? "+" + pL : pL);
 }
 
 const calculateAverage = (trades) => {

@@ -19,7 +19,7 @@ export default function UseUserData() {
     if (!password || !email) {
       handleAlert('please enter a valid password and email')
     }
-    const res = await axios.post(`http://localhost:3001/api/users/login`, {password, email})
+    const res = await axios.post(`http://localhost:3004/api/users/login`, {password, email})
     if (res.data.alert) {
       return handleAlert(res.data.alert)
     }
@@ -37,7 +37,7 @@ export default function UseUserData() {
     if (!firstName || !lastName || !email || !password) {
       return handleAlert("Please enter a valid email and password")
     }
-    const res = await axios.post(`http://localhost:3001/api/users/register`, {firstName, lastName, password, email})
+    const res = await axios.post(`http://localhost:3004/api/users/register`, {firstName, lastName, password, email})
     if (res.data.alert) {
       return handleAlert(res.data.alert)
     }

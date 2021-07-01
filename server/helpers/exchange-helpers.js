@@ -110,7 +110,6 @@ const formatTrades = (trades, exchangeName) => {
 const formatDbTrades = (trades) => {
   const formattedTrades = []
   trades.forEach(trade => {
-    console.log(trade.transaction_time)
     formattedTrades.push({
       transactionId: trade.transaction_id,
       baseCurrency: trade.base_currency,
@@ -143,7 +142,6 @@ const addBalance = (balances) => {
 }
 
 const addUserTransactions = async (accountId, trades) => {
-  console.log(trades)
   trades.forEach( async trade => {
     try {
       const addedTransaction = await addUserTransaction({accountId, ...trade});

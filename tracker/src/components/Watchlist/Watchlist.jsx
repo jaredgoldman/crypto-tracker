@@ -22,7 +22,7 @@ export default function Watchlist(props) {
   } ,[])
 
   const loadDefaultData = async () => {
-    const URL = `http://localhost:3001/api/coins/${cookies.user_id}`
+    const URL = `http://localhost:3004/api/coins/${cookies.user_id}`
     try {
       const defualtData = await axios.get(URL);
       const allCoins = defualtData.data.coins;
@@ -37,7 +37,7 @@ export default function Watchlist(props) {
 
   const addUserCoin = (coinSymbol) => {
     const userId = cookies.user_id;
-    axios.post(`http://localhost:3001/api/coins/add`, {userId, coinSymbol})
+    axios.post(`http://localhost:3004/api/coins/add`, {userId, coinSymbol})
     .then(res => {
       if (res.data.alert) {
         return handleAlert(res.data.alert);
@@ -53,7 +53,7 @@ export default function Watchlist(props) {
 
   const deleteUserCoin = (coin) => {
     const userId = cookies.user_id;
-    axios.post(`http://localhost:3001/api/coins/delete`, {userId, coin})
+    axios.post(`http://localhost:3004/api/coins/delete`, {userId, coin})
     .then(res => {
       if (res.data.alert) {
         return handleAlert(res.data.alert);

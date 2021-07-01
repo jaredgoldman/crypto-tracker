@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import './CoinDash.scss'
 
@@ -8,13 +8,12 @@ import UserCoinInfo from "./UserCoinInfo"
 import TradeTable from "./TradeTable/TradeTable"
 
 import useUserData from '../hooks/useUserData'
-import useExchangeData from '../hooks/useExchangeData'
 
 export default function CoinDash(props) {
   const { coin } = props
   const { cookies } = useUserData();
 
-  const [candleLength, setCandleLength] = useState('day')
+  const [timeframe, setTimeframe] = useState('day')
   const [currency, setCurrency] = useState({uuid: "yhjMzLPhuIDl", ticker: "USD"})
   const [trades, setTrades] = useState([])
   const [loading, setLoading] = useState(false)
@@ -31,17 +30,12 @@ export default function CoinDash(props) {
     userCoinStats,
   } = coinState
 
-  const {
-    setExchangeTrades,
-    exchangeTrades
-  } = useExchangeData();
-
-  useEffect( async () => {
+  useEffect(() => {
     setLoading(true)
-    await loadCoinData();
+    loadCoinData();
     setLoading(false)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coin, currency, candleLength])
+  }, [coin, currency, timeframe])
 
   const loadCoinData = async () => {
     if (!cookies.user_id) {
@@ -50,7 +44,7 @@ export default function CoinDash(props) {
     const userId = cookies.user_id;
     const selectedCoin = coin.ticker;
     const uuid = coin.uuid;
-    const URL = `http://localhost:3001/api/coins/show/${userId}/${selectedCoin}/${uuid}/${candleLength}/${currency.ticker}/${currency.uuid}`
+    const URL = `http://localhost:3004/api/coins/show/${userId}/${selectedCoin}/${uuid}/${timeframe}/${currency.ticker}/${currency.uuid}`
     let res = null;
 
     try {
@@ -67,8 +61,8 @@ export default function CoinDash(props) {
     setTrades(userCoinTrades);
   }
 
-  const handleSetCandleLength = (e) => {
-    setCandleLength(e.target.value)
+  const handleSetTimeframe = (e) => {
+    setTimeframe(e.target.value)
   }
   
   const handleQuoteCurrency = (currency) => {
@@ -98,46 +92,40 @@ export default function CoinDash(props) {
 
   return (
   
-  <div className="coin-dashboard">
-   
+  <div className="coindash-wrapper">
+    <a href='/watchlist'>Back to Watchlist</a>
+   {coinInfo && <div className="coindash-header"> 
+      <img src={coinInfo.icon} className="coin-icon" alt={`icon for ${coinInfo.ticker}`}></img>
+      <h2>This Coins Name</h2>
+    </div> }
     {coinState.candles ?
-    
+
     <div>
-      <div>Quote Currency</div>
-      <select onChange={(e) => handleQuoteCurrency(e.target.value)}>
-        <option value={"USD"}>USD</option>
-        <option value={"CAD"}>CAD</option>
-        <option value={"EUR"}>EUR</option>
-        <option value={"GBP"}>GBP</option>
-        <option value={"AUD"}>AUD</option>
-      </select>
 
-      <div>
-        <div>Select Timeframe</div>
-        <select onChange={(e) => handleSetCandleLength(e)}>
-          <option value={'day'}>day</option>
-          <option value={'week'}>week</option>
-          <option value={'month'}>month</option>
-        </select>
+      <div className="chart-info">
+
+        {loading ? 
+          <div>Loading Coin...</div>
+          :
+          <div className="chart-container">
+            <Chart 
+              candles={candles}
+              handleSetTimeframe={handleSetTimeframe}
+            />
+          </div> 
+          }
+
+        <div className="info-container">
+          <CoinInfo 
+            coinInfo={coinInfo} 
+            currency={currency}
+            handleQuoteCurrency={handleQuoteCurrency}
+          /> 
+        </div>
+
       </div>
 
-      <a href='/watchlist'>Back to Watchlist</a>
-
-
-    {loading ? 
-      <div>Loading Coin...</div>
-      :
-      <div className="chart-container">
-        <Chart candles={candles}/>
-      </div> 
-    }
       
-      <div className="info-container">
-        <CoinInfo 
-          coinInfo={coinInfo} 
-          currency={currency}
-        /> 
-      </div>
 
       {userCoinStats && trades.length ?
       <div className="user-info-container">
@@ -148,6 +136,7 @@ export default function CoinDash(props) {
         /> 
         
         <div>
+          <h2 className="coindash-heading">Your Trades</h2>
           <TradeTable rows={trades}/>
         </div> 
 

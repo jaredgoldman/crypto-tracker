@@ -1,0 +1,40 @@
+main {
+  color: black;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  border: none;
+  background: #7aa7eb;
+  padding: 15px 0;
+  border-radius: 0;
+  margin-bottom: 0;
+  width: 100%;
+  top: 0;
+}
+
+.nav-text-title {
+  font-size: 30px;
+  color: white;
+  margin-top: 0;
+  float: left;
+  font-family: 'Righteous', cursive;
+}
+
+.nav-text {
+  font-size: 22px;
+  color: white;
+  margin-top: 0;
+  padding: 20px;
+  font-family: 'Righteous', cursive;
+  float: right;
+  text-decoration: none;
+}
+
+table {
+  width: 100%;
+}
