@@ -1,0 +1,18 @@
+.user-exchange {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-exchanges {
+  width: 25%;
+}
+
+.exchange-name, .account-name {
+  padding: 0px 5px;
+}
+
+.no-exchange {
+  display: flex;
+  justify-content: center;
+}

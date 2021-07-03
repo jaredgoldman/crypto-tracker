@@ -81,10 +81,10 @@ const getExchangeByName = (exchangeName) => {
 }
 
 const addUserAccount = (exchangeData) => {
-  const { accountName, userId, exchangeId, apiKey, secretKey } = exchangeData;
+  const { accountName, userId, exchangeId, apiKey, secretKey, active} = exchangeData;
     const query = {
-      text: `INSERT INTO accounts (account_name, user_id, exchange_id, api_key, api_secret) VALUES ($1, $2, $3, $4, $5) RETURNING *` ,
-      values: [accountName, userId, exchangeId, apiKey, secretKey]
+      text: `INSERT INTO accounts (account_name, user_id, exchange_id, api_key, api_secret, active) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *` ,
+      values: [accountName, userId, exchangeId, apiKey, secretKey, active]
     }
 
   return db.query(query)
@@ -95,7 +95,7 @@ const addUserAccount = (exchangeData) => {
 const getUserAccounts = (userId) => {
   const query = {
 
-    text: `SELECT accounts.id, accounts.account_name, accounts.api_key, accounts.api_secret, exchanges.name as exchange_name
+    text: `SELECT accounts.id, accounts.account_name, accounts.api_key, accounts.api_secret, exchanges.name as exchange_name, active
     FROM users
     INNER JOIN accounts
     ON users.id = accounts.user_id
@@ -110,10 +110,25 @@ const getUserAccounts = (userId) => {
     .catch(err => err);
 }
 
+const disableUserAccount = (userId, accountId) => {
+  const query = {
+    text: `UPDATE accounts
+          SET active = false 
+          WHERE id = $1 AND user_id = $2`,
+    values: [accountId, userId]
+  }
+  
+  return db
+  .query(query)
+  .then(res => res.rows)
+  .catch((err) => err);
+}
+
 
 
 module.exports = {
   addUserAccount,
+  disableUserAccount,
   getUserAccounts,
   addExchange,
   getExchangeByName,

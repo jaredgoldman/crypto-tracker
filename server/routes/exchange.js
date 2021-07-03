@@ -13,6 +13,7 @@ const {
 const {
   getUserTransactions,
   getUserAccounts,
+  disableUserAccount
 } = require('../db/queries/exchange-queries')
 
       // EXCHANGE ROUTES //
@@ -23,52 +24,37 @@ router.get("/", (req, res) => {
   res.send(ccxtExchanges);
 })
 
-// add new exchange
+// add new exchange account
 router.post("/new", async (req, res) => {
   const exchangeData = req.body;
 
   let account = null;
   let trades = null;
-  let dbTransactions = null;
+  let errorMessage
 
   // add account to database
   try {
     account = await addAccountToDb(exchangeData)
   } catch(error) {
     // res.send({alert: 'error adding account to db'})
-    console.log(error)
+    errorMessage = error;
   }
 
   // initialize ccxt exchange
   const exchange = initializeExchange(exchangeData);  
 
-  // fetch trades and balance from exchange 
+  // fetch trades and balance from exchange and store in db
   try {
     trades = await fetchUserExchangeTrades(exchange);
-  } catch(error) {
-    // res.send({alert: `error fetching user info from exchange`})
-    console.log(error)
-  }
-
-  // add user transactions to database
-  try {
     await addUserTransactions(account.id, trades);
   } catch(error) {
-    // res.send({alert: 'error adding transactions'})
-    console.log(error)
+    // res.send({alert: `error fetching user info from exchange`})
+    errorMessage = error;
   }
 
   // ADD USER BALANCE HERE
 
-  try {
-     dbTransactions = await getUserTransactions(exchangeData.userId);
-   } catch(error) {
-    //  res.send({alert: 'error retreiving trades from database'})
-    console.log(error)
-   } 
-
-   const transactions = formatDbTrades(dbTransactions);
-   res.send({transactions});
+   res.send({account, errorMessage});
 })
 
 // get all user exchange info stored in db
@@ -97,6 +83,42 @@ router.get('/user/:userId', async (req, res) => {
     console.log(error);
   }
 
+})
+
+// send all users connected exchange accounts to front end
+router.get('/user/exchanges/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  let userAccounts
+
+  try {
+    userAccounts = await getUserAccounts(userId);
+  } catch(error) {
+    console.log(error)
+  }
+  console.log(userAccounts)
+  const exchangeAccounts = userAccounts.map(account => {
+    return {
+      accountId: account.id,
+      accountName: account.account_name,
+      exchangeName: account.exchange_name,
+      active: account.active
+    }
+  })
+
+  res.send(exchangeAccounts)
+})
+
+// disable account
+router.post('/user/exchanges', async (req, res) => {
+  const { userId, accountId } = req.body
+  let disabled
+  try {
+    disabled = await disableUserAccount(userId, accountId)
+  } catch(error) {
+    console.log(error)
+  }
+  res.send(disabled)
 })
 
 // get all user trades 

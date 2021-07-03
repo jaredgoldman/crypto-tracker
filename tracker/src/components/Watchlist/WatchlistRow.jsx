@@ -38,13 +38,13 @@ export default function WatchlistRow(props) {
       <td>{`${Number(marketCap).toFixed(0)} ${ticker}`}</td>
       <td>
 
-        <a href='/coins' onClick={(e) => {
+        <a className="button" href='/coins' onClick={(e) => {
             e.preventDefault();
             handleSetCoin(ticker, uuid, name);
           }
         }>Show Coin</a>
 
-        <button onClick={(e) => {
+        <button className="button" onClick={(e) => {
             e.preventDefault();
             handleDeleteUserCoin(ticker)
           }

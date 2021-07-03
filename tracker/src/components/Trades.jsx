@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 import './Trades.scss'
+
 import TradeTable from './TradeTable/TradeTable'
 
 import useUserData from "../hooks/useUserData"

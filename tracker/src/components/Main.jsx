@@ -17,7 +17,6 @@ import HomePage from './HomePage';
 import Trades from './Trades'
 
 import useUserData from "../hooks/useUserData"
-import useExchangeData from "../hooks/useExchangeData"
 
 export default function Main() {
   const [coin, setCoin] = useState({ticker: "BTC", uuid: "Qwsogvtv82FCd", name: "Bitcoin"})
@@ -30,11 +29,6 @@ export default function Main() {
     cookies,
     alert
   } = useUserData();
-
-  const { 
-    addExchange,
-    exchanges,
-  } = useExchangeData();
   
   return (
     <main>
@@ -90,7 +84,7 @@ export default function Main() {
             <Trades />
           </Route>
           <Route path="/exchange">
-            <ExchangeDash addExchange={addExchange} exchanges={exchanges} alert={alert}/>
+            <ExchangeDash alert={alert}/>
           </Route>
           <Route exact path="/">
           {!cookies.user_id ? <Redirect to="/login" /> :

@@ -142,7 +142,9 @@ export default function CoinDash(props) {
 
       </div>
       :
-      <div><a href="/exchange">Add an exchange account</a> or trade this coin to see your coin stats!</div>
+      <div className="user-coininfo-alert">
+        <p><a href="/exchange">Add an exchange account</a> or trade this coin to see your coin stats</p>
+      </div>
       } 
     
    

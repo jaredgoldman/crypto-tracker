@@ -1,16 +1,70 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import AddExchangeForm from './AddExchangeForm';
+import UserExchanges from './UserExchanges';
+import "./ExchangeDash.scss"
 
-export default function ExchangeDash(props) {
-  const { addExchange, exchanges, alert } = props; 
+import useUserData from '../hooks/useUserData.js'
+
+export default function ExchangeDash() {
 
   const [exchangeName, setExchangeName] = useState('aax');
   const [accountName, setAccountName] = useState(null);
   const [apiKey, setApiKey] = useState(null);
   const [secretKey, setSecretKey] = useState(null);
   const [sandboxMode, setSandboxMode] = useState(false)
+  const [exchanges, setExchanges] = useState(null);
+  const [alert, setAlert] = useState("")
+  const { cookies } = useUserData();
+  const [exchangeAddDelete, setExchangeAddDelete] = useState(false);
+  
+
+  useEffect(() => {
+    if (cookies.user_id) {
+      getExchangeData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cookies.user_id])
+
+  const addExchange = async (exchangeData) => {
+    if (!exchangeData.exchangeName || !exchangeData.apiKey || !exchangeData.secretKey) {
+      return handleAlert(`please enter valid credentials`)
+    }
+    const URL = `http://localhost:3004/api/exchange/new`
+    try {
+      const res = await axios.post(URL, {userId: cookies.user_id, ...exchangeData})
+      const {account, errorMessage} = res.data
+      if (errorMessage) handleAlert(errorMessage)
+      if (account) {
+        handleAlert('Exchange added!')
+        setExchangeAddDelete(true);
+        setExchangeAddDelete(false);
+      }
+        
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+  const getExchanges = async () => {
+    const URL = `http://localhost:3004/api/exchange`
+    const resExchanges = await axios.get(URL);
+    return resExchanges.data;
+  }
+
+  const getExchangeData = async () => {
+    try {
+      const ccxtExchanges = await getExchanges();
+      setExchanges(ccxtExchanges)
+    } catch(error) {
+      console.log(error)
+    }
+  }
+  
+//--------AddExchangeForm Functions/Handlers--------//
 
   const handleAddExchange = () => {
+    handleAlert("Exchange adding, this may take a few seconds") 
     addExchange({
       exchangeName,
       accountName,
@@ -53,10 +107,24 @@ export default function ExchangeDash(props) {
     return <option>Loading...</option>
   }
 
+  const handleAlert = (value) => {
+    setAlert(value)
+    setTimeout(() => {
+      setAlert("")
+    }, 5000)
+  }
+
+//-------------------------------------------------//
+
   return (
     <div className="exchange-wrapper">
-      <div>
-        <h2>Your Exchanges</h2>
+      {alert && <div>{alert}</div>}
+      <div className="exchange-info">
+        <UserExchanges
+          handleAlert={handleAlert}
+          exchangeAddDelete={exchangeAddDelete} 
+          setExchangeAddDelete={setExchangeAddDelete}
+      />
       </div>
       <AddExchangeForm
         handleSelectExchangeName={handleSelectExchangeName}
@@ -65,8 +133,8 @@ export default function ExchangeDash(props) {
         handleApiKey={handleApiKey} 
         handleSecretKey={handleSecretKey} 
         handleSandboxMode={handleSandboxMode}
-        alert={alert}
         displayExchangeOptions={displayExchangeOptions}
+        setExchangeAddDelete={setExchangeAddDelete}
       />
     </div>
   )

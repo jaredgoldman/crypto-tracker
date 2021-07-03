@@ -14,9 +14,8 @@ export default function AddExchangeForm(props) {
 
   return (
     <div className="form-container">
+      <p className="form-heading">Add Exchange</p>
       {alert && <div>{alert}</div>}
-      <p>Add Exchange</p>
-      
       <div className="form-select">
         <select onChange={(e) => handleSelectExchangeName(e)}>
           {displayExchangeOptions()}

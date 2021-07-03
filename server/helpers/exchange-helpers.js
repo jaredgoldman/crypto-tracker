@@ -40,7 +40,7 @@ const addAccountToDb = async (exchangeData) => {
 
   let account = null;
   try {
-    account = await addUserAccount({exchangeId: dbExchange.id, ...exchangeData})
+    account = await addUserAccount({...exchangeData, exchangeId: dbExchange.id, active: true })
     console.log('user account added')
   } catch(error) {
     console.log('error adding account to db')

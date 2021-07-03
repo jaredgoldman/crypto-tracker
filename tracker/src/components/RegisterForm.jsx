@@ -1,7 +1,5 @@
-import './RegisterForm.scss'
+import './Form.scss'
 import { useState } from 'react'
-
-
 
 export default function RegisterForm(props) {
   
