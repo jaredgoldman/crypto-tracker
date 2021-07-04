@@ -115,10 +115,11 @@ router.post('/user/exchanges', async (req, res) => {
   let disabled
   try {
     disabled = await disableUserAccount(userId, accountId)
+    res.send({deleted: true})
   } catch(error) {
     console.log(error)
+    res.send({errorMessage: error})
   }
-  res.send(disabled)
 })
 
 // get all user trades 

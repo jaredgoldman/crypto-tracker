@@ -17,14 +17,37 @@ export default function ExchangeDash() {
   const [alert, setAlert] = useState("")
   const { cookies } = useUserData();
   const [exchangeAddDelete, setExchangeAddDelete] = useState(false);
+  const [exchangeRows, setExchangeRows] = useState(null)
   
+  useEffect(() => {
+    loadExchanges();
+  },[exchangeAddDelete] )
 
   useEffect(() => {
     if (cookies.user_id) {
       getExchangeData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cookies.user_id])
+
+  const loadExchanges = async () => {
+    const URL = `http://localhost:3004/api/exchange/user/exchanges/${cookies.user_id}`
+    try {
+      const res = await axios.get(URL)
+      const exchangeRows = userExchangeRows(res.data);
+      setExchangeRows(exchangeRows)
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+  const getExchangeData = async () => {
+    try {
+      const ccxtExchanges = await getExchanges();
+      setExchanges(ccxtExchanges)
+    } catch(error) {
+      console.log(error)
+    }
+  }
 
   const addExchange = async (exchangeData) => {
     if (!exchangeData.exchangeName || !exchangeData.apiKey || !exchangeData.secretKey) {
@@ -36,13 +59,28 @@ export default function ExchangeDash() {
       const {account, errorMessage} = res.data
       if (errorMessage) handleAlert(errorMessage)
       if (account) {
-        handleAlert('Exchange added!')
         setExchangeAddDelete(true);
+        handleAlert('Exchange added!')
         setExchangeAddDelete(false);
       }
-        
     } catch(error) {
       console.log(error)
+    }
+  }
+
+  const deleteExchange = async (accountId) => {
+    const URL = `http://localhost:3004/api/exchange/user/exchanges`
+    try {
+      const res = await axios.post(URL, {userId: cookies.user_id, accountId});
+      const {deleted, errorMessage} = res.data
+      if (errorMessage) handleAlert(errorMessage)
+      if (deleted) {
+        setExchangeAddDelete(true);
+        handleAlert("deleted exchange")
+        setExchangeAddDelete(false);
+      }
+    } catch(error) {
+      console.log(error);
     }
   }
 
@@ -52,15 +90,28 @@ export default function ExchangeDash() {
     return resExchanges.data;
   }
 
-  const getExchangeData = async () => {
-    try {
-      const ccxtExchanges = await getExchanges();
-      setExchanges(ccxtExchanges)
-    } catch(error) {
-      console.log(error)
-    }
+  const userExchangeRows = (exchanges) => {
+    const exchangeRows = exchanges.map((exchange, i) => {
+      if (exchange.active) {
+        const {exchangeName, accountName, accountId} = exchange;
+        const formattedName = exchangeName[0].toUpperCase() + exchangeName.slice(1)
+    
+        return (
+          <div key={i} className="user-exchange">
+            <p className="account-name"><b>Account name:</b> {accountName}</p>
+            <p className="exchange-name"><b>Exchange:</b> {formattedName}</p>
+            <button
+            onClick={() => {
+              deleteExchange(accountId);
+            }}
+            >{`Disconnect ${formattedName} account`}</button>
+          </div>
+        )
+      }
+    })
+    return exchangeRows;
   }
-  
+
 //--------AddExchangeForm Functions/Handlers--------//
 
   const handleAddExchange = () => {
@@ -124,6 +175,7 @@ export default function ExchangeDash() {
           handleAlert={handleAlert}
           exchangeAddDelete={exchangeAddDelete} 
           setExchangeAddDelete={setExchangeAddDelete}
+          exchangeRows={exchangeRows}
       />
       </div>
       <AddExchangeForm
