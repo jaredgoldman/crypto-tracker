@@ -18,7 +18,7 @@ export default function LoginForm(props) {
   }
 
   return (
-    <div className="login-wrapper">
+    <div className="login-register-wrapper">
       <div className="form-container">
         {props.alert && <div>{props.alert}</div>}
         <div className="form-heading">

@@ -41,9 +41,7 @@ export default function UseUserData() {
     if (res.data.alert) {
       return handleAlert(res.data.alert)
     }
-    if (res) {
-      setCookie('user_id', res.data.id, { path: '/' });
-    }
+    setCookie('user_id', res.data.user_id, { path: '/' });
   }
 
   return { 

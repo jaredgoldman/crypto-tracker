@@ -11,17 +11,21 @@ export default function Watchlist(props) {
   const [allCoins, setAllCoins] = useState(null);
   const [userCoins, setUserCoins] = useState(null);
   const { cookies, handleAlert } = UseUserData();
+  const [loading, setLoading] = useState(false);
 
   const handleShowModal = () => {
     setShowModal(prevShowModal => !prevShowModal)
   }
 
   useEffect(() => {
-    loadDefaultData();
+    setLoading(true);
+    loadWatchlistData();
+    setLoading(false);
     // eslint-disable-next-line
   } ,[])
 
-  const loadDefaultData = async () => {
+  const loadWatchlistData = async () => {
+    console.log(cookies.user_id)
     const URL = `http://localhost:3004/api/coins/${cookies.user_id}`
     try {
       const defualtData = await axios.get(URL);
@@ -29,7 +33,11 @@ export default function Watchlist(props) {
       const userCoinRes = defualtData.data.userCoins;
       const filteredUserCoins = filterUserCoins(userCoinRes, allCoins);
       setAllCoins(allCoins);
-      setUserCoins(filteredUserCoins);
+      if (!filteredUserCoins.length) {
+        setUserCoins(null)
+      } else {
+        setUserCoins(filteredUserCoins)
+      }
     } catch(error) {
       console.log(error)
     }
@@ -79,6 +87,10 @@ export default function Watchlist(props) {
     return userCoinArr
     }
 
+  if (loading) {
+    return <div>Loading watchlist...</div>
+  }
+
   return (
     <div className="watchlist-wrapper">
       <h1 className="watchlist-heading">Your Watchlist</h1>
@@ -121,7 +133,10 @@ export default function Watchlist(props) {
           <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
         </div>
          : 
-        <div>Loading watchlist...</div>
+        <div>
+          <div>Add coins to your watchlist to get started!</div>
+          <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
+        </div>
         }
       {showModal && <CoinModal handleShowModal={handleShowModal} rows={allCoins} addUserCoin={addUserCoin} alert={alert}/>}
       </div>

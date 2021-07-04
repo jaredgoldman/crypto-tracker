@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import CoinModalRow from './CoinModalRow'
 import './CoinModal.scss'
 

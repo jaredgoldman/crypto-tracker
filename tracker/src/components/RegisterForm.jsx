@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 export default function RegisterForm(props) {
   
+  const { alert, handleRegister } = props
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
@@ -27,56 +28,68 @@ export default function RegisterForm(props) {
   }
 
   return (
+    <div className="login-register-wrapper">
+      {alert && <div>{alert}</div>}
 
-    <div className="form-container">
-      {props.alert && <div>{props.alert}</div>}
-      <p>Register</p>
-      
-      <form 
-        action="" 
-        method="POST" 
-        onSubmit={(e) => {
-          e.preventDefault()
-          props.handleRegister(userData)
-        }
-      }>
-        <label>First Name</label>
-        <input 
-          className="input-field" 
-          type="text" 
-          placeholder="enter your first name"
-          onChange={(e) => handleFirstName(e)}
-        >
-        </input>
-        <label>Last Name</label>
-        <input 
-          className="input-field" 
-          type="text" 
-          placeholder="enter your last name"
-          onChange={(e) => handleLastName(e)}
-        >
-        </input>
-        <label>Email</label>
-        <input 
-          className="input-field" 
-          type="text" 
-          placeholder="enter your email"
-          onChange={(e) => handleEmail(e)}
-        >
-        </input>
-        <label>Password</label>
-        <input 
-          className="input-field" 
-          type="password" 
-          placeholder="enter your password"
-          onChange={(e) => handlePassword(e)}
-        > 
-        </input>
-        <div>
-          <input type="submit" className="button"/>
-        </div>
-      </form>
+      <div className="form-container">
+        <p className="form-heading">Register</p>
+        
+        <form 
+          action="" 
+          method="POST" 
+          onSubmit={(e) => {
+            e.preventDefault()
+            handleRegister(userData)
+          }
+        }>
+          <div className="inputs-wrapper">
+            <div className="input-wrapper">
+              <label>First Name</label>
+              <input 
+                className="input-field" 
+                type="text" 
+                placeholder="enter your first name"
+                onChange={(e) => handleFirstName(e)}
+              >
+              </input>
+            </div>
+            <div className="input-wrapper">
+              <label>Last Name</label>
+              <input 
+                className="input-field" 
+                type="text" 
+                placeholder="enter your last name"
+                onChange={(e) => handleLastName(e)}
+              >
+              </input>
+            </div>
+            <div className="input-wrapper">
+              <label>Email</label>
+              <input 
+                className="input-field" 
+                type="text" 
+                placeholder="enter your email"
+                onChange={(e) => handleEmail(e)}
+              >
+              </input>
+            </div>
+            <div className="input-wrapper">
+              <label>Password</label>
+              <input 
+                className="input-field" 
+                type="password" 
+                placeholder="enter your password"
+                onChange={(e) => handlePassword(e)}
+              > 
+              </input>
+            </div>
+          </div>
+          <div className="button-wrapper">
+            <input type="submit" className="button"/>
+          </div>
+        </form>
 
+      </div>
     </div>
   )
 }

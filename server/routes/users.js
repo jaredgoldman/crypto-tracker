@@ -8,7 +8,7 @@ const {
  // USER LOGIN
  router.post('/login', async (req, res) => {
   const {email, password} = req.body;
-  user = null;
+  let user = null;
 
   try {
     user = await getUserByEmail(email)
@@ -34,19 +34,21 @@ router.post('/register', async (req, res) => {
   try {
     user = await getUserByEmail(email);
     if (user) {
-      return res.send("Sorry, there is already a user registered with this email")
+      console.log("Sorry, there is already a user registered with this email")
+      return res.send({alert: "Sorry, there is already a user registered with this email"})
     }
   } catch(error) {
+    console.log(error)
     res.send({alert: 'db error'})
   }
 
   try {
-    await addUser(firstName, lastName, email, password)
+    user = await addUser(firstName, lastName, email, password)
   } catch(error) {
+    console.log("error adding user")
     res.send({alert: 'error adding user'})
   }
-
-  return res.send(user.id);
+  return res.send({user_id: user.id});
 });
 
 module.exports = router;

@@ -17,7 +17,7 @@ export default function ExchangeDash() {
   const [alert, setAlert] = useState("")
   const { cookies } = useUserData();
   const [exchangeAddDelete, setExchangeAddDelete] = useState(false);
-  const [exchangeRows, setExchangeRows] = useState(null)
+  const [userExchanges, setUserExchanges] = useState(null)
   
   useEffect(() => {
     loadExchanges();
@@ -33,8 +33,8 @@ export default function ExchangeDash() {
     const URL = `http://localhost:3004/api/exchange/user/exchanges/${cookies.user_id}`
     try {
       const res = await axios.get(URL)
-      const exchangeRows = userExchangeRows(res.data);
-      setExchangeRows(exchangeRows)
+      const exchanges = res.data
+      setUserExchanges(exchanges)
     } catch(error) {
       console.log(error)
     }
@@ -88,28 +88,6 @@ export default function ExchangeDash() {
     const URL = `http://localhost:3004/api/exchange`
     const resExchanges = await axios.get(URL);
     return resExchanges.data;
-  }
-
-  const userExchangeRows = (exchanges) => {
-    const exchangeRows = exchanges.map((exchange, i) => {
-      if (exchange.active) {
-        const {exchangeName, accountName, accountId} = exchange;
-        const formattedName = exchangeName[0].toUpperCase() + exchangeName.slice(1)
-    
-        return (
-          <div key={i} className="user-exchange">
-            <p className="account-name"><b>Account name:</b> {accountName}</p>
-            <p className="exchange-name"><b>Exchange:</b> {formattedName}</p>
-            <button
-            onClick={() => {
-              deleteExchange(accountId);
-            }}
-            >{`Disconnect ${formattedName} account`}</button>
-          </div>
-        )
-      }
-    })
-    return exchangeRows;
   }
 
 //--------AddExchangeForm Functions/Handlers--------//
@@ -175,7 +153,8 @@ export default function ExchangeDash() {
           handleAlert={handleAlert}
           exchangeAddDelete={exchangeAddDelete} 
           setExchangeAddDelete={setExchangeAddDelete}
-          exchangeRows={exchangeRows}
+          userExchanges={userExchanges}
+          deleteExchange={deleteExchange}
       />
       </div>
       <AddExchangeForm

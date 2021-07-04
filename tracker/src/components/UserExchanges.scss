@@ -2,12 +2,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .user-exchange {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.user-exchange-cell {
+  display: flex;
+  flex-direction: column;
 }
 
 .user-exchanges {
@@ -20,7 +26,11 @@
 }
 
 .exchange-name, .account-name {
-  padding: 0px 5px;
+  padding: 0px 10px;
+}
+
+.delete-exchange-button {
+  margin-left: 3em;
 }
 
 .no-exchange {

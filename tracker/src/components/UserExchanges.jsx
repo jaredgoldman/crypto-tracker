@@ -1,11 +1,36 @@
-import { useEffect, useState } from 'react'
-import axios from "axios"
-import UseUserData from '../hooks/useUserData'
-
+import { useState, useEffect} from "react";
 import "./UserExchanges.scss"
 
 export default function UserExchanges(props) {
-const { exchangeRows } = props
+const { userExchanges, deleteExchange } = props;
+const [exchangeRows, setExchangeRows] = useState(null)
+
+  useEffect(() => {
+    setUserExchangeRows();
+  }, [userExchanges])
+
+  const setUserExchangeRows = () => {
+    const exchangeRows = userExchanges.map((exchange, i) => {
+      if (exchange.active) {
+        const {exchangeName, accountName, accountId} = exchange;
+        const formattedName = exchangeName[0].toUpperCase() + exchangeName.slice(1)
+    
+        return (
+          <div key={i} className="user-exchange">
+            <p className="account-name"><b>Account name<br /></b> {accountName}</p>
+            <p className="exchange-name"><b>Exchange<br /></b> {formattedName}</p>
+            <button
+            className="delete-exchange-button"
+            onClick={() => {
+              deleteExchange(accountId);
+            }}
+            >{`Disconnect ${formattedName} account`}</button>
+          </div>
+        )
+      }
+    })
+    setExchangeRows(exchangeRows);
+  }
 
   return (
     <div className="user-exchanges-wrapper">
