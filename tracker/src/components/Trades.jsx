@@ -29,13 +29,21 @@ export default function Trades() {
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  if (trades && !trades.length) {
     return (
-      <div className="trades-wrapper">
-        <h1 className="coindash-heading">Your Trades</h1>
-        <div className="table-wrapper">
-          <TradeTable rows={trades} />
-        </div>
+      <div className="no-trades">
+        <h2>Please <a href="exchange">connect an exchange</a> to see trades</h2>
       </div>
     )
+  }
+
+  return (
+    <div className="trades-wrapper">
+      <h1 className="coindash-heading">Your Trades</h1>
+      <div className="table-wrapper">
+        <TradeTable rows={trades} />
+      </div>
+    </div>
+  )
 
 }
