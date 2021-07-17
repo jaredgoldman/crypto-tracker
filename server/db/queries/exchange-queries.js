@@ -124,6 +124,47 @@ const disableUserAccount = (userId, accountId) => {
   .catch((err) => err);
 }
 
+const fetchUserBalance = (userId, coinId) => {
+  const query = {
+    text: `SELECT balance FROM balances
+    WHERE user_id = $1 AND coin_id = $2`,
+    values: [userId, coinId]
+  }
+  
+  return db
+  .query(query)
+  .then(res => res.rows)
+  .catch((err) => err);
+}
+
+const updateUserBalance = (addBalance, userId, coinId) => {
+  const query = {
+    text: `UPDATE balances
+    SET balance = balance + $1
+    WHERE user_id = $2 AND coin_id = $3`,
+    values: [addBalance, userId, coinId]
+  }
+  
+  return db
+  .query(query)
+  .then(res => res.rows)
+  .catch((err) => err);
+}
+
+const addUserBalance = (userId, coinId, addBalance) => {
+  console.log(userId, coinId, addBalance);
+  const query = {
+    text: `INSERT INTO balances (user_id, coin_id, balance)
+    VALUES ($1, $2, $3)
+    RETURNING *`,
+    values: [userId, coinId, addBalance]
+  }
+  
+  return db
+  .query(query)
+  .then(res => res.rows)
+  .catch((err) => err);
+}
 
 
 module.exports = {
@@ -133,5 +174,8 @@ module.exports = {
   addExchange,
   getExchangeByName,
   addUserTransaction,
-  getUserTransactions
+  getUserTransactions,
+  fetchUserBalance,
+  updateUserBalance,
+  addUserBalance
 }

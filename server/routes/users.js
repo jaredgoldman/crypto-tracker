@@ -48,6 +48,7 @@ router.post('/register', async (req, res) => {
     console.log("error adding user")
     res.send({alert: 'error adding user'})
   }
+
   return res.send({user_id: user.id});
 });
 

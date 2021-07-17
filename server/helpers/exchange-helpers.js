@@ -2,13 +2,21 @@ const ccxt = require('ccxt');
 const { 
   addUserTransaction,
   getExchangeByName,
-  addUserAccount
+  addUserAccount,
+  fetchUserBalance,
+  updateUserBalance,
+  addUserBalance
 } = require('../db/queries/exchange-queries')
 
+const { 
+  getCoinByName,
+  addCoin
+ } = require('../db/queries/coin-queries')
 const getCcxtExchanges = () => {
   return ccxt.exchanges
 }
 
+// account helpers
 const initializeExchange = (exchangeData) => {
   const { exchangeName, apiKey, secretKey, sandboxMode } = exchangeData;
   const exchangeId = exchangeName;
@@ -22,26 +30,26 @@ const initializeExchange = (exchangeData) => {
   return exchange;
 }
 
- // check if exchange is in db 
-// if not, store exchange info in db
+  // check if exchange is in db 
+  // if not, store exchange info in db
 const addAccountToDb = async (exchangeData) => {
-  let dbExchange = null;
+  let dbExchange
+
   try {
     dbExchange = await getExchangeByName(exchangeData.exchangeName); 
     if (!dbExchange) {
       dbExchange = await addExchange(exchangeData.exchangeName);
     }
-    console.log('exchange added')
   } catch(error) {
     console.log('error adding exchange')
     console.log(error)
     return 'error adding exchange'
   }
 
-  let account = null;
+  let account
+
   try {
     account = await addUserAccount({...exchangeData, exchangeId: dbExchange.id, active: true })
-    console.log('user account added')
   } catch(error) {
     console.log('error adding account to db')
     return 'error adding account to db'
@@ -49,6 +57,7 @@ const addAccountToDb = async (exchangeData) => {
   return account;
 }
 
+// trade helpers
 const fetchUserExchangeTrades = async (exchange) => {
   let resTrades = null;
 
@@ -62,11 +71,22 @@ const fetchUserExchangeTrades = async (exchange) => {
     }
     resTrades = formatTrades(exchangeTrades, exchange.name);
   } catch(error) {
-    console.log('error fetching balance')
-    console.log(error)
+    console.log('error fetching balance');
+    console.log(error);
   }
   
   return resTrades
+}
+
+const addUserTransactions = async (accountId, trades) => {
+  trades.forEach( async trade => {
+    try {
+      const addedTransaction = await addUserTransaction({accountId, ...trade});
+      return 'transactions added'
+    } catch(error) {
+      console.log(error);
+    }
+  })
 }
 
 const fetchIterativeTrades = async (exchange) => {
@@ -129,8 +149,47 @@ const formatDbTrades = (trades) => {
   return formattedTrades;
 }
 
-const addBalance = (balances) => {
-  let userBalance = {}
+// balance helpers
+const addBalanceToDb = (balance, userId) => {
+  const balances = balance.total;
+
+  Object.keys(balances).forEach(async (coin) => {
+    let dbCoin;
+    let balance;
+
+    try {
+      // if we have a positive balance
+      if (balances[coin]) {
+        dbCoin = await getCoinByName(coin);
+        // if the coin is not already stored in the db add coin and use that reference 
+        if (!dbCoin) {
+          dbCoin = await addCoin(coin);
+        }
+      }
+
+      // update user balance with the symbol, user id and either our old or newly added coin
+      if (dbCoin) {
+        // if there is no current balance object, create one
+        const dbBalance = await fetchUserBalance(userId, dbCoin.id);
+        if (dbBalance.balance) {
+          balance = await updateUserBalance(balances[coin], userId, dbCoin.id)
+        } else {
+          balance = await addUserBalance(userId, dbCoin.id, balances[coin])
+        }
+      } else {
+        console.log(`we don't care about ${coin}`);
+      }
+      // console.log('coin', coin);
+      // console.log('balance;', balance);
+    } catch(error) {
+      console.log(error);
+    }
+    
+  })
+  return balance
+}
+
+const getTotalBalance = (userBalance, balances) => {
   for (let balance in balances) {
     if (!userBalance[balance]) {
       userBalance[balance] = balances[balance];
@@ -141,17 +200,6 @@ const addBalance = (balances) => {
   return userBalance;
 }
 
-const addUserTransactions = async (accountId, trades) => {
-  trades.forEach( async trade => {
-    try {
-      const addedTransaction = await addUserTransaction({accountId, ...trade});
-      return 'transactions added '
-    } catch(error) {
-      console.log(error);
-    }
-  })
-}
-
 module.exports = { 
   getCcxtExchanges,
   initializeExchange,
@@ -160,6 +208,6 @@ module.exports = {
   formatDbTrades,
   fetchUserExchangeTrades,
   addUserTransactions,
-  addBalance,
-  formatDbTrades
+  formatDbTrades,
+  addBalanceToDb
 }

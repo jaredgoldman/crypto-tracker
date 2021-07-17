@@ -7,7 +7,8 @@ const {
   addUserTransactions,
   formatDbTrades,
   addAccountToDb,
-  initializeExchange
+  initializeExchange,
+  addBalanceToDb
 } = require('../helpers/exchange-helpers');
 
 const {
@@ -28,31 +29,26 @@ router.get("/", (req, res) => {
 router.post("/new", async (req, res) => {
   const exchangeData = req.body;
 
-  let account = null;
-  let trades = null;
+  let account 
+  let trades
+  let balance
   let errorMessage
+  const exchange = initializeExchange(exchangeData); 
 
   // add account to database
   try {
     account = await addAccountToDb(exchangeData)
-  } catch(error) {
-    // res.send({alert: 'error adding account to db'})
-    errorMessage = error;
-  }
-
-  // initialize ccxt exchange
-  const exchange = initializeExchange(exchangeData);  
-
-  // fetch trades and balance from exchange and store in db
-  try {
+    console.log("account added to db");
     trades = await fetchUserExchangeTrades(exchange);
+    console.log("trades fetched from exchange");
     await addUserTransactions(account.id, trades);
+    console.log('transactions added to db');
+    balance = await exchange.fetchBalance();
+    console.log("adding balance");
+    const temp = await addBalanceToDb(balance, exchangeData.userId);
   } catch(error) {
-    // res.send({alert: `error fetching user info from exchange`})
     errorMessage = error;
   }
-
-  // ADD USER BALANCE HERE
 
    res.send({account, errorMessage});
 })
@@ -96,7 +92,6 @@ router.get('/user/exchanges/:userId', async (req, res) => {
   } catch(error) {
     console.log(error)
   }
-  console.log(userAccounts)
   const exchangeAccounts = userAccounts.map(account => {
     return {
       accountId: account.id,
