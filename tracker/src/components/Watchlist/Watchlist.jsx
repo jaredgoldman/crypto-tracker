@@ -25,7 +25,6 @@ export default function Watchlist(props) {
   } ,[])
 
   const loadWatchlistData = async () => {
-    console.log(cookies.user_id)
     const URL = `http://localhost:3004/api/coins/${cookies.user_id}`
     try {
       const defualtData = await axios.get(URL);

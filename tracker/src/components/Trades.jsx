@@ -17,7 +17,6 @@ export default function Trades() {
     let trades
     try {
       const res = await axios.get(URL)
-      console.log(res.data)
       setTrades(res.data)
     } catch(error) {
       console.log(error)

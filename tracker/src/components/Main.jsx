@@ -66,12 +66,13 @@ export default function Main() {
             <Redirect to="/login"/>
           </Route>
           <Route path="/watchlist">
+          {!cookies.user_id ? <Redirect to="/login" /> :
             <Watchlist 
               handleAlert={handleAlert}
               cookies={cookies}
               alert={alert}
               setCoin={setCoin}
-            />
+            /> }
           </Route>
           <Route path="/coins">
             {coin ?
@@ -84,11 +85,11 @@ export default function Main() {
             <Trades />
           </Route>
           <Route path="/exchange">
-            <ExchangeDash alert={alert}/>
-          </Route>
-          <Route exact path="/">
           {!cookies.user_id ? <Redirect to="/login" /> :
-            <HomePage/> }
+            <ExchangeDash alert={alert}/> }
+          </Route> 
+          <Route exact path="/">
+            <HomePage/> 
           </Route>
         </Switch>
       </div>

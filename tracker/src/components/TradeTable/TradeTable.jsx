@@ -43,7 +43,7 @@ const { rows } = props
             side={row.side}
             fee={row.fee}
             currency={row.feeCurrency}
-          />})}
+          />}).reverse()}
         </tbody> }
       </table>
     </div>

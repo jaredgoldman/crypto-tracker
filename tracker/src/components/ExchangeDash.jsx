@@ -57,7 +57,7 @@ export default function ExchangeDash() {
     try {
       const res = await axios.post(URL, {userId: cookies.user_id, ...exchangeData})
       const {account, errorMessage} = res.data
-      if (errorMessage) handleAlert(errorMessage)
+      if (errorMessage) console.log(errorMessage)
       if (account) {
         setExchangeAddDelete(true);
         handleAlert('Exchange added!')
