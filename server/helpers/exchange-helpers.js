@@ -171,9 +171,12 @@ const addBalanceToDb = (balance, userId) => {
       if (dbCoin) {
         // if there is no current balance object, create one
         const dbBalance = await fetchUserBalance(userId, dbCoin.id);
-        if (dbBalance.balance) {
+        console.log(dbBalance);
+        if (dbBalance.length) {
+          console.log('update balance');
           balance = await updateUserBalance(balances[coin], userId, dbCoin.id)
         } else {
+          console.log('create balance');
           balance = await addUserBalance(userId, dbCoin.id, balances[coin])
         }
       } else {
@@ -186,7 +189,8 @@ const addBalanceToDb = (balance, userId) => {
     }
     
   })
-  return balance
+  
+  return
 }
 
 const getTotalBalance = (userBalance, balances) => {

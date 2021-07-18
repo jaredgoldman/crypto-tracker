@@ -141,7 +141,8 @@ const updateUserBalance = (addBalance, userId, coinId) => {
   const query = {
     text: `UPDATE balances
     SET balance = balance + $1
-    WHERE user_id = $2 AND coin_id = $3`,
+    WHERE user_id = $2 AND coin_id = $3
+    RETURNING *`,
     values: [addBalance, userId, coinId]
   }
   
@@ -152,7 +153,6 @@ const updateUserBalance = (addBalance, userId, coinId) => {
 }
 
 const addUserBalance = (userId, coinId, addBalance) => {
-  console.log(userId, coinId, addBalance);
   const query = {
     text: `INSERT INTO balances (user_id, coin_id, balance)
     VALUES ($1, $2, $3)
