@@ -14,7 +14,8 @@ const {
 const {
   getUserTransactions,
   getUserAccounts,
-  disableUserAccount
+  disableUserAccount,
+  fetchUserBalances
 } = require('../db/queries/exchange-queries')
 
       // EXCHANGE ROUTES //
@@ -49,7 +50,7 @@ router.post("/new", async (req, res) => {
   } catch(error) {
     errorMessage = error;
   }
-
+  console.log(account);
    res.send({account, errorMessage});
 })
 
@@ -129,6 +130,19 @@ router.get('/trades/:userId', async (req, res) => {
   }
   const formattedTrades = formatDbTrades(allTrades)
   res.send(formattedTrades)
+})
+
+router.get('/balance/:userId', async (req, res) => {
+  const { userId } = req.params;
+  let balances;
+
+  try {
+    balances = await fetchUserBalances(userId);
+    console.log(balances);  
+  } catch(error) {
+
+  }
+  res.send(balances)
 })
 
 module.exports = router;

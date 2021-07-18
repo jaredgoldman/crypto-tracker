@@ -137,6 +137,34 @@ const fetchUserBalance = (userId, coinId) => {
   .catch((err) => err);
 }
 
+const fetchUserBalanceBySymbol = (userId, symbol) => {
+  const query = {
+    text: `SELECT balance FROM balances
+    JOIN coins ON balances.coin_id = coins.id
+    WHERE user_id = $1 AND symbol = $2`,
+    values: [userId, symbol]
+  }
+  
+  return db
+  .query(query)
+  .then(res => res.rows[0])
+  .catch((err) => err);
+}
+
+const fetchUserBalances = (userId) => {
+  const query = {
+    text: `SELECT symbol, balance FROM balances
+    JOIN coins ON balances.coin_id = coins.id
+    WHERE user_id = $1`,
+    values: [userId]
+  }
+  
+  return db
+  .query(query)
+  .then(res => res.rows)
+  .catch((err) => err);
+}
+
 const updateUserBalance = (addBalance, userId, coinId) => {
   const query = {
     text: `UPDATE balances
@@ -177,5 +205,7 @@ module.exports = {
   getUserTransactions,
   fetchUserBalance,
   updateUserBalance,
-  addUserBalance
+  addUserBalance,
+  fetchUserBalances,
+  fetchUserBalanceBySymbol
 }

@@ -18,6 +18,8 @@ const {
   getUserTransactionsByCoin
 } = require('../db/queries/coin-queries');
 
+// const { fetchUserBalance } = require('../db/queries/exchange-queries')
+
 const { formatDbTrades } = require('../helpers/exchange-helpers')
 
 // get top 100 coins from coin ranking and user coins 
@@ -100,7 +102,8 @@ router.get('/show/:userId/:coin/:uuid/:candleLength/:currency/:currencyUuid', as
 
   try {
     dbTrades = await getUserTransactionsByCoin(userId, coin);
-    userCoinTrades = formatDbTrades(dbTrades)
+    userCoinTrades = formatDbTrades(dbTrades);
+
   } catch(error) {
     console.log(error)
     console.log('error getting user trades')
@@ -108,7 +111,8 @@ router.get('/show/:userId/:coin/:uuid/:candleLength/:currency/:currencyUuid', as
 
   try {
     // depending on currencyticker, calculate profit and loss, average price 
-    userCoinStats = await getUserStats(userCoinTrades, currency, coinInfo);
+    userCoinStats = await getUserStats(userCoinTrades, currency, coinInfo, userId);
+    console.log(userCoinStats);
   } catch(error) {
     console.log(error)
     console.log('error getting coin stats')

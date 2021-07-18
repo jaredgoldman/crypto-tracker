@@ -1,5 +1,7 @@
 const axios = require('axios');
 
+const{ fetchUserBalanceBySymbol } = require('../db/queries/exchange-queries');
+
 const crConfig = {
   headers: {
     'x-access-token': process.env.CR_API
@@ -107,17 +109,17 @@ const formatCandleRequest = (candleLength) => {
 }
 
 // COIN STATS HELPERS //
-const getUserStats = async (trades, currency, coinInfo) => {
-  // get conversion rate
+const getUserStats = async (trades, currency, coinInfo, userId) => {
   const rates = await getConversionRates(currency);
-  // loop through each trade
   const convertedTrades = convertTrades(trades, currency, rates); 
 
   const pL = calculatePL(trades, coinInfo.coin.price);
  
   const average = calculateAverage(trades);
 
-  return { pL, average }
+  const balance = await fetchUserBalanceBySymbol(userId, coinInfo.coin.ticker);
+
+  return { pL, average, balance: balance.balance }
 }
 
 const calculatePL = (trades, currentPrice) => {

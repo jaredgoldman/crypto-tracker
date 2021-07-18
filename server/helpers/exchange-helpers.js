@@ -155,53 +155,29 @@ const addBalanceToDb = (balance, userId) => {
 
   Object.keys(balances).forEach(async (coin) => {
     let dbCoin;
-    let balance;
-
+    // if we have a positive balance
+    // if the coin is not already stored in the db add coin and use that reference 
     try {
-      // if we have a positive balance
       if (balances[coin]) {
         dbCoin = await getCoinByName(coin);
-        // if the coin is not already stored in the db add coin and use that reference 
         if (!dbCoin) {
           dbCoin = await addCoin(coin);
         }
       }
-
       // update user balance with the symbol, user id and either our old or newly added coin
+      // if there is no current balance object, create one
       if (dbCoin) {
-        // if there is no current balance object, create one
         const dbBalance = await fetchUserBalance(userId, dbCoin.id);
-        console.log(dbBalance);
         if (dbBalance.length) {
-          console.log('update balance');
-          balance = await updateUserBalance(balances[coin], userId, dbCoin.id)
+          await updateUserBalance(balances[coin], userId, dbCoin.id);
         } else {
-          console.log('create balance');
-          balance = await addUserBalance(userId, dbCoin.id, balances[coin])
+          await addUserBalance(userId, dbCoin.id, balances[coin]);
         }
-      } else {
-        console.log(`we don't care about ${coin}`);
-      }
-      // console.log('coin', coin);
-      // console.log('balance;', balance);
+      } 
     } catch(error) {
       console.log(error);
     }
-    
   })
-  
-  return
-}
-
-const getTotalBalance = (userBalance, balances) => {
-  for (let balance in balances) {
-    if (!userBalance[balance]) {
-      userBalance[balance] = balances[balance];
-    } else {
-      userBalance[balance] += balances[balance];
-    }
-  }
-  return userBalance;
 }
 
 module.exports = { 
