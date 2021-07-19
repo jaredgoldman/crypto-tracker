@@ -133,6 +133,7 @@ export default function CoinDash(props) {
         <UserCoinInfo 
           userCoinStats={userCoinStats} 
           currency={currency}
+          coin={coin}
         /> 
         
         <div>
