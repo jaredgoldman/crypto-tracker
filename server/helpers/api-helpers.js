@@ -110,8 +110,8 @@ const formatCandleRequest = (candleLength) => {
 
 // COIN STATS HELPERS //
 const getUserStats = async (trades, currency, coinInfo, userId) => {
-  const rates = await getConversionRates(currency);
-  const convertedTrades = convertTrades(trades, currency, rates); 
+  // const rates = await getConversionRates(currency);
+  // const convertedTrades = convertTrades(trades, currency, rates); 
 
   const pL = calculatePL(trades, coinInfo.coin.price);
  
@@ -119,7 +119,7 @@ const getUserStats = async (trades, currency, coinInfo, userId) => {
 
   const balance = await fetchUserBalanceBySymbol(userId, coinInfo.coin.ticker);
 
-  return { pL, average, balance: balance.balance }
+  return { pL, average, balance }
 }
 
 const calculatePL = (trades, currentPrice) => {

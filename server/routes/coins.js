@@ -112,7 +112,6 @@ router.get('/show/:userId/:coin/:uuid/:candleLength/:currency/:currencyUuid', as
   try {
     // depending on currencyticker, calculate profit and loss, average price 
     userCoinStats = await getUserStats(userCoinTrades, currency, coinInfo, userId);
-    console.log(userCoinStats);
   } catch(error) {
     console.log(error)
     console.log('error getting coin stats')
