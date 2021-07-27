@@ -92,6 +92,17 @@ const addUserAccount = (exchangeData) => {
     .catch(err => err);
 }
 
+const getAccountByApiKey = ({ apiKey }) => {
+  const query = {
+    text: `SELECT * FROM accounts WHERE api_key = $1 LIMIT 1`,
+    values: [apiKey]
+  }
+
+return db.query(query)
+  .then(result => result.rows[0])
+  .catch(err => err);
+}
+
 const getUserAccounts = (userId) => {
   const query = {
 
@@ -114,6 +125,20 @@ const disableUserAccount = (userId, accountId) => {
   const query = {
     text: `UPDATE accounts
           SET active = false 
+          WHERE id = $1 AND user_id = $2`,
+    values: [accountId, userId]
+  }
+  
+  return db
+  .query(query)
+  .then(res => res.rows)
+  .catch((err) => err);
+}
+
+const enableUserAccount = (userId, accountId) => {
+  const query = {
+    text: `UPDATE accounts
+          SET active = true 
           WHERE id = $1 AND user_id = $2`,
     values: [accountId, userId]
   }
@@ -198,7 +223,9 @@ const addUserBalance = (userId, coinId, addBalance) => {
 module.exports = {
   addUserAccount,
   disableUserAccount,
+  enableUserAccount,
   getUserAccounts,
+  getAccountByApiKey,
   addExchange,
   getExchangeByName,
   addUserTransaction,

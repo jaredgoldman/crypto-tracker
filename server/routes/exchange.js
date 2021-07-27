@@ -14,7 +14,9 @@ const {
 const {
   getUserTransactions,
   getUserAccounts,
+  getAccountByApiKey,
   disableUserAccount,
+  enableUserAccount,
   fetchUserBalances
 } = require('../db/queries/exchange-queries')
 
@@ -38,6 +40,18 @@ router.post("/new", async (req, res) => {
 
   // add account to database
   try {
+    // check if account exists by comparing api key
+    account = await getAccountByApiKey(exchangeData)
+    // if account exists 
+    if (account) {
+      if (!account.active) {
+       await enableUserAccount(account.user_id, account.id);
+       console.log('enabled previously disabled account');
+      } else {
+        errorMessage = "account already active"
+        return res.send({account, errorMessage})
+      }
+    }
     account = await addAccountToDb(exchangeData)
     console.log("account added to db");
     trades = await fetchUserExchangeTrades(exchange);
@@ -46,9 +60,10 @@ router.post("/new", async (req, res) => {
     console.log('transactions added to db');
     balance = await exchange.fetchBalance();
     console.log("adding balance");
-    const temp = await addBalanceToDb(balance, exchangeData.userId);
+    await addBalanceToDb(balance, exchangeData.userId);
+    console.log('balance added');
   } catch(error) {
-    errorMessage = error;
+    console.log(error);
   }
   console.log(account);
    res.send({account, errorMessage});
@@ -108,7 +123,7 @@ router.get('/user/exchanges/:userId', async (req, res) => {
 // disable account
 router.post('/user/exchanges', async (req, res) => {
   const { userId, accountId } = req.body
-  let disabled
+
   try {
     disabled = await disableUserAccount(userId, accountId)
     res.send({deleted: true})

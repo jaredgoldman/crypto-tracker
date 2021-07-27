@@ -90,12 +90,19 @@ export default function Watchlist(props) {
     return <div>Loading watchlist...</div>
   }
 
+  if (!userCoins) {
+    return (
+      <div>
+        <div>Add coins to your watchlist to get started!</div>
+        <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
+      </div>
+    )
+  }
   return (
     <div className="watchlist-wrapper">
       <h1 className="watchlist-heading">Your Watchlist</h1>
       <div className="table-wrapper">
         
-      {userCoins ? 
       <div>
         <table className="watchlist-table">
             <thead>
@@ -131,15 +138,9 @@ export default function Watchlist(props) {
           </table>
           
         </div>
-         : 
-        <div>
-          <div>Add coins to your watchlist to get started!</div>
-          <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
-        </div>
-        }
       {showModal && <CoinModal handleShowModal={handleShowModal} rows={allCoins} addUserCoin={addUserCoin} alert={alert}/>}
       </div>
-      {userCoins && <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button> }
+      <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button> 
     </div>
   )
 

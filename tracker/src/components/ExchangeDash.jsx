@@ -50,14 +50,14 @@ export default function ExchangeDash() {
   }
 
   const addExchange = async (exchangeData) => {
-    if (!exchangeData.exchangeName || !exchangeData.apiKey || !exchangeData.secretKey) {
+    if (!exchangeData.exchangeName || !exchangeData.apiKey || !exchangeData.secretKey || !exchangeData.accountName) {
       return handleAlert(`please enter valid credentials`)
     }
     const URL = `http://localhost:3004/api/exchange/new`
     try {
       const res = await axios.post(URL, {userId: cookies.user_id, ...exchangeData})
       const {account, errorMessage} = res.data
-      if (errorMessage) console.log(errorMessage)
+      if (errorMessage) return handleAlert(errorMessage)
       if (account) {
         setExchangeAddDelete(true);
         handleAlert('Exchange added!')
