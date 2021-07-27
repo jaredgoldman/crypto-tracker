@@ -129,7 +129,7 @@ export default function Watchlist(props) {
             })}
             </tbody> 
           </table>
-          <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
+          
         </div>
          : 
         <div>
@@ -139,6 +139,7 @@ export default function Watchlist(props) {
         }
       {showModal && <CoinModal handleShowModal={handleShowModal} rows={allCoins} addUserCoin={addUserCoin} alert={alert}/>}
       </div>
+      {userCoins && <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button> }
     </div>
   )
 

@@ -5,10 +5,19 @@
   align-items: center;
 }
 
+.back-to-watchlist {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
 .coindash-header {
   display: flex;
   justify-content: center;
-  padding: 2.5em 0em;
+  padding: 1em;
+  border: 1px solid black;
+  border-radius: 15px;
+  margin-bottom: 1em;
 }
 
 .coin-icon {
@@ -28,7 +37,6 @@
   display: flex;
   justify-content: center;
   font-family: Secular One;
-  padding-top: .7em;
   color: rgb(23, 128, 221);
 }
 

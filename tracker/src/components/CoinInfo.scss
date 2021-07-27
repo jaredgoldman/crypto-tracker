@@ -1,6 +1,10 @@
 .coininfo {
   display: flex;
   flex-direction: column;
+  border: 1px solid black;
+  padding: 4%;
+  border-radius: 15px;
+  margin-top: .7em
 }
 
 .coininfo-select {

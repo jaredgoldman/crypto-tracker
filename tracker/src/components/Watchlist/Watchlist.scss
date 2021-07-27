@@ -1,16 +1,12 @@
 .watchlist-wrapper {
-  padding: 1em 2em 0em 2em;
-  border: solid 1px black;
-  margin: 2em 2em;
-  border-radius: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   
-  .add-coins-button {
-    padding: .8em;
-    margin-top: 2em;
-  }
+}
 
+.add-coins-button {
+  padding: .8em;
 }
 
 .watchlist-heading {
@@ -24,7 +20,10 @@
   text-align: center;
   margin: 2% 0;
   height: 100%;
-  width: 100%;
+  margin: 2em 2em;
+  border: solid 1px black;
+  border-radius: 20px;
+  padding: 2em
 }
 
 .watchlist-table {
@@ -32,6 +31,7 @@
   border: none;
   width: 100%;
   border-collapse: collapse;
+  
 
   thead {
     font-weight: bold;

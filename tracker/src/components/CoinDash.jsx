@@ -93,7 +93,9 @@ export default function CoinDash(props) {
   return (
   
   <div className="coindash-wrapper">
-    <a href='/watchlist'>Back to Watchlist</a>
+    <div className="back-to-watchlist">
+      <a href='/watchlist'>Back to Watchlist</a>
+    </div>
    {coinInfo && <div className="coindash-header"> 
       <img src={coinInfo.icon} className="coin-icon" alt={`icon for ${coinInfo.ticker}`}></img>
       <h2>{coin.name}</h2>
