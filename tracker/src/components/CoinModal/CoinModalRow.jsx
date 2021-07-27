@@ -8,7 +8,7 @@ export default function CoinModalRow(props) {
       <td>{props.coin}</td>
       <td>{props.ticker}</td>
       <td>
-        <button onClick={() => props.addUserCoin(props.ticker)}>Select Coin</button>
+        <button onClick={() => props.addUserCoin(props.ticker)}>Add Coin</button>
       </td>
     </tr>
   )

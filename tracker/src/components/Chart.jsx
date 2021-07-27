@@ -37,13 +37,14 @@ export default function DisplayChart(props) {
   const chart_height = 500;
 
   return (
+  <div>
     <div className="Chart">
       <div className="content">
         <div>
           <ReactApexChart options={chartData.options} series={chartData.series} type="candlestick" width={chart_width} height={chart_height} />
         </div>
       </div>
-
+    </div>
       <div className="select-timeframe">
         <h5>Select Timeframe</h5>
         <select onChange={(e) => props.handleSetTimeframe(e)}>
@@ -52,7 +53,7 @@ export default function DisplayChart(props) {
           <option value={'month'}>month</option>
         </select>
       </div>
-
-    </div>
+  </div>
   );
+
 }

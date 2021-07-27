@@ -1,26 +1,74 @@
 .watchlist-wrapper {
-  padding: 0em 2em;
+  padding: 1em 2em 0em 2em;
+  border: solid 1px black;
+  margin: 2em 2em;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  
+  .add-coins-button {
+    padding: .8em;
+    margin-top: 2em;
+  }
+
 }
 
 .watchlist-heading {
   display: flex;
   justify-content: center;
   font-family: Secular One;
-  padding-top: 1em;
   color: rgb(23, 128, 221);
-}
-
-button {
-  height: 40px;
-  margin: 3px;
 }
 
 .table-wrapper {
   text-align: center;
-  margin-top: 2%;
-  margin-bottom: 200px;
-  display: block;
+  margin: 2% 0;
   height: 100%;
   width: 100%;
+}
+
+.watchlist-table {
+  table-layout: fixed;
+  border: none;
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    font-weight: bold;
+  }
+  
+  th {
+    padding-bottom: 1em;
+  }
+
+  td {
+    padding: 1em .5em;
+  }
+
+  thead th:nth-child(1) {
+    width: 8%
+  }
+  thead th:nth-child(2) {
+    width: 7%
+  }
+  thead th:nth-child(3) {
+    width: 10%
+  }
+  thead th:nth-child(4) {
+    width: 10%
+  }
+  thead th:nth-child(5) {
+    width: 10%
+  }
+  thead th:nth-child(6) {
+    width: 20%
+  }
+  thead th:nth-child(7) {
+    width: 20%
+  }
+  thead th:nth-child(8) {
+    width: 15%
+  }
+
 }
 

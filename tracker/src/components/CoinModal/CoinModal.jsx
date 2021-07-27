@@ -15,30 +15,30 @@ export default function CoinModal(props) {
 
   return (
     <div className="Modal">
+     
+      <h2>Add coins to your watchlist</h2>
       <div className="coin-table">
-      <p>Add Coins to Watchlist</p>
       
           {props.alert && <p>{props.alert}</p>}
 
           <table>
             <thead>
               <tr>
-                <td>Coin</td>
-                <td>Ticker</td>
-                <td>Select Coin</td>
+                <th>Coin</th>
+                <th>Ticker</th>
               </tr>
             </thead>
             <tbody>
               {coinRows}
             </tbody>
           </table>
-        
+      
+      </div>
+      <div className="coin-modal-back">
         <button onClick={() => props.handleShowModal()}>
           Go back
         </button>
-
       </div>
-
     </div>
   )
 

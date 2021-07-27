@@ -6,7 +6,6 @@ export default function UserCoinInfo(props) {
 
   return (
     <div className="user-coin-stats">
-      <h2 className="coindash-heading">Asset Performance</h2>
       <div className="stats">
 
       {pL &&

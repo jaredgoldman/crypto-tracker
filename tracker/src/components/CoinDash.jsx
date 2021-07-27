@@ -129,15 +129,18 @@ export default function CoinDash(props) {
 
       {userCoinStats && trades.length ?
       <div className="user-info-container">
-
-        <UserCoinInfo 
-          userCoinStats={userCoinStats} 
-          currency={currency}
-          coin={coin}
-        /> 
+      
+        <h2 className="coindash-heading">Asset Performance</h2>   
+        <div className="coindash-info">   
+          <UserCoinInfo 
+            userCoinStats={userCoinStats} 
+            currency={currency}
+            coin={coin}
+          /> 
+        </div>
         
-        <div>
-          <h2 className="coindash-heading">Your Trades</h2>
+        <h2 className="coindash-heading">Your Trades</h2>
+        <div className="coindash-trades">
           <TradeTable rows={trades}/>
         </div> 
 

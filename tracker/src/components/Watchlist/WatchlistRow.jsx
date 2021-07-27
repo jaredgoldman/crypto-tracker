@@ -29,7 +29,17 @@ export default function WatchlistRow(props) {
   return (
 
     <tr>
-      <td>{ticker}</td>
+      <td>
+        <a 
+        className="button" 
+        href='/coins' 
+        onClick={(e) => {
+            e.preventDefault();
+            handleSetCoin(ticker, uuid, name);
+          }}
+        >{ticker}
+        </a>
+      </td>
       <td>#{rank}</td>
       <td>{name}</td>
       <td>${Number(price).toFixed(4)}</td>
@@ -37,13 +47,7 @@ export default function WatchlistRow(props) {
       <td>{`${Number(volume).toFixed(0)} ${ticker}`}</td>
       <td>{`${Number(marketCap).toFixed(0)} ${ticker}`}</td>
       <td>
-
-        <a className="button" href='/coins' onClick={(e) => {
-            e.preventDefault();
-            handleSetCoin(ticker, uuid, name);
-          }
-        }>Show Coin</a>
-
+        
         <button className="button" onClick={(e) => {
             e.preventDefault();
             handleDeleteUserCoin(ticker)

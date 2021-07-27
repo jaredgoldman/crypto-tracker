@@ -97,17 +97,17 @@ export default function Watchlist(props) {
         
       {userCoins ? 
       <div>
-        <table>
+        <table className="watchlist-table">
             <thead>
               <tr>
-                <td>Ticker</td>
-                <td>Rank</td>
-                <td>Name</td>
-                <td>Price</td>
-                <td>24h%</td>
-                <td>Volume (24h)</td>
-                <td>Market Cap</td>
-                <td></td>
+                <th>Ticker</th>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>24h%</th>
+                <th>Volume (24h)</th>
+                <th>Market Cap</th>
+                <th></th>
               </tr>
             </thead>
             <tbody className="tbody">

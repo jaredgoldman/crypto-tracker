@@ -13,6 +13,7 @@
 
   /* center content inside modal */
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -20,4 +21,31 @@
 .coin-table {
   max-height: calc(100vh - 210px);
   overflow-y: auto;
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: .8em 1em 1em 1em; 
+
+  table {
+    th {
+      padding-bottom: 1em;
+    }
+  
+    td {
+      padding: .5em;
+    }
+  
+    thead th:nth-child(1) {
+      width: 35%
+    }
+    thead th:nth-child(2) {
+      width: 35%
+    }
+    thead th:nth-child(3) {
+      width: 30%
+    }
+  }
+}
+
+.coin-modal-back {
+  margin-top: 1em;
 }

@@ -1,0 +1,51 @@
+.trade-table {
+  table-layout: fixed;
+  border: none;
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+  border-radius: 15px;
+
+
+  thead {
+    font-weight: bold;
+  }
+  
+  th {
+    padding-bottom: 1em;
+    text-align: center;
+  }
+
+  td {
+    padding: 1em .5em;
+    text-align: center;
+  }
+
+  thead th:nth-child(1) {
+    width: 10%
+  }
+  thead th:nth-child(2) {
+    width: 10%
+  }
+  thead th:nth-child(3) {
+    width: 10%
+  }
+  thead th:nth-child(4) {
+    width: 10%
+  }
+  thead th:nth-child(5) {
+    width: 10%
+  }
+  thead th:nth-child(6) {
+    width: 10%
+  }
+  thead th:nth-child(7) {
+    width: 10%
+  }
+  thead th:nth-child(8) {
+    width: 10%
+  }
+  thead th:nth-child(9) {
+    width: 8%
+  }
+}

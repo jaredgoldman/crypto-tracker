@@ -17,15 +17,15 @@ const { rows } = props
       <table>
         <thead>
           <tr>
-            <td>Quote Currency</td>
-            <td>Price</td>
-            <td>Amount</td>
-            <td>Cost</td>
-            <td>Exchange Name</td>
-            <td>Date</td>
-            <td>Order Type</td>
-            <td>Order Side</td>
-            <td>Fee</td>
+            <th>Quote Currency</th>
+            <th>Price</th>
+            <th>Amount</th>
+            <th>Cost</th>
+            <th>Exchange Name</th>
+            <th>Date</th>
+            <th>Order Type</th>
+            <th>Order Side</th>
+            <th>Fee</th>
           </tr>
         </thead>
         {rows &&
