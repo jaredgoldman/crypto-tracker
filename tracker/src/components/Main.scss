@@ -3,6 +3,10 @@ main {
   display: flex;
   flex-direction: column;
   overflow: auto;
+
+  header {
+    border-bottom: 1px solid black;
+  }
 }
 
 nav {

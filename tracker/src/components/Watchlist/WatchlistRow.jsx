@@ -1,21 +1,22 @@
 import { useHistory } from "react-router-dom";
 import './WatchlistRow.scss'
 
-export default function WatchlistRow(props) {
-  const {
-    ticker,
-    uuid,
-    rank, 
-    name, 
-    price, 
-    changePercent, 
-    volume, 
-    marketCap,
-    deleteUserCoin
-  } = props;
+export default function WatchlistRow({
+  ticker,
+  uuid,
+  rank, 
+  name, 
+  price, 
+  changePercent, 
+  volume, 
+  marketCap,
+  deleteUserCoin,
+  coinLogo,
+  setCoin
+}) {
 
+  console.log(coinLogo);
   const history = useHistory();
-  const { setCoin } = props
 
   const handleSetCoin = async (ticker, uuid, name) => {
     setCoin({ticker, uuid, name})
@@ -28,8 +29,10 @@ export default function WatchlistRow(props) {
   
   return (
 
-    <tr>
-      <td>
+    <tr className="watchlist-row">
+      <td>#{rank}</td>
+      <td className="image-icon">
+        <img src={coinLogo} alt="" />
         <a 
         className="button" 
         href='/coins' 
@@ -40,7 +43,6 @@ export default function WatchlistRow(props) {
         >{ticker}
         </a>
       </td>
-      <td>#{rank}</td>
       <td>{name}</td>
       <td>${Number(price).toFixed(4)}</td>
       <td>{Number(changePercent).toFixed(2)}%</td>

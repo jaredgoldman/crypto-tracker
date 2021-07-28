@@ -1,14 +1,19 @@
 import './CoinModalRow.scss'
 
-export default function CoinModalRow(props) {
+export default function CoinModalRow({
+  coin, 
+  ticker,
+  addUserCoin,
+  coinLogo
+}) {
 
   return (
 
     <tr>
-      <td>{props.coin}</td>
-      <td>{props.ticker}</td>
+      <td className="image-icon"><img src={coinLogo}/>{coin}</td>
+      <td>{ticker}</td>
       <td>
-        <button onClick={() => props.addUserCoin(props.ticker)}>Add Coin</button>
+        <button onClick={() => addUserCoin(ticker)}>Add Coin</button>
       </td>
     </tr>
   )

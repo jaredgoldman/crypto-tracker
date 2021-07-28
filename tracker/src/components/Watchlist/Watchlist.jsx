@@ -5,8 +5,7 @@ import WatchlistRow from "./WatchlistRow"
 import CoinModal from '../CoinModal/CoinModal'
 import UseUserData from "../../hooks/useUserData"
 
-export default function Watchlist(props) {
-  const { setCoin } = props;
+export default function Watchlist({ setCoin }) {
   const [showModal, setShowModal] = useState(false);
   const [allCoins, setAllCoins] = useState(null);
   const [userCoins, setUserCoins] = useState(null);
@@ -107,8 +106,8 @@ export default function Watchlist(props) {
         <table className="watchlist-table">
             <thead>
               <tr>
-                <th>Ticker</th>
                 <th>Rank</th>
+                <th>Ticker</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>24h%</th>
@@ -121,7 +120,7 @@ export default function Watchlist(props) {
               {userCoins.map((row, i) => {
               return <WatchlistRow
                 key={i}
-                coinLogo={row.iconUrl}
+                coinLogo={row.coinLogo}
                 ticker={row.ticker}
                 rank={row.rank}
                 name={row.name}

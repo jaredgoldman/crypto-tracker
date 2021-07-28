@@ -1,15 +1,20 @@
-import { useState, useEffect } from 'react'
 import CoinModalRow from './CoinModalRow'
 import './CoinModal.scss'
 
-export default function CoinModal(props) {
+export default function CoinModal({
+  rows,
+  addUserCoin,
+  handleShowModal
+}) {
 
-  const coinRows = props.rows.map((coin, i) => {
+  const coinRows = rows.map((coin, i) => {
+    console.log(coin);
     return <CoinModalRow 
       key={i}
       coin={coin.name} 
       ticker={coin.ticker} 
-      addUserCoin={props.addUserCoin}
+      addUserCoin={addUserCoin}
+      coinLogo={coin.coinLogo}
     />
   })
 
@@ -19,7 +24,7 @@ export default function CoinModal(props) {
       <h2>Add coins to your watchlist</h2>
       <div className="coin-table">
       
-          {props.alert && <p>{props.alert}</p>}
+          {alert && <p>{alert}</p>}
 
           <table>
             <thead>
@@ -35,8 +40,8 @@ export default function CoinModal(props) {
       
       </div>
       <div className="coin-modal-back">
-        <button onClick={() => props.handleShowModal()}>
-          Go back
+        <button onClick={() => handleShowModal()}>
+          Go Back
         </button>
       </div>
     </div>
