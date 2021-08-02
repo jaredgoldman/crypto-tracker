@@ -46,7 +46,7 @@ router.post("/new", async (req, res) => {
     if (account) {
       if (!account.active) {
        await enableUserAccount(account.user_id, account.id);
-       console.log('enabled previously disabled account');
+       return res.send({account})
       } else {
         errorMessage = "account already active"
         return res.send({account, errorMessage})
