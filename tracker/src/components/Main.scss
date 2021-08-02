@@ -21,22 +21,22 @@ nav {
   top: 0;
 }
 
-.nav-text-title {
-  font-size: 30px;
+.nav-text, .nav-title {
   color: white;
-  margin-top: 0;
-  float: left;
-  font-family: 'Righteous', cursive;
-}
-
-.nav-text {
-  font-size: 22px;
-  color: white;
+  stroke: 1px solid black;
   margin-top: 0;
   padding: 20px;
   font-family: 'Righteous', cursive;
   float: right;
   text-decoration: none;
+}
+
+.nav-text {
+  font-size: 23px;
+}
+
+.nav-title {
+  font-size: 30px;
 }
 
 table {

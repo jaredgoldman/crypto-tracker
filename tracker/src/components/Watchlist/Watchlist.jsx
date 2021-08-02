@@ -17,15 +17,14 @@ export default function Watchlist({ setCoin }) {
   }
 
   useEffect(() => {
-    setLoading(true);
     loadWatchlistData();
-    setLoading(false);
     // eslint-disable-next-line
   } ,[])
 
   const loadWatchlistData = async () => {
     const URL = `http://localhost:3004/api/coins/${cookies.user_id}`
     try {
+      setLoading(true);
       const defualtData = await axios.get(URL);
       const allCoins = defualtData.data.coins;
       const userCoinRes = defualtData.data.userCoins;
@@ -36,6 +35,7 @@ export default function Watchlist({ setCoin }) {
       } else {
         setUserCoins(filteredUserCoins)
       }
+      setLoading(false);
     } catch(error) {
       console.log(error)
     }
@@ -85,19 +85,27 @@ export default function Watchlist({ setCoin }) {
     return userCoinArr
     }
 
-  if (loading) {
-    return <div>Loading watchlist...</div>
+  if (loading && !userCoins) {
+    return <div className="watchlist__no-coins-text">Loading watchlist...</div>
   }
 
-  if (!userCoins) {
-    return (
-      <div>
-        <div>Add coins to your watchlist to get started!</div>
-        <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
-      </div>
-    )
-  }
+  // if (!userCoins) {
+  //   return (
+  //     <div className="watchlist__no-coins">
+  //       <div className="watchlist__no-coins-text">Add coins to your watchlist to get started!</div>
+  //       <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
+  //     </div>
+  //   )
+  // }
+
   return (
+    <>
+    {showModal && <CoinModal handleShowModal={handleShowModal} rows={allCoins} addUserCoin={addUserCoin} alert={alert}/>}
+    {!userCoins && <div className="watchlist__no-coins">
+      <div className="watchlist__no-coins-text">Add coins to your watchlist to get started!</div>
+      <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
+    </div> }
+    {userCoins && 
     <div className="watchlist-wrapper">
       <h1 className="watchlist-heading">Your Watchlist</h1>
       <div className="table-wrapper">
@@ -137,10 +145,10 @@ export default function Watchlist({ setCoin }) {
           </table>
           
         </div>
-      {showModal && <CoinModal handleShowModal={handleShowModal} rows={allCoins} addUserCoin={addUserCoin} alert={alert}/>}
       </div>
       <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button> 
-    </div>
+    </div> }
+    </>
   )
 
 }

@@ -6,7 +6,8 @@
 }
 
 .add-coins-button {
-  padding: .8em;
+  padding: 1em;
+  margin-bottom: 1.5em;
 }
 
 .watchlist-heading {
@@ -14,13 +15,29 @@
   justify-content: center;
   font-family: Secular One;
   color: rgb(23, 128, 221);
+  margin-top: 1em;
+}
+
+.watchlist {
+
+  &__no-coins {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4em;
+    font-size: 30px;
+  }
+
+  &__no-coins-text {
+    margin-bottom: 1em;
+  }
 }
 
 .table-wrapper {
   text-align: center;
   margin: 2% 0;
   height: 100%;
-  margin: 2em 2em;
+  margin: 1em 2em;
   border: solid 1px black;
   border-radius: 20px;
   padding: 2em

@@ -15,7 +15,6 @@ export default function WatchlistRow({
   setCoin
 }) {
 
-  console.log(coinLogo);
   const history = useHistory();
 
   const handleSetCoin = async (ticker, uuid, name) => {

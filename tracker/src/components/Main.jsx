@@ -35,7 +35,7 @@ export default function Main() {
       <Router>
         <header>
           <nav>
-            <Link className="nav-text" to="/">Crypto-Tracker</Link>
+            <Link className="nav-title" to="/">Crypto-Tracker</Link>
             {!cookies.user_id && 
               <div>
                 <Link className="nav-text" to="/login">Login</Link>

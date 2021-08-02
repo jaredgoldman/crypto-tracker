@@ -8,7 +8,6 @@ export default function CoinModal({
 }) {
 
   const coinRows = rows.map((coin, i) => {
-    console.log(coin);
     return <CoinModalRow 
       key={i}
       coin={coin.name} 
