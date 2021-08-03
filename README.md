@@ -4,9 +4,9 @@ Crypto tracker is a cryptocurrency portfolio-tracker that allows users to view t
 
 ## Views
 
-!["landing page"]()
-!["watchlist"]()
-!["coin dashboard"]()
+!["landing page"](https://github.com/jaredgoldman/crypto-tracker/blob/main/docs/welcome.png)
+!["watchlist"](https://github.com/jaredgoldman/crypto-tracker/blob/main/docs/watchlist.png)
+!["coin dashboard"](https://github.com/jaredgoldman/crypto-tracker/blob/main/docs/coin-show.png)
 
 ## Dependencies (tracker)
 
