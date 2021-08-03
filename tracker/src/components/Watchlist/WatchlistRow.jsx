@@ -33,7 +33,7 @@ export default function WatchlistRow({
       <td className="image-icon">
         <img src={coinLogo} alt="" />
         <a 
-        className="button" 
+        className="watchlist-row__link" 
         href='/coins' 
         onClick={(e) => {
             e.preventDefault();

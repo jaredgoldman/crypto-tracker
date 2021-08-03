@@ -63,6 +63,7 @@ const fetchUserExchangeTrades = async (exchange) => {
 
   // grab trades
   let exchangeTrades = null;
+
   try {
     if (exchange.name === 'Kraken') {
       exchangeTrades = await exchange.fetchMyTrades();
@@ -81,7 +82,7 @@ const fetchUserExchangeTrades = async (exchange) => {
 const addUserTransactions = async (accountId, trades) => {
   trades.forEach( async trade => {
     try {
-      const addedTransaction = await addUserTransaction({accountId, ...trade});
+      await addUserTransaction({accountId, ...trade});
       return 'transactions added'
     } catch(error) {
       console.log(error);
@@ -189,5 +190,5 @@ module.exports = {
   fetchUserExchangeTrades,
   addUserTransactions,
   formatDbTrades,
-  addBalanceToDb
+  addBalanceToDb,
 }

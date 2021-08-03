@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const ccxt = require('ccxt')
 
 const {  
   fetchUserExchangeTrades, 
@@ -8,7 +9,7 @@ const {
   formatDbTrades,
   addAccountToDb,
   initializeExchange,
-  addBalanceToDb
+  addBalanceToDb,
 } = require('../helpers/exchange-helpers');
 
 const {
@@ -38,6 +39,9 @@ router.post("/new", async (req, res) => {
   let errorMessage
   const exchange = initializeExchange(exchangeData); 
 
+  // console.log(exchange.name);
+  // return console.log(exchange.hasFetchMyTrades);
+
   // add account to database
   try {
     // check if account exists by comparing api key
@@ -46,6 +50,7 @@ router.post("/new", async (req, res) => {
     if (account) {
       if (!account.active) {
        await enableUserAccount(account.user_id, account.id);
+       console.log("enabling previous account");
        return res.send({account})
       } else {
         errorMessage = "account already active"
@@ -65,7 +70,6 @@ router.post("/new", async (req, res) => {
   } catch(error) {
     console.log(error);
   }
-  console.log(account);
    res.send({account, errorMessage});
 })
 
@@ -159,5 +163,14 @@ router.get('/balance/:userId', async (req, res) => {
   }
   res.send(balances)
 })
+
+router.get('/exchangetrades', (req, res) => {
+  const ccxtExchanges = getCcxtExchanges()
+  for (let exchange of ccxtExchanges) {
+    const ex = ccxt[exchange]
+    ex.hasFetchMyTrades ? console.log(ex.name) : console.log('')
+  }
+})
+
 
 module.exports = router;

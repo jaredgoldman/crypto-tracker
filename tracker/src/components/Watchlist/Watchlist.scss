@@ -31,6 +31,14 @@
   &__no-coins-text {
     margin-bottom: 1em;
   }
+
+  &__loading {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 4em;
+    font-size: 30px;
+  }
 }
 
 .table-wrapper {
@@ -66,7 +74,7 @@
     width: 8%
   }
   thead th:nth-child(2) {
-    width: 7%
+    width: 10%
   }
   thead th:nth-child(3) {
     width: 10%

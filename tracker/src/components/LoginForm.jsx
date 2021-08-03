@@ -1,4 +1,5 @@
 import './Form.scss'
+import './LoginForm.scss'
 import { useState } from 'react'
 
 export default function LoginForm(props) {

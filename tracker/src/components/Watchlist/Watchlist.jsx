@@ -86,25 +86,24 @@ export default function Watchlist({ setCoin }) {
     }
 
   if (loading && !userCoins) {
-    return <div className="watchlist__no-coins-text">Loading watchlist...</div>
+    return <div className="watchlist__loading">Loading watchlist...</div>
   }
-
-  // if (!userCoins) {
-  //   return (
-  //     <div className="watchlist__no-coins">
-  //       <div className="watchlist__no-coins-text">Add coins to your watchlist to get started!</div>
-  //       <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
-  //     </div>
-  //   )
-  // }
 
   return (
     <>
-    {showModal && <CoinModal handleShowModal={handleShowModal} rows={allCoins} addUserCoin={addUserCoin} alert={alert}/>}
-    {!userCoins && <div className="watchlist__no-coins">
-      <div className="watchlist__no-coins-text">Add coins to your watchlist to get started!</div>
-      <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
-    </div> }
+    {showModal && 
+      <CoinModal 
+        handleShowModal={handleShowModal} 
+        rows={allCoins} addUserCoin={addUserCoin} 
+        alert={alert}
+      />
+    }
+    {!userCoins && 
+      <div className="watchlist__no-coins">
+        <div className="watchlist__no-coins-text">Add coins to your watchlist to get started!</div>
+        <button className="add-coins-button" onClick={() => handleShowModal()}>Add Coins</button>
+      </div> 
+    }
     {userCoins && 
     <div className="watchlist-wrapper">
       <h1 className="watchlist-heading">Your Watchlist</h1>
