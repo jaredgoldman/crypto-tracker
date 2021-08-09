@@ -1,10 +1,11 @@
 .coininfo {
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
-  padding: 4%;
+  padding: .1em 0 1em 1em;
   border-radius: 15px;
-  margin-top: .7em
+  margin-top: .7em;
+  background-color: white;
+  box-shadow: 0 10px 10px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .coininfo-select {
@@ -16,7 +17,7 @@
 
 .coininfo-table {
   border: none;
-  width: 30em;
+  width: 28em;
   
   td {
     text-align: left;

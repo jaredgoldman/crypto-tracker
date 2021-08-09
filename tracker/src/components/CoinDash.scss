@@ -15,9 +15,10 @@
   display: flex;
   justify-content: center;
   padding: 1em;
-  border: 1px solid black;
   border-radius: 15px;
-  margin-bottom: 1em;
+  margin-bottom: 3em;
+  background-color: white;
+  box-shadow: 0 10px 10px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .coin-icon {
@@ -37,7 +38,8 @@
   display: flex;
   justify-content: center;
   font-family: Secular One;
-  color: rgb(23, 128, 221);
+  color: #5f92df;
+  
 }
 
 .user-info-container {
@@ -54,15 +56,14 @@
 }
 
 .coindash-trades {
-  border: 1px solid black;
-  border-radius: 15px;
-  padding: 2%;
   width: 100%;
 }
 
 .coindash-info {
-  border: 1px solid black;
   border-radius: 15px;
   padding: 1%;
   max-width: 1000px;
+  background-color: white;
+  box-shadow: 0 10px 10px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  margin-bottom: 2em;
 }

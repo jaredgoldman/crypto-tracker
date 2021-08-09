@@ -14,7 +14,7 @@
   display: flex;
   justify-content: center;
   font-family: Secular One;
-  color: rgb(23, 128, 221);
+  color: #5f92df;
   margin-top: 1em;
 }
 
@@ -46,9 +46,10 @@
   margin: 2% 0;
   height: 100%;
   margin: 1em 2em;
-  border: solid 1px black;
   border-radius: 20px;
-  padding: 2em
+  padding: 2em;
+  background-color: white;
+  box-shadow: 0 10px 10px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .watchlist-table {
