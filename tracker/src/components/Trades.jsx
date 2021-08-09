@@ -39,7 +39,7 @@ export default function Trades() {
   return (
     <div className="trades-wrapper">
       <h1 className="coindash-heading">Your Trades</h1>
-      <div className="table-wrapper">
+      <div>
         <TradeTable rows={trades} />
       </div>
     </div>
