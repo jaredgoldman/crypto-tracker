@@ -9,6 +9,10 @@ import TradeTable from "./TradeTable/TradeTable"
 
 import useUserData from '../hooks/useUserData'
 
+import { 
+Arrow90degLeft
+} from 'react-bootstrap-icons'
+
 export default function CoinDash(props) {
   const { coin } = props
   const { cookies } = useUserData();
@@ -98,7 +102,10 @@ export default function CoinDash(props) {
         onClick={() => {
           window.location.href = '/watchlist'
         }}
-      >Back to Watchlist</button>
+      >
+      <Arrow90degLeft color="royalblue" size={20} />
+      <p>Back to Watchlist</p>
+    </button>
     </div>
    {coinInfo && <div className="coindash-header"> 
       <img src={coinInfo.icon} className="coin-icon" alt={`icon for ${coinInfo.ticker}`}></img>
