@@ -8,7 +8,7 @@ Crypto tracker is a cryptocurrency portfolio-tracker that allows users to view t
 !["watchlist"](https://github.com/jaredgoldman/crypto-tracker/blob/main/docs/watchlist.png)
 !["coin dashboard"](https://github.com/jaredgoldman/crypto-tracker/blob/main/docs/coin-show.png)
 
-## Dependencies (tracker)
+## Dependencies (client)
 
 - testing-library/jest-dom: ^5.12.0,
 - testing-library/react: ^11.2.7,
