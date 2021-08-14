@@ -1,0 +1,16 @@
+footer {
+  display: flex;
+  align-items: center;
+  height: 3em;
+  background-color: rgb(241, 253, 255);     
+  color: black;
+  padding: 1em;
+  position: relative; 
+  bottom: 0; 
+  width: 100%;
+  border-top: solid 1px black;
+
+  a {
+    color: black;
+  }
+}

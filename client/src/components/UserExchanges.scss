@@ -1,0 +1,40 @@
+.user-exchanges-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.user-exchange {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-exchange-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-exchanges {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  padding-bottom: 1em;
+}
+
+.exchange-name, .account-name {
+  padding: 0px 10px;
+}
+
+.delete-exchange-button {
+  margin-left: 3em;
+}
+
+.no-exchange {
+  text-align: center;
+  width: 100%;
+  margin: 3em 0em;
+}

@@ -1,0 +1,17 @@
+.image-icon {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  
+  img {
+    height: 30px;
+    padding-right: 1em;
+  }
+}
+
+.coinModalRow {
+
+  &__ticker {
+    text-align: center;
+  }
+}

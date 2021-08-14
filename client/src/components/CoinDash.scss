@@ -1,0 +1,78 @@
+.coindash-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.back-to-watchlist {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 3em;
+
+  button {
+    padding: 1em;
+    border: none;
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.19), 0 0px 0px rgba(0,0,0,0.23);
+  }
+}
+
+.coindash-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  border-radius: 15px;
+  margin-bottom: 3em;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 10px 10px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.coin-icon {
+  width: 4.3em;
+  margin-right: 1.5em;
+}
+
+.chart-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-right: 2em;
+  max-width: fit-content;
+}
+
+.coindash-heading {
+  display: flex;
+  justify-content: center;
+  font-family: Secular One;
+  color: #5f92df;
+  
+}
+
+.user-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-coininfo-alert {
+  padding-top: 5em;
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.coindash-trades {
+  width: 100%;
+}
+
+.coindash-info {
+  border-radius: 15px;
+  padding: 1%;
+  max-width: 1000px;
+  background-color: white;
+  box-shadow: 0 10px 10px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  margin-bottom: 2em;
+}
